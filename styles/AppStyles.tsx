@@ -103,4 +103,17 @@ export default StyleSheet.create({
     color: "#87F1FF",
     opacity: 0.6
   }
+  ,button:{
+
+    backgroundColor: "#87F1FF",
+    opacity: 0.6
+  }
+  ,buttonText:{
+    fontSize: 60
+  },
+  thumbnail: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain"
+  }
 });

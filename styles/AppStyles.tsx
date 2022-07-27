@@ -18,8 +18,9 @@ export default StyleSheet.create({
     width: '80%',
   },
     logo: {
-    width: 30,
-    height: 15,
+          resizeMode: 'contain',
+    width: 300,
+    height: 300,
     marginBottom: 10,
   },
   instructions: {
@@ -29,7 +30,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16

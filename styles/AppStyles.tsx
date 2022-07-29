@@ -1,11 +1,28 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  fullWidthContainer: {
-    backgroundColor: "pink",
-    padding:10,
+  popCatParentContainer: {
+    flex: 1,
+    padding: 20,
     alignItems: "stretch",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+  },
+  popCatContainer: {
+    padding: 20,
+    margin: 2,
+    backgroundColor: "grey",
+    height: 200,
+    width: 100,
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+
+  bannerContainer: {
+    backgroundColor: "pink",
+    padding: 20,
+    height: 200,
+    alignItems: "stretch",
+    justifyContent: "flex-start",
   },
   container: {
     flex: 1,

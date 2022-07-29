@@ -5,9 +5,9 @@ import AppStyles from "../styles/AppStyles";
 import { Cat } from "../types";
 import { MonoText } from "./StyledText";
 
-export default function PopularCatCard(props: { cat: Cat }) {
+export default function Banner(props: { cat: Cat }) {
   return (
-    <View style={AppStyles.fullWidthContainer}>
+    <View style={AppStyles.bannerContainer}>
       <Text style={AppStyles.title}>{props.cat.name}</Text>
       <Text>cat goes here</Text>
     </View>

@@ -85,6 +85,7 @@ function BottomTabNavigator() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarShowLabel: false,
+        headerShown: false,
       }}
     >
       <BottomTab.Screen

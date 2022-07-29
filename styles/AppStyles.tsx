@@ -1,6 +1,18 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  fullWidthContainer: {
+    backgroundColor: "pink",
+    padding:10,
+    alignItems: "stretch",
+    justifyContent: "center",
+  },
+  container: {
+    flex: 1,
+    alignItems: "stretch",
+    justifyContent: "flex-start",
+  },
+
   imageContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -27,12 +39,7 @@ export default StyleSheet.create({
     fontSize: 18,
     marginHorizontal: 15,
   },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 16,
-  },
+
   noPadding: {
     flex: 1,
     backgroundColor: "#fff",

@@ -23,10 +23,10 @@ export type Cat = {
   uid: string;
   name: string;
   gender: "male" | "female";
-  lastSeen: { location: string; date: string };
-  aliases: [string];
-  tempermant: string;
-  description: string;
+  lastSeen?: { location: string; date: string };
+  aliases?: [string];
+  temperment?: string;
+  description?: string;
   pets: number;
   feeder?: Feeder;
   photos?: [string];

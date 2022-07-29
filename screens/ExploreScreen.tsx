@@ -1,13 +1,19 @@
 import React from "react";
 
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
+import { Cat, RootTabScreenProps } from "../types";
 import AppStyles from "../styles/AppStyles";
+import PopularCatCard from "../components/PopularCatCard";
+import App from "../App";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ExploreScreen() {
+  const localCat: Cat = { name: "bob", uid: "1234", gender: "male", pets: 900 };
   return (
-    <View style={AppStyles.container}>
-      <Text style={AppStyles.title}>Explore tab</Text>
-    </View>
+    <SafeAreaView style={AppStyles.container}>
+      <View>
+        <PopularCatCard cat={localCat}></PopularCatCard>
+      </View>
+    </SafeAreaView>
   );
 }

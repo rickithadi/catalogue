@@ -26,6 +26,7 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import ExploreScreen from "../screens/ExploreScreen";
 
 export default function Navigation({
   colorScheme,
@@ -109,7 +110,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Explore"
-        component={TabTwoScreen}
+        component={ExploreScreen}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
@@ -125,7 +126,7 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="inbox" color={color} />,
         }}
       />
-<BottomTab.Screen
+      <BottomTab.Screen
         name="Profile"
         component={TabTwoScreen}
         options={{

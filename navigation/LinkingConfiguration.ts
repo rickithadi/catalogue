@@ -17,12 +17,22 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           Home: {
             screens: {
-              HomeScreen: "Home",
+              Home: "Home",
             },
           },
           Explore: {
             screens: {
-              ExploreScreen: "Explore",
+              Explore: "Explore",
+            },
+          },
+          Inbox: {
+            screens: {
+              Inbox: "Inbox",
+            },
+          },
+          Profile: {
+            screens: {
+              Profile: "Profile",
             },
           },
         },

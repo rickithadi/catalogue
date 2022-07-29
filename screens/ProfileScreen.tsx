@@ -4,10 +4,10 @@ import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import AppStyles from "../styles/AppStyles";
 
-export default function ExploreScreen() {
+export default function ProfileScreen() {
   return (
     <View style={AppStyles.container}>
-      <Text style={AppStyles.title}>Explore tab</Text>
+      <Text style={AppStyles.title}>Profile tab</Text>
     </View>
   );
 }

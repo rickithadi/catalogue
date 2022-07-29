@@ -9,9 +9,9 @@ import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import AppStyles from "../styles/AppStyles";
 
-export default function TabOneScreen({
+export default function HomeScreen({
   navigation,
-}: RootTabScreenProps<"TabOne">) {
+}: RootTabScreenProps<"Home">) {
   type ImagePath = {
     localUri: string;
   };

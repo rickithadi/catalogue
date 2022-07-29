@@ -20,6 +20,7 @@ export type Feeder = {
   uid: string;
 };
 export type Cat = {
+  uid: string;
   name: string;
   gender: "male" | "female";
   lastSeen: { location: string; date: string };
@@ -41,8 +42,10 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Home: undefined;
+  Explore: undefined;
+  Inbox: undefined;
+  Profile: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

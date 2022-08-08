@@ -17,7 +17,6 @@ export default StyleSheet.create({
 
   image: {
     flex: 1,
-    justifyContent: "center",
   },
 
   popCatContainer: {
@@ -33,8 +32,6 @@ export default StyleSheet.create({
 
   bannerContainer: {
     height: 200,
-    alignItems: "stretch",
-    justifyContent: "flex-start",
   },
   container: {
     flex: 1,
@@ -43,8 +40,14 @@ export default StyleSheet.create({
   },
   bannerTextContainer: {
     padding: 10,
+    flexWrap: "nowrap",
+    maxWidth:200,
     alignItems: "flex-start",
     justifyContent: "flex-start",
+    alignContent: "center",
+    alignSelf: "auto",
+
+
   },
 
   imageContainer: {
@@ -63,16 +66,23 @@ export default StyleSheet.create({
   },
   smallButtonText: {
     fontSize: 12,
-    padding: 12,
     fontFamily: "RobotoMono_400Regular",
   },
 
   bannerTitle: {
+    fontFamily: "LondrinaSolid_400Regular",
     color: "white",
-    fontSize: 30,
     padding: 20,
     paddingBottom: 0,
-    fontWeight: "bold",
+    fontSize: 24,
+  },
+  bannersubText: {
+    fontFamily: "RobotoMono_400Regular",
+    color: "white",
+    padding: 20,
+    paddingTop: 0,
+    paddingBottom: 0,
+    fontSize: 16,
   },
 
   separator: {

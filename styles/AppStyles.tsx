@@ -6,10 +6,20 @@ export default StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
+  popCatHeaderContainer: {
+    alignItems: "center",
+    alignContent: "space-between",
+    alignSelf: "auto",
+
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+
   image: {
     flex: 1,
     justifyContent: "center",
   },
+
   popCatContainer: {
     padding: 20,
     flex: 1,
@@ -51,6 +61,11 @@ export default StyleSheet.create({
     fontFamily: "LondrinaSolid_400Regular",
     color: "#007DA3",
   },
+  smallButtonText: {
+    fontSize: 10,
+    fontFamily: "RobotoMono_400Regular",
+  },
+
   bannerTitle: {
     color: "white",
     fontSize: 30,

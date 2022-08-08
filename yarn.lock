@@ -1091,6 +1091,11 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/londrina-solid/-/londrina-solid-0.2.2.tgz#518b59544b7c8a5c6ec19f13ecf9c240e336c31b"
   integrity sha512-DJlJJgdqHZc91tH83tFo0T3rEtNfNyK/j0K8sKeFmi7GNaFCTs3g6Nfl1BUF0vFJOt0apjasq3pRn0hZhNAY4g==
 
+"@expo-google-fonts/roboto-mono@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/roboto-mono/-/roboto-mono-0.2.2.tgz#90ba396114bf8b293154a25bd869de238b5f0884"
+  integrity sha512-x3a3wZ4Qq/OHzSL9fH492XCpTrCzhXvkVh+h9Q8+ESoHAqbR3EFx/SuZIFlLlX8Dg5AWesGOZxOQIRCOSo01nw==
+
 "@expo/bunyan@4.0.0", "@expo/bunyan@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@expo/bunyan/-/bunyan-4.0.0.tgz#be0c1de943c7987a9fbd309ea0b1acd605890c7b"

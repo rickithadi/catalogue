@@ -32,17 +32,6 @@ export default function HomeScreen({
     }
     setSelectedImage({ localUri: pickerResult.uri });
   };
-  // if (selectedImage !== null) {
-  //   return (
-  //     <View style={AppStyles.container}>
-  //       <Image
-  //         source={{ uri: selectedImage.localUri }}
-  //         style={AppStyles.thumbnail}
-  //       />
-  //     </View>
-  //   );
-  // }
-
   return (
     <View style={AppStyles.container}>
       <Image source={logo} style={AppStyles.logo} />

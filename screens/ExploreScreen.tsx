@@ -1,7 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Text, View } from "../components/Themed";
 import { Cat } from "../types";
 import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";

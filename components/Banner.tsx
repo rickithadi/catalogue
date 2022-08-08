@@ -5,7 +5,6 @@ import AppStyles from "../styles/AppStyles";
 import { Cat } from "../types";
 
 import catSample from "../assets/images/rusty.jpg";
-import { MonoText } from "./StyledText";
 
 export default function Banner(props: { cat: Cat }) {
   return (

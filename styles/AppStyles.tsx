@@ -43,13 +43,16 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  nothing: {
+    fontSize: 30,
+  },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
-    color:"#007DA3"
+    fontFamily: "LondrinaSolid_400Regular",
+    color: "#007DA3",
   },
   bannerTitle: {
-    color:'white',
+    color: "white",
     fontSize: 30,
     padding: 20,
     paddingBottom: 0,

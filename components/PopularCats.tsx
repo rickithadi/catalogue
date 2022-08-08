@@ -1,13 +1,17 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import { View, Text,  ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 
 import AppStyles from "../styles/AppStyles";
 
 import { Cat } from "../types";
+import { LocationObjectCoords } from "expo-location";
 
-export default function PopularCats(props: { cats: Cat[] }) {
+export default function PopularCats(props: {
+  cats: Cat[];
+  location: LocationObjectCoords | null;
+}) {
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>
@@ -16,7 +20,7 @@ export default function PopularCats(props: { cats: Cat[] }) {
         <TouchableOpacity>
           <Text style={AppStyles.smallButtonText}>
             View All
-            <AntDesign name="right"  color="black" />
+            <AntDesign name="right" color="black" />
           </Text>
         </TouchableOpacity>
       </View>

@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Location from "expo-location";
 
 import { Cat } from "../types";
 import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";
 import PopularCats from "../components/PopularCats";
+import { LocationObject } from "expo-location";
 
-// get location
 export default function ExploreScreen() {
+  const [location, setLocation] = useState<null | LocationObject>(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
   const rusty: Cat = {
     name: "rusty",
     uid: "234",
@@ -19,8 +34,7 @@ export default function ExploreScreen() {
   return (
     <SafeAreaView style={AppStyles.container}>
       <Banner cat={rusty}></Banner>
-      <PopularCats cats={[rusty, loki]}></PopularCats>
-      {/* cats around location */}
+      <PopularCats cats={[rusty, loki]} location={location}></PopularCats>
     </SafeAreaView>
   );
 }

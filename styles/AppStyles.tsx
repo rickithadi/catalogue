@@ -62,7 +62,8 @@ export default StyleSheet.create({
     color: "#007DA3",
   },
   smallButtonText: {
-    fontSize: 10,
+    fontSize: 12,
+    padding: 12,
     fontFamily: "RobotoMono_400Regular",
   },
 

@@ -10,7 +10,7 @@ export default function PopularCats(props: { cats: Cat[] }) {
       <Text style={AppStyles.title}>Popular Cats</Text>
       <ScrollView horizontal={true}>
         {props.cats.map((c: Cat) => (
-          <View style={AppStyles.popCatContainer}>
+          <View style={AppStyles.popCatContainer} key={c.uid}>
             <Text>{c.name}</Text>
           </View>
         ))}

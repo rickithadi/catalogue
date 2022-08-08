@@ -2,13 +2,17 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   popCatParentContainer: {
-    flex: 1,
     padding: 20,
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
   popCatContainer: {
     padding: 20,
+    flex: 1,
     margin: 2,
     backgroundColor: "grey",
     height: 200,
@@ -18,8 +22,6 @@ export default StyleSheet.create({
   },
 
   bannerContainer: {
-    backgroundColor: "pink",
-    padding: 20,
     height: 200,
     alignItems: "stretch",
     justifyContent: "flex-start",
@@ -27,6 +29,11 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "stretch",
+    justifyContent: "flex-start",
+  },
+  bannerTextContainer: {
+    padding: 10,
+    alignItems: "flex-start",
     justifyContent: "flex-start",
   },
 
@@ -37,9 +44,18 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
+    fontWeight: "bold",
+    color:"#007DA3"
+  },
+  bannerTitle: {
+    color:'white',
+    fontSize: 30,
+    padding: 20,
+    paddingBottom: 0,
     fontWeight: "bold",
   },
+
   separator: {
     marginVertical: 30,
     height: 1,

@@ -1,11 +1,10 @@
 import React from "react";
-import { View, TouchableOpacity, Text, ImageBackground } from "react-native";
+import { View, Text, ImageBackground } from "react-native";
 import AppStyles from "../styles/AppStyles";
 
 import { Cat } from "../types";
 
 import catSample from "../assets/images/rusty.jpg";
-import { MonoText } from "./StyledText";
 
 export default function Banner(props: { cat: Cat }) {
   return (
@@ -17,7 +16,7 @@ export default function Banner(props: { cat: Cat }) {
       >
         <View style={AppStyles.bannerTextContainer}>
           <Text style={AppStyles.bannerTitle}>{props.cat.name}</Text>
-          <Text style={AppStyles.instructions}>cat goes here</Text>
+          <Text style={AppStyles.bannersubText}>{props.cat.description}</Text>
         </View>
       </ImageBackground>
     </View>

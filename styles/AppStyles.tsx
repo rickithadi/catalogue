@@ -6,10 +6,19 @@ export default StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
+  popCatHeaderContainer: {
+    alignItems: "center",
+    alignContent: "space-between",
+    alignSelf: "auto",
+
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+
   image: {
     flex: 1,
-    justifyContent: "center",
   },
+
   popCatContainer: {
     padding: 20,
     flex: 1,
@@ -23,8 +32,6 @@ export default StyleSheet.create({
 
   bannerContainer: {
     height: 200,
-    alignItems: "stretch",
-    justifyContent: "flex-start",
   },
   container: {
     flex: 1,
@@ -33,8 +40,14 @@ export default StyleSheet.create({
   },
   bannerTextContainer: {
     padding: 10,
+    flexWrap: "nowrap",
+    maxWidth:200,
     alignItems: "flex-start",
     justifyContent: "flex-start",
+    alignContent: "center",
+    alignSelf: "auto",
+
+
   },
 
   imageContainer: {
@@ -43,17 +56,33 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  nothing: {
+    fontSize: 30,
+  },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
-    color:"#007DA3"
+    fontFamily: "LondrinaSolid_400Regular",
+    color: "#007DA3",
   },
+  smallButtonText: {
+    fontSize: 12,
+    fontFamily: "RobotoMono_400Regular",
+  },
+
   bannerTitle: {
-    color:'white',
-    fontSize: 30,
+    fontFamily: "LondrinaSolid_400Regular",
+    color: "white",
     padding: 20,
     paddingBottom: 0,
-    fontWeight: "bold",
+    fontSize: 24,
+  },
+  bannersubText: {
+    fontFamily: "RobotoMono_400Regular",
+    color: "white",
+    padding: 20,
+    paddingTop: 0,
+    paddingBottom: 0,
+    fontSize: 16,
   },
 
   separator: {

@@ -15,7 +15,7 @@ export default function ExploreScreen() {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        return;
+        setLocation(null);
       }
 
       let location = await Location.getCurrentPositionAsync({});

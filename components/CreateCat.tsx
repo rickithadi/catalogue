@@ -1,34 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
 
-import {db} from "../firebase";
+import { db } from "../firebase";
+import { Cat } from "../types";
 
 const CreateCat = () => {
-  const initalState = {
+  const emptyCat: Cat = {
     name: "",
-    email: "",
-    phone: "",
+    description: "",
+    gender: "male",
+    uid: null,
+    pets: 0,
   };
 
-  const [state, setState] = useState(initalState);
+  const [cat, setCat] = useState(emptyCat);
 
   const handleChangeText = (value: any, name: any) => {
-    setState({ ...state, [name]: value });
+    setCat({ ...cat, [name]: value });
   };
 
-
-
   const saveNewCat = async () => {
-    if (state.name === "") {
+    if (cat.name === "") {
       alert("please provide a name");
     } else {
       try {
         await db
           .collection("cats")
-          .add({
-            name: "test",
-          })
-          .then(() => setState(initalState));
+          .add(cat)
+          .then(() => setCat(emptyCat));
       } catch (error) {
         console.log(error);
       }
@@ -42,27 +41,27 @@ const CreateCat = () => {
         <TextInput
           placeholder="Name"
           onChangeText={(value) => handleChangeText(value, "name")}
-          value={state.name}
+          value={cat.name}
         />
       </View>
 
       {/* Email Input */}
       <View style={styles.inputGroup}>
         <TextInput
-          placeholder="Email"
+          placeholder="Description"
           multiline={true}
           numberOfLines={4}
           onChangeText={(value) => handleChangeText(value, "email")}
-          value={state.email}
+          value={cat.description}
         />
       </View>
 
       {/* Input */}
       <View style={styles.inputGroup}>
         <TextInput
-          placeholder="phone"
+          placeholder="temperament"
           onChangeText={(value) => handleChangeText(value, "phone")}
-          value={state.phone}
+          value={cat.temperament}
         />
       </View>
 

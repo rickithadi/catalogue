@@ -51,7 +51,7 @@ const CreateCat = () => {
           placeholder="Description"
           multiline={true}
           numberOfLines={4}
-          onChangeText={(value) => handleChangeText(value, "email")}
+          onChangeText={(value) => handleChangeText(value, "description")}
           value={cat.description}
         />
       </View>
@@ -60,7 +60,7 @@ const CreateCat = () => {
       <View style={styles.inputGroup}>
         <TextInput
           placeholder="temperament"
-          onChangeText={(value) => handleChangeText(value, "phone")}
+          onChangeText={(value) => handleChangeText(value, "temperament")}
           value={cat.temperament}
         />
       </View>

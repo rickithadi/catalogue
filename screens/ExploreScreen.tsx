@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Location from "expo-location";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import MapView, { Marker } from "react-native-maps";
+import { LocationObject } from "expo-location";
+import { ScrollView } from "react-native";
 
 import { Cat } from "../types";
 import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";
 import PopularCats from "../components/PopularCats";
-import { LocationObject } from "expo-location";
 import CatsAround from "../components/CatsAround";
-import { ScrollView, ScrollViewComponent } from "react-native";
 
 export default function ExploreScreen() {
-  const [location, setLocation] = useState<null | LocationObject>(null);
+  const [location, setLocation] =
+    useState<undefined | LocationObject>(undefined);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setLocation(null);
+        setLocation(undefined);
       }
-
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
@@ -37,7 +39,7 @@ export default function ExploreScreen() {
     <SafeAreaView style={AppStyles.container}>
       <ScrollView>
         <Banner cat={rusty}></Banner>
-        <PopularCats cats={[rusty, loki]} location={location}></PopularCats>
+        <PopularCats cats={[rusty, loki]}></PopularCats>
         <CatsAround cats={[rusty, loki]} location={location}></CatsAround>
       </ScrollView>
     </SafeAreaView>

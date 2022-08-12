@@ -6,12 +6,8 @@ import { View, Text, ScrollView } from "react-native";
 import AppStyles from "../styles/AppStyles";
 
 import { Cat } from "../types";
-import { LocationObject } from "expo-location";
 
-export default function PopularCats(props: {
-  cats: Cat[];
-  location: LocationObject| null;
-}) {
+export default function PopularCats(props: { cats: Cat[] }) {
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>

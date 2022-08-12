@@ -35,6 +35,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
+    height: 100,
     alignItems: "stretch",
     justifyContent: "flex-start",
   },

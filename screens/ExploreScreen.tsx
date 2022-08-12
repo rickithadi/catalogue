@@ -7,6 +7,8 @@ import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";
 import PopularCats from "../components/PopularCats";
 import { LocationObject } from "expo-location";
+import CatsAround from "../components/CatsAround";
+import { ScrollView, ScrollViewComponent } from "react-native";
 
 export default function ExploreScreen() {
   const [location, setLocation] = useState<null | LocationObject>(null);
@@ -33,8 +35,11 @@ export default function ExploreScreen() {
   const loki: Cat = { name: "loki", uid: "1234", gender: "male", pets: 900 };
   return (
     <SafeAreaView style={AppStyles.container}>
-      <Banner cat={rusty}></Banner>
-      <PopularCats cats={[rusty, loki]} location={location}></PopularCats>
+      <ScrollView>
+        <Banner cat={rusty}></Banner>
+        <PopularCats cats={[rusty, loki]} location={location}></PopularCats>
+        <CatsAround cats={[rusty, loki]} location={location}></CatsAround>
+      </ScrollView>
     </SafeAreaView>
   );
 }

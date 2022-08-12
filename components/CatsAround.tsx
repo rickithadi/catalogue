@@ -9,17 +9,17 @@ import { View, Text, ScrollView } from "react-native";
 import AppStyles from "../styles/AppStyles";
 
 import { Cat } from "../types";
-import { LocationObject } from "expo-location";
+import { LocationGeocodedAddress, LocationObject } from "expo-location";
 
 export default function CatsAround(props: {
   cats: Cat[];
-  location: LocationObject | undefined;
+  locationGeocodedAddress: undefined | LocationGeocodedAddress[];
 }) {
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>
         <Text style={AppStyles.title}>
-          Cats Around {console.log(props.location?.coords)}
+          Cats Around {console.log(props.locationGeocodedAddress)}
         </Text>
 
         <TouchableOpacity>

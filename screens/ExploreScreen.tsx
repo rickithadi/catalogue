@@ -11,20 +11,23 @@ import PopularCats from "../components/PopularCats";
 import CatsAround from "../components/CatsAround";
 
 export default function ExploreScreen() {
-  const [locationGeocodedAddress, setLocationGeocodedAddress] =
-    useState<undefined | LocationGeocodedAddress[]>(undefined);
+  const [locationGeocodedAddress, setLocationGeocodedAddress] = useState<
+    undefined | LocationGeocodedAddress[]
+  >(undefined);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
+        console.log("not allow", status);
         setLocationGeocodedAddress(undefined);
+      } else {
+        Location.getCurrentPositionAsync({}).then((loc) =>
+          Location.reverseGeocodeAsync(loc.coords).then((data) =>
+            setLocationGeocodedAddress(data)
+          )
+        );
       }
-      Location.getCurrentPositionAsync({}).then((loc) =>
-        Location.reverseGeocodeAsync(loc.coords).then((data) =>
-          setLocationGeocodedAddress(data)
-        )
-      );
     })();
   }, []);
 

@@ -65,6 +65,11 @@ export default StyleSheet.create({
     fontFamily: "LondrinaSolid_400Regular",
     color: "#007DA3",
   },
+  locationStyle: {
+    fontSize: 30,
+    fontFamily: "LondrinaSolid_400Regular",
+  },
+
   smallButtonText: {
     fontSize: 12,
     fontFamily: "RobotoMono_400Regular",

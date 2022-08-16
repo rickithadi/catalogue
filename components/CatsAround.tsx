@@ -14,10 +14,14 @@ export default function CatsAround(props: {
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>
-        <Text style={AppStyles.title}>
-          Cats Around {console.log(props.locationGeocodedAddress)}
+        <Text>
+          <Text style={AppStyles.title}>Cats Around </Text>
+          <Text style={AppStyles.locationStyle}>
+            {props.locationGeocodedAddress
+              ? props.locationGeocodedAddress[0].street
+              : "Singapore"}
+          </Text>
         </Text>
-
         <TouchableOpacity>
           <Text style={AppStyles.smallButtonText}>
             View All

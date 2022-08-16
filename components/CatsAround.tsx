@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ListRenderItemInfo,
+  TouchableHighlight,
 } from "react-native";
 import { View, Text } from "react-native";
 import { LocationGeocodedAddress } from "expo-location";
@@ -48,9 +49,9 @@ export default function CatsAround(props: {
 }
 export function CatsAroundCard({ item }: ListRenderItemInfo<Cat>) {
   return (
-    <TouchableOpacity
-      style={AppStyles.catsAroundCard}
-      onPress={() => console.log(item.uid)}
+    <View
+      style={[AppStyles.catsAroundCard, { backgroundColor: "white" }]}
+      // onPress={() => console.log(item.uid)}
     >
       <ImageBackground
         source={catSample}
@@ -79,6 +80,6 @@ export function CatsAroundCard({ item }: ListRenderItemInfo<Cat>) {
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }

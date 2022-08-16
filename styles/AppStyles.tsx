@@ -108,7 +108,6 @@ export default StyleSheet.create({
     fontFamily: "RobotoMono_400Regular",
   },
 
-
   bannerTitle: {
     fontFamily: "LondrinaSolid_400Regular",
     color: "white",

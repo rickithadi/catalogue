@@ -14,6 +14,8 @@ import { LocationGeocodedAddress } from "expo-location";
 import AppStyles from "../styles/AppStyles";
 import catSample from "../assets/images/rusty.jpg";
 import pets from "../assets/icons/pets.png";
+import location from "../assets/icons/location.png";
+import fish from "../assets/icons/fish.png";
 import { Cat } from "../types";
 import App from "../App";
 
@@ -60,18 +62,23 @@ export function CatsAroundCard({ item }: ListRenderItemInfo<Cat>) {
         style={AppStyles.catsAroundImageContainer}
       ></ImageBackground>
       <View style={AppStyles.catsAroundTextContainer}>
-        {console.log(item)}
         <Text style={AppStyles.title}>{item.name}</Text>
-        <View>
-          <Text style={AppStyles.smallButtonText}>
+
+        <View style={AppStyles.cardRow}>
+          <Text style={AppStyles.smallText}>
             <Image source={pets} style={AppStyles.icon} />
+            {item.pets} pets
+          </Text>
+        </View>
+        <View style={AppStyles.cardRow}>
+          <Text style={AppStyles.smallText}>
+            <Image source={location} style={AppStyles.icon} />
             {item.name}
           </Text>
         </View>
-
-        <View>
-          <Text style={AppStyles.smallButtonText}>
-            <Image source={pets} style={AppStyles.icon} />
+        <View style={AppStyles.cardRow}>
+          <Text style={AppStyles.smallText}>
+            <Image source={fish} style={AppStyles.icon} />
             {item.name}
           </Text>
         </View>

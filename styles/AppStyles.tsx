@@ -68,10 +68,15 @@ export default StyleSheet.create({
     alignContent: "center",
     alignSelf: "auto",
   },
+  cardRow: {
+    marginBottom: 2,
+    marginTop: 2,
+  },
   icon: {
     width: 15,
     height: 15,
     padding: 5,
+    marginRight: 5,
     textAlignVertical: "middle",
   },
   imageContainer: {
@@ -98,6 +103,11 @@ export default StyleSheet.create({
     fontSize: 12,
     fontFamily: "RobotoMono_400Regular",
   },
+  smallText: {
+    fontSize: 10,
+    fontFamily: "RobotoMono_400Regular",
+  },
+
 
   bannerTitle: {
     fontFamily: "LondrinaSolid_400Regular",

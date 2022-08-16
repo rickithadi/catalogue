@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  ListRenderItem,
   ListRenderItemInfo,
 } from "react-native";
 import { View, Text } from "react-native";
@@ -13,11 +12,8 @@ import { LocationGeocodedAddress } from "expo-location";
 
 import AppStyles from "../styles/AppStyles";
 import catSample from "../assets/images/rusty.jpg";
-import pets from "../assets/icons/pets.png";
-import location from "../assets/icons/location.png";
-import fish from "../assets/icons/fish.png";
+import icons from "./Icons";
 import { Cat } from "../types";
-import App from "../App";
 
 export default function CatsAround(props: {
   cats: Cat[];
@@ -66,19 +62,19 @@ export function CatsAroundCard({ item }: ListRenderItemInfo<Cat>) {
 
         <View style={AppStyles.cardRow}>
           <Text style={AppStyles.smallText}>
-            <Image source={pets} style={AppStyles.icon} />
+            <Image source={icons.fish} style={AppStyles.icon} />
             {item.pets} pets
           </Text>
         </View>
         <View style={AppStyles.cardRow}>
           <Text style={AppStyles.smallText}>
-            <Image source={location} style={AppStyles.icon} />
+            <Image source={icons.location} style={AppStyles.icon} />
             {item.name}
           </Text>
         </View>
         <View style={AppStyles.cardRow}>
           <Text style={AppStyles.smallText}>
-            <Image source={fish} style={AppStyles.icon} />
+            <Image source={icons.fish} style={AppStyles.icon} />
             {item.name}
           </Text>
         </View>

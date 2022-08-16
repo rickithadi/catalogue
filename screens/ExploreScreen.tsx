@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Location from "expo-location";
-import { LocationGeocodedAddress, LocationObject } from "expo-location";
+import { LocationGeocodedAddress } from "expo-location";
 import { ScrollView } from "react-native";
 
 import { Cat } from "../types";

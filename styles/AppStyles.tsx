@@ -15,10 +15,6 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
 
-  image: {
-    flex: 1,
-  },
-
   catsAroundCard: {
     margin: 2,
     height: 200,
@@ -34,22 +30,51 @@ export default StyleSheet.create({
   catsAroundImageContainer: {
     flex: 2,
   },
+  image: {
+    flex: 1,
+  },
+
 
   catsAroundTextContainer: {
-    padding: 20,
+    padding:20,
     flex: 2,
   },
-  popCatContainer: {
-    padding: 20,
+
+  popCatCardTextContainer: {
     flex: 1,
-    margin: 2,
-    backgroundColor: "grey",
-    height: 200,
-    width: 100,
-    alignItems: "center",
-    justifyContent: "space-around",
+    alignItems: "flex-start",
+    alignContent: "flex-start",
+    flexDirection: "column-reverse",
   },
 
+  popCatCard: {
+    flex: 1,
+    borderRadius: 4,
+    flexDirection: "column-reverse",
+    overflow: "hidden",
+    margin: 2,
+    height: 182,
+    width: 120,
+  },
+  popCatBigText: {
+    fontFamily: "LondrinaSolid_400Regular",
+    color: "white",
+    paddingBottom: 0,
+    fontSize: 16,
+    textTransform: "capitalize",
+
+
+  },
+  popCatsmallText: {
+
+    fontFamily: "RobotoMono_400Regular",
+    color: "white",
+    paddingBottom: 0,
+    fontSize: 12,
+    textTransform: "capitalize",
+
+
+  },
   bannerContainer: {
     height: 200,
   },

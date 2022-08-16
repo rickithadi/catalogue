@@ -19,7 +19,6 @@ export default function ExploreScreen() {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("not allow", status);
         setLocationGeocodedAddress(undefined);
       } else {
         Location.getCurrentPositionAsync({}).then((loc) =>

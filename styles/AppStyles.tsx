@@ -19,6 +19,26 @@ export default StyleSheet.create({
     flex: 1,
   },
 
+  catsAroundCard: {
+    margin: 2,
+    height: 200,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#007DA310",
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  catsAroundContainer: {
+    flexDirection: "column",
+  },
+  catsAroundImageContainer: {
+    flex: 2,
+  },
+
+  catsAroundTextContainer: {
+    padding: 20,
+    flex: 2,
+  },
   popCatContainer: {
     padding: 20,
     flex: 1,
@@ -42,15 +62,18 @@ export default StyleSheet.create({
   bannerTextContainer: {
     padding: 10,
     flexWrap: "nowrap",
-    maxWidth:200,
+    maxWidth: 200,
     alignItems: "flex-start",
     justifyContent: "flex-start",
     alignContent: "center",
     alignSelf: "auto",
-
-
   },
-
+  icon: {
+    width: 15,
+    height: 15,
+    padding: 5,
+    textAlignVertical: "middle",
+  },
   imageContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -58,15 +81,16 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   nothing: {
-    fontSize: 30,
+    fontSize: 24,
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: "LondrinaSolid_400Regular",
     color: "#007DA3",
+    textTransform: "capitalize",
   },
   locationStyle: {
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: "LondrinaSolid_400Regular",
   },
 
@@ -81,6 +105,7 @@ export default StyleSheet.create({
     padding: 20,
     paddingBottom: 0,
     fontSize: 24,
+    textTransform: "capitalize",
   },
   bannersubText: {
     fontFamily: "RobotoMono_400Regular",

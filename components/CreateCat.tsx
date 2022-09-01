@@ -8,6 +8,7 @@ const CreateCat = () => {
   const emptyCat: Cat = {
     name: "",
     description: "",
+    temperament: "",
     gender: "male",
     uid: null,
     pets: 0,
@@ -15,7 +16,7 @@ const CreateCat = () => {
 
   const [cat, setCat] = useState(emptyCat);
 
-  const handleChangeText = (value: any, name: any) => {
+  const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
@@ -66,7 +67,11 @@ const CreateCat = () => {
       </View>
 
       <View>
-        <Button title="Create Cat" onPress={() => saveNewCat()} />
+        <Button
+          title="Create Cat"
+          onPress={() => saveNewCat()}
+          disabled={!cat.description || !cat.name || !cat.temperament}
+        />
       </View>
     </ScrollView>
   );

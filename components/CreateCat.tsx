@@ -69,6 +69,7 @@ const CreateCat = () => {
       <View>
         <Button
           title="Create Cat"
+          testID="CreateCatButton"
           onPress={() => saveNewCat()}
           disabled={!cat.description || !cat.name || !cat.temperament}
         />

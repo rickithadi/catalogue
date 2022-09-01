@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CrateCat form snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "flex": 1,
+      "padding": 35,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "borderBottomColor": "#cccccc",
+          "borderBottomWidth": 1,
+          "flex": 1,
+          "marginBottom": 15,
+          "padding": 0,
+        }
+      }
+    >
+      <TextInput
+        onChangeText={[Function]}
+        placeholder="Name"
+        value=""
+      />
+    </View>
+    <View
+      style={
+        {
+          "borderBottomColor": "#cccccc",
+          "borderBottomWidth": 1,
+          "flex": 1,
+          "marginBottom": 15,
+          "padding": 0,
+        }
+      }
+    >
+      <TextInput
+        multiline={true}
+        numberOfLines={4}
+        onChangeText={[Function]}
+        placeholder="Description"
+        value=""
+      />
+    </View>
+    <View
+      style={
+        {
+          "borderBottomColor": "#cccccc",
+          "borderBottomWidth": 1,
+          "flex": 1,
+          "marginBottom": 15,
+          "padding": 0,
+        }
+      }
+    >
+      <TextInput
+        onChangeText={[Function]}
+        placeholder="temperament"
+        value=""
+      />
+    </View>
+    <View>
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "disabled": true,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="CreateCatButton"
+      >
+        <View
+          style={
+            [
+              {},
+              {},
+            ]
+          }
+        >
+          <Text
+            disabled={true}
+            style={
+              [
+                {
+                  "color": "#007AFF",
+                  "fontSize": 18,
+                  "margin": 8,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#cdcdcd",
+                },
+              ]
+            }
+          >
+            Create Cat
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

@@ -32,19 +32,6 @@ import Account from "./components/Account";
 import Auth from "./components/Auth";
 
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null)
-
-  useEffect(() => {
-    console.log(supabase)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-  }, [])
-
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -71,9 +58,7 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-          <View>
-      {session && session.user ? <Account key={session.user.id} session={session} /> : <Auth />}
-    </View>
+
         <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </SafeAreaProvider>

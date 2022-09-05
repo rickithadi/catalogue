@@ -28,18 +28,37 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import ExploreScreen from "../screens/ExploreScreen";
 import InboxScreen from "../screens/InboxScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import { Session } from "@supabase/supabase-js";
+import { supabase } from "../lib/supabase";
+import Account from "../components/Account";
+import Auth from "../components/Auth";
 
 export default function Navigation({
   colorScheme,
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  const [session, setSession] = React.useState<Session | null>(null)
+
+  React.useEffect(() => {
+    console.log(supabase)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
+
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+
+      {session && session.user ? <RootNavigator key={session.user.id} session={session} /> : <Auth />}
     </NavigationContainer>
   );
 }
@@ -50,7 +69,7 @@ export default function Navigation({
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator({ session }: { session: Session }) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -64,7 +83,7 @@ function RootNavigator() {
         options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Modal" component={Account} />
       </Stack.Group>
     </Stack.Navigator>
   );

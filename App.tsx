@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
+import Constants from "expo-constants";
+import { setGoogleApiKey } from "expo-location";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import {
@@ -25,7 +27,6 @@ import AppLoading from "expo-app-loading";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import { setGoogleApiKey } from "expo-location";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -49,7 +50,7 @@ export default function App() {
   });
 
   // TODO use .env
-  setGoogleApiKey("AIzaSyA2VHWlEdfIiMSU8nIMNMVAMChpU-H9s_M")
+  setGoogleApiKey(Constants.manifest?.extra?.googleApiKey);
 
   if (!fontsLoaded || !isLoadingComplete) {
     return <AppLoading />;

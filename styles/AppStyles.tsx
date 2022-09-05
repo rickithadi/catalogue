@@ -15,41 +15,95 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
 
+  catsAroundCard: {
+    margin: 2,
+    height: 200,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#007DA310",
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  catsAroundContainer: {
+    flexDirection: "column",
+  },
+  catsAroundImageContainer: {
+    flex: 2,
+  },
   image: {
     flex: 1,
   },
 
-  popCatContainer: {
-    padding: 20,
-    flex: 1,
-    margin: 2,
-    backgroundColor: "grey",
-    height: 200,
-    width: 100,
-    alignItems: "center",
-    justifyContent: "space-around",
+
+  catsAroundTextContainer: {
+    padding:20,
+    flex: 2,
   },
 
+  popCatCardTextContainer: {
+    flex: 1,
+    alignItems: "flex-start",
+    alignContent: "flex-start",
+    flexDirection: "column-reverse",
+  },
+
+  popCatCard: {
+    flex: 1,
+    borderRadius: 4,
+    flexDirection: "column-reverse",
+    overflow: "hidden",
+    margin: 2,
+    height: 182,
+    width: 120,
+  },
+  popCatBigText: {
+    fontFamily: "LondrinaSolid_400Regular",
+    color: "white",
+    paddingBottom: 0,
+    fontSize: 16,
+    textTransform: "capitalize",
+
+
+  },
+  popCatsmallText: {
+
+    fontFamily: "RobotoMono_400Regular",
+    color: "white",
+    paddingBottom: 0,
+    fontSize: 12,
+    textTransform: "capitalize",
+
+
+  },
   bannerContainer: {
     height: 200,
   },
   container: {
     flex: 1,
+    height: 100,
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
   bannerTextContainer: {
     padding: 10,
     flexWrap: "nowrap",
-    maxWidth:200,
+    maxWidth: 200,
     alignItems: "flex-start",
     justifyContent: "flex-start",
     alignContent: "center",
     alignSelf: "auto",
-
-
   },
-
+  cardRow: {
+    marginBottom: 2,
+    marginTop: 2,
+  },
+  icon: {
+    width: 15,
+    height: 15,
+    padding: 5,
+    marginRight: 5,
+    textAlignVertical: "middle",
+  },
   imageContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -57,15 +111,25 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   nothing: {
-    fontSize: 30,
+    fontSize: 24,
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: "LondrinaSolid_400Regular",
     color: "#007DA3",
+    textTransform: "capitalize",
   },
+  locationStyle: {
+    fontSize: 24,
+    fontFamily: "LondrinaSolid_400Regular",
+  },
+
   smallButtonText: {
     fontSize: 12,
+    fontFamily: "RobotoMono_400Regular",
+  },
+  smallText: {
+    fontSize: 10,
     fontFamily: "RobotoMono_400Regular",
   },
 
@@ -75,6 +139,7 @@ export default StyleSheet.create({
     padding: 20,
     paddingBottom: 0,
     fontSize: 24,
+    textTransform: "capitalize",
   },
   bannersubText: {
     fontFamily: "RobotoMono_400Regular",

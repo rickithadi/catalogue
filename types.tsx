@@ -20,12 +20,12 @@ export type Feeder = {
   uid: string;
 };
 export type Cat = {
-  uid: string;
+  uid: string | null;
   name: string;
   gender: "male" | "female";
   lastSeen?: { location: string; date: string };
   aliases?: [string];
-  temperment?: string;
+  temperament?: string;
   description?: string;
   pets: number;
   feeder?: Feeder;

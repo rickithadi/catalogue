@@ -25,6 +25,7 @@ import AppLoading from "expo-app-loading";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
+import { setGoogleApiKey } from "expo-location";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -47,6 +48,8 @@ export default function App() {
     RobotoMono_700Bold_Italic,
   });
 
+  // TODO use .env
+  setGoogleApiKey("AIzaSyA2VHWlEdfIiMSU8nIMNMVAMChpU-H9s_M")
   if (!fontsLoaded || !isLoadingComplete) {
     return <AppLoading />;
   } else {

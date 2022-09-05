@@ -1,10 +1,17 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
-import { View, Text,  ScrollView } from "react-native";
+import {
+  ImageBackground,
+  Image,
+  ListRenderItemInfo,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { View, Text } from "react-native";
 
 import AppStyles from "../styles/AppStyles";
-
+import icons from "./Icons";
+import catSample from "../assets/images/rusty.jpg";
 import { Cat } from "../types";
 
 export default function PopularCats(props: { cats: Cat[] }) {
@@ -16,17 +23,39 @@ export default function PopularCats(props: { cats: Cat[] }) {
         <TouchableOpacity>
           <Text style={AppStyles.smallButtonText}>
             View All
-            <AntDesign name="right"  color="black" />
+            <AntDesign name="right" color="black" />
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView horizontal={true}>
-        {props.cats.map((c: Cat) => (
-          <View style={AppStyles.popCatContainer} key={c.uid}>
-            <Text>{c.name}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <FlatList
+        horizontal={true}
+        data={props.cats}
+        renderItem={PopularCatCard}
+        keyExtractor={(cat) => cat.uid as string}
+      />
     </View>
+  );
+}
+export function PopularCatCard({ item }: ListRenderItemInfo<Cat>) {
+  return (
+    <TouchableOpacity
+      style={AppStyles.popCatCard}
+      // style={AppStyles.popularCatCardTextContainer}
+      onPress={() => console.log(item)}
+    >
+      <ImageBackground
+        source={catSample}
+        resizeMode="cover"
+        style={AppStyles.popCatCardTextContainer}
+      >
+        <View style={{ padding: 5 }}>
+          <Text style={AppStyles.popCatBigText}>{item.name}</Text>
+          <Text style={AppStyles.popCatsmallText}>
+            <Image source={icons.petsWhite} style={AppStyles.icon} />
+            {item.pets}
+          </Text>
+        </View>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 }

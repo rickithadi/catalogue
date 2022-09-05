@@ -38,27 +38,28 @@ export default function Navigation({
 }: {
   colorScheme: ColorSchemeName;
 }) {
-  const [session, setSession] = React.useState<Session | null>(null)
+  const [session, setSession] = React.useState<Session | null>(null);
 
   React.useEffect(() => {
-    console.log(supabase)
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+      setSession(session);
+    });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-  }, [])
-
+      setSession(session);
+    });
+  }, []);
 
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-
-      {session && session.user ? <RootNavigator key={session.user.id} session={session} /> : <Auth />}
+      {session && session.user ? (
+        <RootNavigator key={session.user.id} session={session} />
+      ) : (
+        <Auth />
+      )}
     </NavigationContainer>
   );
 }
@@ -74,7 +75,9 @@ function RootNavigator({ session }: { session: Session }) {
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
-        component={BottomTabNavigator}
+        children={() => (
+          <BottomTabNavigator key={session.user.id} session={session} />
+        )}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -82,9 +85,6 @@ function RootNavigator({ session }: { session: Session }) {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={Account} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }
@@ -95,7 +95,7 @@ function RootNavigator({ session }: { session: Session }) {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+function BottomTabNavigator({ session }: { session: Session }) {
   const colorScheme = useColorScheme();
 
   return (
@@ -135,7 +135,8 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ProfileScreen}
+        // component={Account}
+        children={() => <Account key={session.user.id} session={session} />}
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,

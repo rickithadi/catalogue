@@ -25,11 +25,6 @@ import AppLoading from "expo-app-loading";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import { Session } from "@supabase/supabase-js";
-import { supabase } from "./lib/supabase";
-import { View } from "react-native";
-import Account from "./components/Account";
-import Auth from "./components/Auth";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -58,7 +53,6 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-
         <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </SafeAreaProvider>

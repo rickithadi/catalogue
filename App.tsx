@@ -49,7 +49,6 @@ export default function App() {
     RobotoMono_700Bold_Italic,
   });
 
-  // TODO use .env
   setGoogleApiKey(Constants.manifest?.extra?.googleApiKey);
 
   if (!fontsLoaded || !isLoadingComplete) {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View, Button, TextInput } from "react-native";
+import { StyleSheet, View, Button, TextInput } from "react-native";
 import { supabase } from "../lib/supabase";
 
 export default function Auth() {
@@ -14,7 +14,7 @@ export default function Auth() {
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) alert(error.message);
     setLoading(false);
   }
 
@@ -25,7 +25,7 @@ export default function Auth() {
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) alert(error.message);
     setLoading(false);
   }
 

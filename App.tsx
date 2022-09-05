@@ -25,7 +25,6 @@ import AppLoading from "expo-app-loading";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import { setGoogleApiKey } from "expo-location";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "./lib/supabase";
 import { View } from "react-native";
@@ -67,7 +66,6 @@ export default function App() {
   });
 
   // TODO use .env
-  setGoogleApiKey("AIzaSyA2VHWlEdfIiMSU8nIMNMVAMChpU-H9s_M")
   if (!fontsLoaded || !isLoadingComplete) {
     return <AppLoading />;
   } else {
@@ -76,8 +74,8 @@ export default function App() {
           <View>
       {session && session.user ? <Account key={session.user.id} session={session} /> : <Auth />}
     </View>
-        {/* <Navigation colorScheme={colorScheme} /> */}
-        {/* <StatusBar /> */}
+        <Navigation colorScheme={colorScheme} />
+        <StatusBar />
       </SafeAreaProvider>
     );
   }

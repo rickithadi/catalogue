@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 
-import { Button, View, TextInput, StyleSheet, Alert } from "react-native";
+import { Button, View, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { Session } from "@supabase/supabase-js";
 
 export default function Account({ session }: { session: Session }) {
@@ -78,24 +78,30 @@ export default function Account({ session }: { session: Session }) {
   }
 
   return (
-    <View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <TextInput value={session?.user?.email} />
+    <ScrollView style={styles.container}>
+      <View style={styles.inputGroup}>
+        <TextInput value={session?.user?.email}
+          placeholder="email"
+        />
       </View>
-      <View style={styles.verticallySpaced}>
+      <View style={styles.inputGroup}>
         <TextInput
+
+          placeholder="username"
           value={username || ""}
           onChangeText={(text) => setUsername(text)}
         />
       </View>
-      <View style={styles.verticallySpaced}>
+      <View style={styles.inputGroup}>
         <TextInput
+
+          placeholder="website"
           value={website || ""}
           onChangeText={(text) => setWebsite(text)}
         />
       </View>
 
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      <View style={styles.inputGroup}>
         <Button
           title={loading ? "Loading ..." : "Update"}
           onPress={() =>
@@ -105,24 +111,33 @@ export default function Account({ session }: { session: Session }) {
         />
       </View>
 
-      <View style={styles.verticallySpaced}>
+      <View style={styles.inputGroup}>
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
-    padding: 12,
+    flex: 1,
+    padding: 35,
   },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: "stretch",
+  inputGroup: {
+    flex: 1,
+    padding: 0,
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
   },
-  mt20: {
-    marginTop: 20,
+  loader: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

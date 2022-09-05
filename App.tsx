@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
+import Constants from "expo-constants";
+import { setGoogleApiKey } from "expo-location";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import {
@@ -46,8 +48,9 @@ export default function App() {
     RobotoMono_700Bold,
     RobotoMono_700Bold_Italic,
   });
+console.log(Constants.manifest?.extra?.googleApiKey);
+  setGoogleApiKey(Constants.manifest?.extra?.googleApiKey);
 
-  // TODO use .env
   if (!fontsLoaded || !isLoadingComplete) {
     return <AppLoading />;
   } else {

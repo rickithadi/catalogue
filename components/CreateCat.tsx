@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
 
-import { db } from "../firebase";
 import { Cat } from "../types";
 
 const CreateCat = () => {
@@ -25,10 +24,11 @@ const CreateCat = () => {
       alert("please provide a name");
     } else {
       try {
-        await db
-          .collection("cats")
-          .add(cat)
-          .then(() => setCat(emptyCat));
+        //TODO insert into supabase
+        // await db
+        //   .collection("cats")
+        //   .add(cat)
+        //   .then(() => setCat(emptyCat));
       } catch (error) {
         console.log(error);
       }

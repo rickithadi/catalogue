@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert, Image, Button } from "react-native";
-import DocumentPicker, {
-  isCancel,
-  isInProgress,
-  types,
-} from "react-native-document-picker";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Text,
+  Image,
+  Button,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { Camera, CameraType } from "expo-camera";
 
 interface Props {
   size: number;
@@ -19,12 +25,42 @@ export default function CreateCatPhotoUpload({
   onUpload,
 }: Props) {
   const [uploading, setUploading] = useState(false);
+  const [camera, toggleCamera] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<{
+    localUri: string;
+  } | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const avatarSize = { height: size, width: size };
+
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
 
   useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
+
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraType() {
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  }
 
   async function downloadImage(path: string) {
     try {
@@ -47,80 +83,83 @@ export default function CreateCatPhotoUpload({
       }
     }
   }
-
-  async function uploadAvatar() {
-    try {
-      setUploading(true);
-
-      const file = await DocumentPicker.pickSingle({
-        presentationStyle: "fullScreen",
-        copyTo: "cachesDirectory",
-        type: types.images,
-        mode: "open",
-      });
-
-      const photo = {
-        uri: file.fileCopyUri,
-        type: file.type,
-        name: file.name,
-      };
-
-      const formData = new FormData();
-      formData.append("file", photo);
-
-      const fileExt = file.name.split(".").pop();
-      const filePath = `${Math.random()}.${fileExt}`;
-
-      let { error } = await supabase.storage
-        .from("avatar")
-        .upload(filePath, formData);
-
-      if (error) {
-        throw error;
-      }
-
-      onUpload(filePath);
-    } catch (error) {
-      if (isCancel(error)) {
-        console.warn("cancelled");
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else if (isInProgress(error)) {
-        console.warn(
-          "multiple pickers were opened, only the last will be considered"
-        );
-      } else if (error instanceof Error) {
-        Alert.alert(error.message);
-      } else {
-        throw error;
-      }
-    } finally {
-      setUploading(false);
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
+    if (!result.cancelled) {
+      setSelectedImage({ localUri: result.uri });
     }
-  }
+  };
 
   return (
     <View>
       {avatarUrl ? (
         <Image
           source={{ uri: avatarUrl }}
-          accessibilityLabel="avatar"
+          accessibilityLabel="Avatar"
           style={[avatarSize, styles.avatar, styles.image]}
         />
       ) : (
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
       <View>
-        <Button
-          title={uploading ? "Uploading ..." : "Upload"}
-          onPress={uploadAvatar}
-          disabled={uploading}
-        />
+        {camera ? (
+          <View style={styles.container}>
+            <Camera style={styles.camera} type={type}>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={toggleCameraType}
+                >
+                  <Text>Flip Camera</Text>
+                </TouchableOpacity>
+              </View>
+            </Camera>
+          </View>
+        ) : (
+          <>
+            <Button
+              title={uploading ? "Uploading ..." : "Upload"}
+              onPress={pickImage}
+              disabled={uploading}
+            />
+            <Button title="camera" onPress={() => toggleCamera(!camera)} />
+          </>
+        )}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+  },
   avatar: {
     borderRadius: 5,
     overflow: "hidden",

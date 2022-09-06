@@ -1,9 +1,12 @@
+import { LocationGeocodedAddress } from "expo-location";
 import React, { useEffect, useState } from "react";
 import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
 
 import { Cat } from "../types";
 
-const CreateCat = () => {
+const CreateCat = (props: {
+  locationGeocodedAdress: LocationGeocodedAddress | null;
+}) => {
   const emptyCat: Cat = {
     name: "",
     description: "",

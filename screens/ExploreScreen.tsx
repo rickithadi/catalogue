@@ -10,35 +10,51 @@ import Banner from "../components/Banner";
 import PopularCats from "../components/PopularCats";
 import CatsAround from "../components/CatsAround";
 
-export default function ExploreScreen() {
-  const [locationGeocodedAddress, setLocationGeocodedAddress] = useState<
-    undefined | LocationGeocodedAddress[]
-  >(undefined);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setLocationGeocodedAddress(undefined);
-      } else {
-        Location.getCurrentPositionAsync({}).then((loc) =>
-          Location.reverseGeocodeAsync(loc.coords).then((data) => {
-            console.log("got", data);
-            setLocationGeocodedAddress(data);
-          })
-        );
-      }
-    })();
-  }, []);
-
+export default function ExploreScreen(props: {
+  locationGeocodedAddress: undefined | LocationGeocodedAddress[];
+}) {
+  // TODO mock this
   const rusty: Cat = {
     name: "rusty",
     uid: "234",
     gender: "male",
     pets: 900,
     description: "very soft and fluffy, 10/10",
+    location: {
+      city: "Singapore",
+      country: "Singapore",
+      isoCountryCode: "SG",
+      name: "862 Tampines Street 83",
+      postalCode: "520862",
+      street: "Tampines Street 83",
+
+      streetNumber: "862",
+      district: "862",
+      subregion: "862",
+      region: "862",
+      timezone: "862",
+    },
   };
-  const loki: Cat = { name: "loki", uid: "1234", gender: "male", pets: 900 };
+  const loki: Cat = {
+    name: "loki",
+    uid: "1234",
+    gender: "male",
+    pets: 900,
+    location: {
+      city: "Singapore",
+      country: "Singapore",
+      isoCountryCode: "SG",
+      name: "862 Tampines Street 83",
+      postalCode: "520862",
+      street: "Tampines Street 83",
+
+      streetNumber: "862",
+      district: "862",
+      subregion: "862",
+      region: "862",
+      timezone: "862",
+    },
+  };
   return (
     <SafeAreaView style={AppStyles.container}>
       <ScrollView>

@@ -13,6 +13,8 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
+import * as Location from "expo-location";
+import { LocationGeocodedAddress } from "expo-location";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -97,6 +99,25 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator({ session }: { session: Session }) {
   const colorScheme = useColorScheme();
+  const [locationGeocodedAddress, setLocationGeocodedAddress] = React.useState<
+    undefined | LocationGeocodedAddress[]
+  >(undefined);
+
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setLocationGeocodedAddress(undefined);
+      } else {
+        Location.getCurrentPositionAsync({}).then((loc) =>
+          Location.reverseGeocodeAsync(loc.coords).then((data) => {
+            console.log("got", data);
+            setLocationGeocodedAddress(data);
+          })
+        );
+      }
+    })();
+  }, []);
 
   return (
     <BottomTab.Navigator
@@ -109,7 +130,9 @@ function BottomTabNavigator({ session }: { session: Session }) {
     >
       <BottomTab.Screen
         name="Home"
-        component={HomeScreen}
+        children={() => (
+          <HomeScreen locationGeocodedAddress={locationGeocodedAddress} />
+        )}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -117,7 +140,9 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Explore"
-        component={ExploreScreen}
+        children={() => (
+          <ExploreScreen locationGeocodedAddress={locationGeocodedAddress} />
+        )}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
@@ -135,7 +160,6 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Profile"
-        // component={Account}
         children={() => <Account key={session.user.id} session={session} />}
         options={{
           title: "Profile",

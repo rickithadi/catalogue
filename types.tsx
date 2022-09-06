@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { LocationGeocodedAddress } from "expo-location";
 
 declare global {
   namespace ReactNavigation {
@@ -29,6 +30,7 @@ export type Cat = {
   description?: string;
   pets: number;
   feeder?: Feeder;
+  location:LocationGeocodedAddress
   photos?: [string];
 };
 

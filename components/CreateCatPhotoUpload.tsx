@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { decode } from "base64-arraybuffer";
 import { supabase } from "../lib/supabase";
 import {
   StyleSheet,
@@ -30,7 +31,9 @@ export default function CreateCatPhotoUpload({
     localUri: string;
   } | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
   const avatarSize = { height: size, width: size };
+  const cameraRef = useRef<Camera>(null);
 
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -84,20 +87,60 @@ export default function CreateCatPhotoUpload({
     }
   }
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    console.log(result);
-    if (!result.cancelled) {
-      setSelectedImage({ localUri: result.uri });
+    try {
+      setUploading(true);
+
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: true,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled && result.base64) {
+        console.log(result);
+        setSelectedImage({ localUri: result.uri });
+        setAvatarUrl(result.uri);
+
+        let { error } = await supabase.storage
+          .from("avatars")
+          .upload("public.jpg", decode(result.base64), {
+            contentType: "image/png",
+          });
+        if (error) {
+          throw error;
+        }
+        onUpload(result.uri);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      } else {
+        throw error;
+      }
+    } finally {
+      setUploading(false);
     }
   };
-
+  const takePicture = async () => {
+    if (camera) {
+      const options = { quality: 1, base64: true };
+      const data = await cameraRef.current?.takePictureAsync(options);
+      console.log(data);
+    }
+  };
   return (
     <View>
+      {selectedImage ? (
+        <Image
+          source={{ uri: selectedImage.localUri }}
+          accessibilityLabel="Avatar"
+          style={[avatarSize, styles.avatar, styles.image]}
+        />
+      ) : (
+        <View style={[avatarSize, styles.avatar, styles.noImage]} />
+      )}
+
       {avatarUrl ? (
         <Image
           source={{ uri: avatarUrl }}
@@ -120,6 +163,8 @@ export default function CreateCatPhotoUpload({
                 </TouchableOpacity>
               </View>
             </Camera>
+
+            <Button title="Take Picture" onPress={() => takePicture()} />
           </View>
         ) : (
           <>

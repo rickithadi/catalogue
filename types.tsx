@@ -25,17 +25,17 @@ export type Cat = {
   name: string;
   gender: boolean;
   lastSeen?: Whereabouts[]; //user populated by public by current location
-  gallery?: [string];
+  gallery?: string[];
   temperament?: string;
   description?: string;
   pets: number;
   feeder?: Feeder;
   whereAbouts: Whereabouts; //populated at creation by current location
-  photos?: [string];
 };
 export type Whereabouts = {
   address: LocationGeocodedAddress;
   location: LocationObject;
+  picture?: string;
 };
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;

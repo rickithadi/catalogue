@@ -2,21 +2,21 @@ import { LocationGeocodedAddress } from "expo-location";
 import React, { useEffect, useState } from "react";
 import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
 
-import { Cat } from "../types";
+import { Cat, emptyCat } from "../types";
 
 const CreateCat = (props: {
-  locationGeocodedAdress: LocationGeocodedAddress | null;
+  locationGeocodedAddress: LocationGeocodedAddress | null;
 }) => {
-  const emptyCat: Cat = {
+  const emptyCat: emptyCat = {
     name: "",
     description: "",
     temperament: "",
-    gender: "male",
+    gender: false,
     uid: null,
     pets: 0,
   };
 
-  const [cat, setCat] = useState(emptyCat);
+  const [cat, setCat] = useState<Cat | emptyCat>(emptyCat);
 
   const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });

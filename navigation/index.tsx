@@ -14,6 +14,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 import * as Location from "expo-location";
+import { Session } from "@supabase/supabase-js";
+import { useEffect } from "react";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
 
 import Colors from "../constants/Colors";
@@ -30,7 +32,6 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import ExploreScreen from "../screens/ExploreScreen";
 import InboxScreen from "../screens/InboxScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import Account from "../components/Account";
 import Auth from "../components/Auth";
@@ -42,7 +43,7 @@ export default function Navigation({
 }) {
   const [session, setSession] = React.useState<Session | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -114,7 +115,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
       } else {
         Location.getCurrentPositionAsync({}).then((loc) =>
           Location.reverseGeocodeAsync(loc.coords).then((data) => {
-            console.log(data,loc)
+            console.log(data, loc);
             setLocation(loc);
             setLocationGeocodedAddress(data);
           })

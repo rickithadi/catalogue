@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import 'react-native-url-polyfill/auto';
 import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
 import { setGoogleApiKey } from "expo-location";

@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 
-import { Button, View, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
+import {
+  Button,
+  View,
+  TextInput,
+  StyleSheet,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { Session } from "@supabase/supabase-js";
+import CreateCatPhotoUpload from "./CreateCatPhotoUpload";
 
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
@@ -80,13 +88,10 @@ export default function Account({ session }: { session: Session }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inputGroup}>
-        <TextInput value={session?.user?.email}
-          placeholder="email"
-        />
+        <TextInput value={session?.user?.email} placeholder="email" />
       </View>
       <View style={styles.inputGroup}>
         <TextInput
-
           placeholder="username"
           value={username || ""}
           onChangeText={(text) => setUsername(text)}
@@ -94,7 +99,6 @@ export default function Account({ session }: { session: Session }) {
       </View>
       <View style={styles.inputGroup}>
         <TextInput
-
           placeholder="website"
           value={website || ""}
           onChangeText={(text) => setWebsite(text)}
@@ -110,14 +114,20 @@ export default function Account({ session }: { session: Session }) {
           disabled={loading}
         />
       </View>
-
+      <CreateCatPhotoUpload
+        size={200}
+        url={avatarUrl}
+        onUpload={(url: string) => {
+          setAvatarUrl(url);
+          updateProfile({ username, website, avatar_url: url });
+        }}
+      />
       <View style={styles.inputGroup}>
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
     </ScrollView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

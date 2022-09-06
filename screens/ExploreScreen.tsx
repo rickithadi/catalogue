@@ -22,9 +22,10 @@ export default function ExploreScreen() {
         setLocationGeocodedAddress(undefined);
       } else {
         Location.getCurrentPositionAsync({}).then((loc) =>
-          Location.reverseGeocodeAsync(loc.coords).then((data) =>
-            setLocationGeocodedAddress(data)
-          )
+          Location.reverseGeocodeAsync(loc.coords).then((data) => {
+            console.log("got", data);
+            setLocationGeocodedAddress(data);
+          })
         );
       }
     })();

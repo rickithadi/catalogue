@@ -9,7 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { LocationGeocodedAddress } from "expo-location";
+import { LocationGeocodedAddress, LocationObject } from "expo-location";
 
 declare global {
   namespace ReactNavigation {
@@ -23,17 +23,20 @@ export type Feeder = {
 export type Cat = {
   uid: string | null;
   name: string;
-  gender: "male" | "female";
-  lastSeen?: { location: string; date: string };
-  aliases?: [string];
+  gender: boolean;
+  lastSeen?: Whereabouts[]; //user populated by public by current location
+  gallery?: [string];
   temperament?: string;
   description?: string;
   pets: number;
   feeder?: Feeder;
-  location:LocationGeocodedAddress
+  whereAbouts: Whereabouts; //populated at creation by current location
   photos?: [string];
 };
-
+export type Whereabouts = {
+  address: LocationGeocodedAddress;
+  location: LocationObject;
+};
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;

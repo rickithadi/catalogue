@@ -17,42 +17,70 @@ export default function ExploreScreen(props: {
   const rusty: Cat = {
     name: "rusty",
     uid: "234",
-    gender: "male",
+    gender: true,
     pets: 900,
     description: "very soft and fluffy, 10/10",
-    location: {
-      city: "Singapore",
-      country: "Singapore",
-      isoCountryCode: "SG",
-      name: "862 Tampines Street 83",
-      postalCode: "520862",
-      street: "Tampines Street 83",
-
-      streetNumber: "862",
-      district: "862",
-      subregion: "862",
-      region: "862",
-      timezone: "862",
+    whereAbouts: {
+      address: {
+        streetNumber: "862",
+        street: "Tampines Street 83",
+        city: "Singapore",
+        country: "Singapore",
+        isoCountryCode: "SG",
+        postalCode: "520862",
+        name: "862 Tampines Street 83",
+        // TODO find out why these arent coming back
+        district: null,
+        region: null,
+        timezone: null,
+        subregion: null,
+      },
+      location: {
+        coords: {
+          latitude: 1.3545155,
+          longitude: 103.9364254,
+          altitude: null,
+          accuracy: 14.636,
+          altitudeAccuracy: null,
+          heading: null,
+          speed: null,
+        },
+        timestamp: 1662433415304,
+      },
     },
   };
   const loki: Cat = {
     name: "loki",
     uid: "1234",
-    gender: "male",
+    gender: false,
     pets: 900,
-    location: {
-      city: "Singapore",
-      country: "Singapore",
-      isoCountryCode: "SG",
-      name: "862 Tampines Street 83",
-      postalCode: "520862",
-      street: "Tampines Street 83",
-
-      streetNumber: "862",
-      district: "862",
-      subregion: "862",
-      region: "862",
-      timezone: "862",
+    whereAbouts: {
+      address: {
+        streetNumber: "862",
+        street: "Tampines Street 83",
+        city: "Singapore",
+        country: "Singapore",
+        isoCountryCode: "SG",
+        postalCode: "520862",
+        name: "862 Tampines Street 83",
+        // TODO find out why these arent coming back
+        district: "520862",
+        region: "520862",
+        timezone: "520862",
+        subregion: "520862",
+      },
+      location: {
+        coords: {
+          latitude: 1.3545155,
+          longitude: 103.9364254,
+          altitude: null,
+          accuracy: 14.636,
+          altitudeAccuracy: null,
+          heading: null,
+          speed: null,
+        },
+        timestamp: 1662433415304,
+      },
     },
   };
   return (
@@ -62,7 +90,7 @@ export default function ExploreScreen(props: {
         <PopularCats cats={[rusty, loki]}></PopularCats>
         <CatsAround
           cats={[rusty, loki]}
-          locationGeocodedAddress={locationGeocodedAddress}
+          locationGeocodedAddress={props.locationGeocodedAddress}
         ></CatsAround>
       </ScrollView>
     </SafeAreaView>

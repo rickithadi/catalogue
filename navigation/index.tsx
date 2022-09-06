@@ -14,7 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 import * as Location from "expo-location";
-import { LocationGeocodedAddress } from "expo-location";
+import { LocationGeocodedAddress, LocationObject } from "expo-location";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -102,6 +102,9 @@ function BottomTabNavigator({ session }: { session: Session }) {
   const [locationGeocodedAddress, setLocationGeocodedAddress] = React.useState<
     undefined | LocationGeocodedAddress[]
   >(undefined);
+  const [location, setLocation] = React.useState<undefined | LocationObject>(
+    undefined
+  );
 
   React.useEffect(() => {
     (async () => {
@@ -111,7 +114,8 @@ function BottomTabNavigator({ session }: { session: Session }) {
       } else {
         Location.getCurrentPositionAsync({}).then((loc) =>
           Location.reverseGeocodeAsync(loc.coords).then((data) => {
-            console.log("got", data);
+            console.log(data,loc)
+            setLocation(loc);
             setLocationGeocodedAddress(data);
           })
         );
@@ -131,7 +135,10 @@ function BottomTabNavigator({ session }: { session: Session }) {
       <BottomTab.Screen
         name="Home"
         children={() => (
-          <HomeScreen locationGeocodedAddress={locationGeocodedAddress} />
+          <HomeScreen
+            locationGeocodedAddress={locationGeocodedAddress}
+            location={location}
+          />
         )}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",

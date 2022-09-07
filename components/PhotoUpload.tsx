@@ -8,13 +8,11 @@ import { pick } from "react-native-document-picker";
 
 interface Props {
   size: number;
-  url: string | null;
   fileName: string;
   onUpload: (filePath: string) => void;
 }
 
 export default function PhotoUpload({
-  url,
   size = 150,
   onUpload,
   fileName,

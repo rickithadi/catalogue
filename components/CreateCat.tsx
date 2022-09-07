@@ -3,6 +3,7 @@ import { Camera, CameraType } from "expo-camera";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
+  Image,
   Button,
   View,
   StyleSheet,
@@ -13,6 +14,7 @@ import {
 
 import { Cat, emptyCat } from "../types";
 import { supabase } from "../lib/supabase";
+import AppStyles from "../styles/AppStyles";
 
 const CreateCat = (props: {
   locationGeocodedAddress: LocationGeocodedAddress | null;
@@ -23,6 +25,7 @@ const CreateCat = (props: {
     temperament: "",
     gender: false,
     pets: 0,
+    gallery: [],
   };
 
   const [cat, setCat] = useState<Cat | emptyCat>(emptyCat);
@@ -50,11 +53,11 @@ const CreateCat = (props: {
     );
   }
 
-  function toggleCameraType() {
+  const toggleCameraType = () => {
     setType((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
-  }
+  };
 
   const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });
@@ -65,9 +68,11 @@ const CreateCat = (props: {
       alert("please provide a name");
     } else {
       try {
-
         const { data, error } = await supabase.from("cats").insert(cat);
         console.log(data);
+        if (error) {
+          console.log;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -75,9 +80,19 @@ const CreateCat = (props: {
   };
   const takePicture = async () => {
     if (camera) {
-      const options = { quality: 1, base64: true };
-      const data = await cameraRef.current?.takePictureAsync(options);
-      console.log(data);
+      const options = {
+        quality: 1,
+        base64: true,
+        fixOrientation: true,
+        exif: true,
+      };
+      await cameraRef.current?.takePictureAsync(options).then((photo) => {
+        photo.exif.Orientation = 1;
+        if (photo.base64 && cat.gallery) {
+          cat.gallery.push(`data:image/png;base64,${photo.base64}`);
+        }
+        console.log(cat.gallery?.length);
+      });
     }
   };
   return (
@@ -111,17 +126,10 @@ const CreateCat = (props: {
         />
       </View>
 
-      <View>
-        <Button
-          title="Create Cat"
-          testID="CreateCatButton"
-          onPress={() => saveNewCat()}
-          disabled={!cat.description || !cat.name || !cat.temperament}
-        />
-      </View>
       {camera ? (
         <View style={styles.container}>
-          <Camera style={styles.camera} type={type}>
+          {/* <Camera style={styles.camera} type={type}> */}
+          <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
@@ -130,12 +138,31 @@ const CreateCat = (props: {
                 <Text>Flip Camera</Text>
               </TouchableOpacity>
             </View>
-          </Camera>
 
-          <Button title="camera" onPress={() => toggleCamera(!camera)} />
-          <Button title="Take Picture" onPress={() => takePicture()} />
+            <Button title="Take Picture" onPress={() => takePicture()} />
+          </Camera>
         </View>
       ) : null}
+
+      <Button title="camera" onPress={() => toggleCamera(!camera)} />
+
+      <ScrollView horizontal style={styles.photoContainer}>
+        {cat.gallery &&
+          cat.gallery.map((photo, i) => (
+            <View style={AppStyles.popCatHeaderContainer} key={i}>
+              <Text>{i}</Text>
+              <Image source={{ uri: photo }} style={styles.image} />
+            </View>
+          ))}
+      </ScrollView>
+      <View>
+        <Button
+          title="Create Cat"
+          testID="CreateCatButton"
+          onPress={() => saveNewCat()}
+          disabled={!cat.description || !cat.name || !cat.temperament}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -144,6 +171,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 35,
+  },
+  photoContainer: {
+    height: 100,
+    flex: 1,
   },
   inputGroup: {
     flex: 1,
@@ -170,6 +201,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     margin: 64,
   },
+  image: { height: 150, width: 150 },
   button: {
     flex: 1,
     alignSelf: "flex-end",

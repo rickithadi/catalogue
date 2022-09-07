@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { decode } from "base64-arraybuffer";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert, Image, Button } from "react-native";
+import { StyleSheet, View, Alert, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { FontAwesome } from "@expo/vector-icons";
-import { pick } from "react-native-document-picker";
 
 interface Props {
   size: number;

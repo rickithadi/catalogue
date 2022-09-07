@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { decode } from "base64-arraybuffer";
 import { supabase } from "../lib/supabase";
-import {
-  StyleSheet,
-  View,
-  Alert,
-  Image,
-  Button,
-} from "react-native";
+import { StyleSheet, View, Alert, Image, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 interface Props {
   size: number;
   url: string | null;
+  fileName: string  ;
   onUpload: (filePath: string) => void;
 }
 
-export default function PhotoUpload({ url, size = 150, onUpload }: Props) {
+export default function PhotoUpload({
+  url,
+  size = 150,
+  onUpload,
+  fileName,
+}: Props) {
   const [uploading, setUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{
     localUri: string;
   } | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const avatarSize = { height: size, width: size };
-    useEffect(() => {
+  useEffect(() => {
+    console.log("downloading from", url);
     if (url) downloadImage(url);
   }, [url]);
 
-    async function downloadImage(path: string) {
+  async function downloadImage(path: string) {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
@@ -41,7 +41,7 @@ export default function PhotoUpload({ url, size = 150, onUpload }: Props) {
       const fr = new FileReader();
       fr.readAsDataURL(data);
       fr.onload = () => {
-        setAvatarUrl(fr.result as string);
+        setSelectedImage({ localUri: fr.result as string });
       };
     } catch (error) {
       if (error instanceof Error) {
@@ -61,13 +61,12 @@ export default function PhotoUpload({ url, size = 150, onUpload }: Props) {
         quality: 1,
       });
       if (!result.cancelled && result.base64) {
-        console.log(result);
         setSelectedImage({ localUri: result.uri });
-        setAvatarUrl(result.uri);
+
 
         let { error } = await supabase.storage
           .from("avatars")
-          .upload("public.jpg", decode(result.base64), {
+          .upload(fileName, decode(result.base64), {
             contentType: "image/png",
           });
         if (error) {
@@ -98,24 +97,12 @@ export default function PhotoUpload({ url, size = 150, onUpload }: Props) {
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
 
-      {avatarUrl ? (
-        <Image
-          source={{ uri: avatarUrl }}
-          accessibilityLabel="Avatar"
-          style={[avatarSize, styles.avatar, styles.image]}
-        />
-      ) : (
-        <View style={[avatarSize, styles.avatar, styles.noImage]} />
-      )}
       <View>
-         <>
-            <Button
-              title={uploading ? "Uploading ..." : "Upload"}
-              onPress={pickImage}
-              disabled={uploading}
-            />
-          </>
-        )}
+        <Button
+          title={uploading ? "Uploading ..." : "Upload"}
+          onPress={pickImage}
+          disabled={uploading}
+        />
       </View>
     </View>
   );

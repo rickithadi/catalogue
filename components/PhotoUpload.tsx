@@ -102,7 +102,6 @@ export default function PhotoUpload({
           style={styles.button}>
         <FontAwesome.Button
 
-          style={styles.button}
           name="edit"
           backgroundColor="#3b5998"
           onPress={pickImage}

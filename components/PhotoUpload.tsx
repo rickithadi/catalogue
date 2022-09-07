@@ -7,7 +7,7 @@ import * as ImagePicker from "expo-image-picker";
 interface Props {
   size: number;
   url: string | null;
-  fileName: string  ;
+  fileName: string;
   onUpload: (filePath: string) => void;
 }
 
@@ -25,8 +25,8 @@ export default function PhotoUpload({
   const avatarSize = { height: size, width: size };
   useEffect(() => {
     console.log("downloading from", url);
-    if (url) downloadImage(url);
-  }, [url]);
+    if (fileName) downloadImage(fileName);
+  }, [fileName]);
 
   async function downloadImage(path: string) {
     try {
@@ -62,7 +62,6 @@ export default function PhotoUpload({
       });
       if (!result.cancelled && result.base64) {
         setSelectedImage({ localUri: result.uri });
-
 
         let { error } = await supabase.storage
           .from("avatars")

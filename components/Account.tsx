@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabase";
 
 import {
   Button,
+  Image,
   View,
   TextInput,
   StyleSheet,
@@ -89,6 +90,10 @@ export default function Account({ session }: { session: Session }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inputGroup}>
+        <Image source={{ uri: avatarUrl }} accessibilityLabel="Avatar"
+       style={{width: 100, height: 50,  borderWidth: 1, borderColor: 'red'}}
+
+        />
         <TextInput value={session?.user?.email} placeholder="email" />
       </View>
       <View style={styles.inputGroup}>

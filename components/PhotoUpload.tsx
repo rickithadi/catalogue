@@ -24,7 +24,6 @@ export default function PhotoUpload({
 
   const avatarSize = { height: size, width: size };
   useEffect(() => {
-    console.log("downloading from", url);
     if (fileName) downloadImage(fileName);
   }, [fileName]);
 
@@ -45,7 +44,6 @@ export default function PhotoUpload({
       };
     } catch (error) {
       if (error instanceof Error) {
-        console.log("Error downloading image: ", error.message);
       }
     }
   }
@@ -67,6 +65,8 @@ export default function PhotoUpload({
           .from("avatars")
           .upload(fileName, decode(result.base64), {
             contentType: "image/png",
+            cacheControl: "3600",
+            upsert: true,
           });
         if (error) {
           throw error;

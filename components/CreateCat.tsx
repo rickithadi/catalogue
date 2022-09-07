@@ -1,19 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
+import { LocationGeocodedAddress } from "expo-location";
+import { Camera, CameraType } from "expo-camera";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Text,
+  Button,
+  View,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 
-import { Cat } from "../types";
+import { Cat, emptyCat } from "../types";
 
-const CreateCat = () => {
-  const emptyCat: Cat = {
+const CreateCat = (props: {
+  locationGeocodedAddress: LocationGeocodedAddress | null;
+}) => {
+  const emptyCat: emptyCat = {
     name: "",
     description: "",
     temperament: "",
-    gender: "male",
+    gender: false,
     uid: null,
     pets: 0,
   };
 
-  const [cat, setCat] = useState(emptyCat);
+  const [cat, setCat] = useState<Cat | emptyCat>(emptyCat);
+
+  const [camera, toggleCamera] = useState(false);
+  const cameraRef = useRef<Camera>(null);
+
+  const [type, setType] = useState(CameraType.front);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraType() {
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  }
 
   const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });
@@ -34,7 +75,13 @@ const CreateCat = () => {
       }
     }
   };
-
+  const takePicture = async () => {
+    if (camera) {
+      const options = { quality: 1, base64: true };
+      const data = await cameraRef.current?.takePictureAsync(options);
+      console.log(data);
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       {/* Name Input */}
@@ -74,6 +121,23 @@ const CreateCat = () => {
           disabled={!cat.description || !cat.name || !cat.temperament}
         />
       </View>
+      {camera ? (
+        <View style={styles.container}>
+          <Camera style={styles.camera} type={type}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={toggleCameraType}
+              >
+                <Text>Flip Camera</Text>
+              </TouchableOpacity>
+            </View>
+          </Camera>
+
+          <Button title="camera" onPress={() => toggleCamera(!camera)} />
+          <Button title="Take Picture" onPress={() => takePicture()} />
+        </View>
+      ) : null}
     </ScrollView>
   );
 };
@@ -98,6 +162,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
   },
 });
 

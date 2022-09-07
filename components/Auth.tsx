@@ -30,7 +30,7 @@ export default function Auth() {
   }
 
   return (
-    <View>
+      <View style={[styles.container]}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <TextInput
           onChangeText={(text: string) => setEmail(text)}

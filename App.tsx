@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import 'react-native-url-polyfill/auto';
 import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
 import { setGoogleApiKey } from "expo-location";
@@ -48,7 +49,6 @@ export default function App() {
     RobotoMono_700Bold,
     RobotoMono_700Bold_Italic,
   });
-console.log(Constants.manifest?.extra?.googleApiKey);
   setGoogleApiKey(Constants.manifest?.extra?.googleApiKey);
 
   if (!fontsLoaded || !isLoadingComplete) {

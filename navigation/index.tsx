@@ -13,6 +13,10 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
+import * as Location from "expo-location";
+import { Session } from "@supabase/supabase-js";
+import { useEffect } from "react";
+import { LocationGeocodedAddress, LocationObject } from "expo-location";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -28,7 +32,6 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import ExploreScreen from "../screens/ExploreScreen";
 import InboxScreen from "../screens/InboxScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import Account from "../components/Account";
 import Auth from "../components/Auth";
@@ -40,7 +43,7 @@ export default function Navigation({
 }) {
   const [session, setSession] = React.useState<Session | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -97,6 +100,29 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator({ session }: { session: Session }) {
   const colorScheme = useColorScheme();
+  const [locationGeocodedAddress, setLocationGeocodedAddress] = React.useState<
+    undefined | LocationGeocodedAddress[]
+  >(undefined);
+  const [location, setLocation] = React.useState<undefined | LocationObject>(
+    undefined
+  );
+
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setLocationGeocodedAddress(undefined);
+      } else {
+        Location.getCurrentPositionAsync({}).then((loc) =>
+          Location.reverseGeocodeAsync(loc.coords).then((data) => {
+            console.log(data, loc);
+            setLocation(loc);
+            setLocationGeocodedAddress(data);
+          })
+        );
+      }
+    })();
+  }, []);
 
   return (
     <BottomTab.Navigator
@@ -109,7 +135,12 @@ function BottomTabNavigator({ session }: { session: Session }) {
     >
       <BottomTab.Screen
         name="Home"
-        component={HomeScreen}
+        children={() => (
+          <HomeScreen
+            locationGeocodedAddress={locationGeocodedAddress}
+            location={location}
+          />
+        )}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -117,7 +148,9 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Explore"
-        component={ExploreScreen}
+        children={() => (
+          <ExploreScreen locationGeocodedAddress={locationGeocodedAddress} />
+        )}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
@@ -135,7 +168,6 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Profile"
-        // component={Account}
         children={() => <Account key={session.user.id} session={session} />}
         options={{
           title: "Profile",

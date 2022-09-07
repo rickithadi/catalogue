@@ -26,7 +26,7 @@ export default function CatsAround(props: {
           <Text style={AppStyles.title}>Cats Around </Text>
           <Text style={AppStyles.locationStyle}>
             {props.locationGeocodedAddress
-              ? props.locationGeocodedAddress[0].street
+              ? props.locationGeocodedAddress[0].name
               : "Singapore"}
           </Text>
         </Text>

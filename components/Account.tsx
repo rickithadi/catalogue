@@ -90,10 +90,6 @@ export default function Account({ session }: { session: Session }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inputGroup}>
-        <Image source={{ uri: avatarUrl }} accessibilityLabel="Avatar"
-       style={{width: 100, height: 50,  borderWidth: 1, borderColor: 'red'}}
-
-        />
         <TextInput value={session?.user?.email} placeholder="email" />
       </View>
       <View style={styles.inputGroup}>
@@ -111,15 +107,6 @@ export default function Account({ session }: { session: Session }) {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Button
-          title={loading ? "Loading ..." : "Update"}
-          onPress={() =>
-            updateProfile({ username, website, avatar_url: avatarUrl })
-          }
-          disabled={loading}
-        />
-      </View>
       <PhotoUpload
         size={200}
         url={avatarUrl}
@@ -131,6 +118,15 @@ export default function Account({ session }: { session: Session }) {
       />
       <View style={styles.inputGroup}>
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+      </View>
+      <View style={styles.inputGroup}>
+        <Button
+          title={loading ? "Loading ..." : "Update"}
+          onPress={() =>
+            updateProfile({ username, website, avatar_url: avatarUrl })
+          }
+          disabled={loading}
+        />
       </View>
     </ScrollView>
   );

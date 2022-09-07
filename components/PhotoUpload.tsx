@@ -3,6 +3,8 @@ import { decode } from "base64-arraybuffer";
 import { supabase } from "../lib/supabase";
 import { StyleSheet, View, Alert, Image, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { FontAwesome } from "@expo/vector-icons";
+import { pick } from "react-native-document-picker";
 
 interface Props {
   size: number;
@@ -85,7 +87,7 @@ export default function PhotoUpload({
   };
 
   return (
-    <View>
+    <View style={styles.buttonContainer}>
       {selectedImage ? (
         <Image
           source={{ uri: selectedImage.localUri }}
@@ -96,12 +98,15 @@ export default function PhotoUpload({
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
 
-      <View>
-        <Button
-          title={uploading ? "Uploading ..." : "Upload"}
+      <View
+          style={styles.button}>
+        <FontAwesome.Button
+
+          style={styles.button}
+          name="edit"
+          backgroundColor="#3b5998"
           onPress={pickImage}
-          disabled={uploading}
-        />
+        ></FontAwesome.Button>
       </View>
     </View>
   );
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    alignSelf: "flex-end",
+    alignSelf: "center",
     alignItems: "center",
   },
   text: {

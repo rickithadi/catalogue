@@ -39,7 +39,8 @@ export type Whereabouts = {
   picture?: string;
 };
 
-export type emptyCat = Omit<Cat, "whereAbouts">;
+export type emptyCat = Omit<Cat, "whereAbouts" | "uid">;
+
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;

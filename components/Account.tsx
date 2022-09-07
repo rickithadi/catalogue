@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Session } from "@supabase/supabase-js";
-import CreateCatPhotoUpload from "./CreateCatPhotoUpload";
+import PhotoUpload from "./PhotoUpload";
 
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
@@ -46,6 +46,7 @@ export default function Account({ session }: { session: Session }) {
         Alert.alert(error.message);
       }
     } finally {
+      console.log("user", session.user);
       setLoading(false);
     }
   }
@@ -114,7 +115,7 @@ export default function Account({ session }: { session: Session }) {
           disabled={loading}
         />
       </View>
-      <CreateCatPhotoUpload
+      <PhotoUpload
         size={200}
         url={avatarUrl}
         onUpload={(url: string) => {

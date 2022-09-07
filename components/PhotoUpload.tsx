@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { decode } from "base64-arraybuffer";
 import { supabase } from "../lib/supabase";
 import {
   StyleSheet,
   View,
   Alert,
-  Text,
   Image,
   Button,
-  Platform,
-  TouchableOpacity,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, CameraType } from "expo-camera";
 
 interface Props {
   size: number;
@@ -20,52 +16,19 @@ interface Props {
   onUpload: (filePath: string) => void;
 }
 
-export default function CreateCatPhotoUpload({
-  url,
-  size = 150,
-  onUpload,
-}: Props) {
+export default function PhotoUpload({ url, size = 150, onUpload }: Props) {
   const [uploading, setUploading] = useState(false);
-  const [camera, toggleCamera] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{
     localUri: string;
   } | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const avatarSize = { height: size, width: size };
-  const cameraRef = useRef<Camera>(null);
-
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-
-  useEffect(() => {
+    useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
 
-  if (!permission) {
-    // Camera permissions are still loading
-    return <View />;
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
-
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
-
-  async function downloadImage(path: string) {
+    async function downloadImage(path: string) {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
@@ -122,13 +85,7 @@ export default function CreateCatPhotoUpload({
       setUploading(false);
     }
   };
-  const takePicture = async () => {
-    if (camera) {
-      const options = { quality: 1, base64: true };
-      const data = await cameraRef.current?.takePictureAsync(options);
-      console.log(data);
-    }
-  };
+
   return (
     <View>
       {selectedImage ? (
@@ -151,29 +108,12 @@ export default function CreateCatPhotoUpload({
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
       <View>
-        {camera ? (
-          <View style={styles.container}>
-            <Camera style={styles.camera} type={type}>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={toggleCameraType}
-                >
-                  <Text>Flip Camera</Text>
-                </TouchableOpacity>
-              </View>
-            </Camera>
-
-            <Button title="Take Picture" onPress={() => takePicture()} />
-          </View>
-        ) : (
-          <>
+         <>
             <Button
               title={uploading ? "Uploading ..." : "Upload"}
               onPress={pickImage}
               disabled={uploading}
             />
-            <Button title="camera" onPress={() => toggleCamera(!camera)} />
           </>
         )}
       </View>

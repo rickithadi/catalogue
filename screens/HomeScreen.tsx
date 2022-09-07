@@ -6,7 +6,7 @@ import { RootTabScreenProps } from "../types";
 import AppStyles from "../styles/AppStyles";
 import CreateCat from "../components/CreateCat";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
-import CreateCatPhotoUpload from "../components/CreateCatPhotoUpload";
+import CreateCatPhotoUpload from "../components/PhotoUpload";
 
 export default function HomeScreen(props: {
   locationGeocodedAddress: undefined | LocationGeocodedAddress[];

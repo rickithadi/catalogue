@@ -109,7 +109,6 @@ export default function Account({ session }: { session: Session }) {
 
       <PhotoUpload
         size={200}
-        url={avatarUrl}
         fileName={session.user.id}
         onUpload={(url: string) => {
           setAvatarUrl(url);

@@ -56,6 +56,41 @@ const CreateCat = (props: {
       current === CameraType.back ? CameraType.front : CameraType.back
     );
   }
+  const rusty: Omit<Cat, "uid"> = {
+    name: "rustyblue",
+    temperament: "docile",
+    gender: true,
+    pets: 900,
+    description: "very soft and fluffy, 10/10",
+    whereAbouts: {
+      address: {
+        streetNumber: "862",
+        street: "Tampines Street 83",
+        city: "Singapore",
+        country: "Singapore",
+        isoCountryCode: "SG",
+        postalCode: "520862",
+        name: "862 Tampines Street 83",
+        // TODO find out why these arent coming back
+        district: null,
+        region: null,
+        timezone: null,
+        subregion: null,
+      },
+      location: {
+        coords: {
+          latitude: 1.3545155,
+          longitude: 103.9364254,
+          altitude: null,
+          accuracy: 14.636,
+          altitudeAccuracy: null,
+          heading: null,
+          speed: null,
+        },
+        timestamp: 1662433415304,
+      },
+    },
+  };
 
   const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });
@@ -66,10 +101,8 @@ const CreateCat = (props: {
       alert("please provide a name");
     } else {
       try {
-        console.log("creaing", cat);
-        // const { data, error } = await supabase.from("cats").insert([{ cat }]);
-        let { data: cats, error } = await supabase.from("cats").select("*");
-        console.log(cats);
+        const { data, error } = await supabase.from("cats").insert( rusty );
+        console.log(data);
       } catch (error) {
         console.log(error);
       }

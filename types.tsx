@@ -20,6 +20,7 @@ declare global {
 export type Feeder = {
   uid: string;
 };
+
 export type Cat = {
   uid: string | null;
   name: string;
@@ -37,6 +38,8 @@ export type Whereabouts = {
   location: LocationObject;
   picture?: string;
 };
+
+export type emptyCat = Omit<Cat, "whereAbouts">;
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;

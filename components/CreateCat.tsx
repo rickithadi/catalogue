@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import { Cat, emptyCat } from "../types";
+import { supabase } from "../lib/supabase";
 
 const CreateCat = (props: {
   locationGeocodedAddress: LocationGeocodedAddress | null;
@@ -65,11 +66,10 @@ const CreateCat = (props: {
       alert("please provide a name");
     } else {
       try {
-        //TODO insert into supabase
-        // await db
-        //   .collection("cats")
-        //   .add(cat)
-        //   .then(() => setCat(emptyCat));
+        console.log("creaing", cat);
+        // const { data, error } = await supabase.from("cats").insert([{ cat }]);
+        let { data: cats, error } = await supabase.from("cats").select("*");
+        console.log(cats);
       } catch (error) {
         console.log(error);
       }

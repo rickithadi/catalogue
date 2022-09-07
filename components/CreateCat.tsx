@@ -33,7 +33,7 @@ const CreateCat = (props: {
   const [camera, toggleCamera] = useState(false);
   const cameraRef = useRef<Camera>(null);
 
-  const [type, setType] = useState(CameraType.front);
+  const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   if (!permission) {
@@ -67,13 +67,10 @@ const CreateCat = (props: {
     if (cat.name === "") {
       alert("please provide a name");
     } else {
-      try {
-        const { data, error } = await supabase.from("cats").insert(cat);
-        console.log(data);
-        if (error) {
-          console.log;
-        }
-      } catch (error) {
+      console.log('creating a cat',cat)
+      const { data, error } = await supabase.from("cats").insert(cat);
+      console.log(data);
+      if (error) {
         console.log(error);
       }
     }
@@ -91,7 +88,7 @@ const CreateCat = (props: {
         if (photo.base64 && cat.gallery) {
           cat.gallery.push(`data:image/png;base64,${photo.base64}`);
         }
-        console.log(cat.gallery?.length);
+        toggleCamera(false);
       });
     }
   };
@@ -150,7 +147,6 @@ const CreateCat = (props: {
         {cat.gallery &&
           cat.gallery.map((photo, i) => (
             <View style={AppStyles.popCatHeaderContainer} key={i}>
-              <Text>{i}</Text>
               <Image source={{ uri: photo }} style={styles.image} />
             </View>
           ))}

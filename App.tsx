@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import "react-native-url-polyfill/auto";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Constants from "expo-constants";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -71,20 +71,23 @@ export default function App() {
   setGoogleApiKey(Constants.manifest?.extra?.googleApiKey);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setLocationGeocodedAddress(undefined);
-      } else {
-        Location.getCurrentPositionAsync({}).then((loc) =>
-          Location.reverseGeocodeAsync(loc.coords).then((data) => {
-            console.log(data, loc);
-            setLocation(loc);
-            setLocationGeocodedAddress(data);
-          })
-        );
-      }
-    })();
+    //NOTE dont waste API calls there is a limit
+    if (!location || !locationGeocodedAddress) {
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setLocationGeocodedAddress(undefined);
+        } else {
+          Location.getCurrentPositionAsync({}).then((loc) =>
+            Location.reverseGeocodeAsync(loc.coords).then((data) => {
+              console.log(data, loc);
+              setLocation(loc);
+              setLocationGeocodedAddress(data);
+            })
+          );
+        }
+      })();
+    }
   }, []);
 
   if (!fontsLoaded || !isLoadingComplete) {
@@ -96,7 +99,7 @@ export default function App() {
           value={{
             location,
             address: locationGeocodedAddress
-              ? locationGeocodedAddress[0]
+              ? locationGeocodedAddress
               : undefined,
           }}
         >

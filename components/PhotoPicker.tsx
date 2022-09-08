@@ -14,9 +14,10 @@ import * as ImagePicker from "expo-image-picker";
 import AppStyles from "../styles/AppStyles";
 
 interface Props {
+  show: boolean;
   onSubmit: (photos: string[]) => void;
 }
-export const PhotoPicker = ({ onSubmit }: Props) => {
+export const PhotoPicker = ({ onSubmit, show }: Props) => {
   const [modalVisible, setModalVisible] = useState(true);
   const [camera, toggleCamera] = useState(false);
   const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
@@ -86,15 +87,8 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
     }
   };
   return (
-    <Modal
-      animationType="slide"
-      presentationStyle="fullScreen"
-      visible={modalVisible}
-      onRequestClose={() => {
-        // setModalVisible(!modalVisible);
-      }}
-    >
-      <Text style={AppStyles.modalText}>Select Images</Text>
+    <Modal animationType="slide" presentationStyle="fullScreen" visible={show}>
+      <Text style={AppStyles.modalText}>Select Pictures of Cat</Text>
 
       <View style={AppStyles.createCatContainer}>
         {selectedPictures.map((picture, index) => (
@@ -117,7 +111,6 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
         disabled={selectedPictures.length === 0}
         title="Submit"
         onPress={() => {
-          setModalVisible(!modalVisible);
           onSubmit(selectedPictures);
         }}
       ></Button>

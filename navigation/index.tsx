@@ -139,7 +139,9 @@ function BottomTabNavigator({ session }: { session: Session }) {
                 height: 58,
                 width: 58,
                 borderRadius: 58,
+                borderWidth: 2,
                 backgroundColor: Colors[colorScheme].background,
+                borderColor: Colors[colorScheme].tint,
                 justifyContent: "center",
                 alignItems: "center",
               }}

@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
   },
   image: {
-    objectFit: "cover",
     paddingTop: 0,
   },
   noImage: {

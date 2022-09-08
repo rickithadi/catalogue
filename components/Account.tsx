@@ -3,7 +3,6 @@ import { supabase } from "../lib/supabase";
 
 import {
   Button,
-  Image,
   View,
   TextInput,
   StyleSheet,

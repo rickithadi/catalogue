@@ -1,12 +1,20 @@
 import { Camera, CameraType } from "expo-camera";
 import React, { useEffect, useRef, useState } from "react";
-import { Text, Button, View, Alert, Modal, Pressable } from "react-native";
+import {
+  Text,
+  Button,
+  View,
+  Alert,
+  Modal,
+  Pressable,
+  Image,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import AppStyles from "../styles/AppStyles";
 
 interface Props {
-  onSubmit: (photos: []) => void;
+  onSubmit: (photos: string[]) => void;
 }
 export const PhotoPicker = ({ onSubmit }: Props) => {
   const [modalVisible, setModalVisible] = useState(true);
@@ -62,13 +70,19 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsMultipleSelection: true,
       base64: true,
-      allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
     if (!result.cancelled) {
-      console.log(result.uri);
+      result.selected.map((photo) => {
+        setSelectedPictures((current) => [
+          ...current,
+          // `data:image/png;base64,${photo.base64}`,
+          photo.uri,
+        ]);
+      });
     }
   };
   return (
@@ -77,21 +91,36 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
       presentationStyle="fullScreen"
       visible={modalVisible}
       onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
-        setModalVisible(!modalVisible);
+        // setModalVisible(!modalVisible);
       }}
     >
+      <Text style={AppStyles.modalText}>Select Images</Text>
+
       <View style={AppStyles.container}>
-        <Button title="camera" onPress={() => toggleCamera(!camera)} />
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        <View style={AppStyles.modalView}>
-          <Text style={AppStyles.modalText}>Hello World!</Text>
-          <Pressable
-            style={[AppStyles.button, AppStyles.buttonClose]}
-            onPress={() => setModalVisible(!modalVisible)}
-          ></Pressable>
-        </View>
+        {selectedPictures.map((picture, index) => (
+          <View key={index}>
+            <Image
+              source={{ uri: picture }}
+              style={{ height: 20, width: 20 }}
+            />
+          </View>
+        ))}
       </View>
+      <View style={AppStyles.popCatHeaderContainer}>
+        <Button title="camera" onPress={() => toggleCamera(!camera)} />
+        <Button
+          title="Pick an image from camera roll"
+          onPress={() => pickImage()}
+        />
+      </View>
+      <Button
+        disabled={selectedPictures.length === 0}
+        title="Submit"
+        onPress={() => {
+          setModalVisible(!modalVisible);
+          onSubmit(selectedPictures);
+        }}
+      ></Button>
     </Modal>
   );
 };

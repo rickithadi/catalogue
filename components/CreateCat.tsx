@@ -125,24 +125,6 @@ const CreateCat = (props: {
         />
       </View>
 
-      {camera ? (
-        <View style={styles.container}>
-          <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={toggleCameraType}
-              >
-                <Text>Flip Camera</Text>
-              </TouchableOpacity>
-            </View>
-
-            <Button title="Take Picture" onPress={() => takePicture()} />
-          </Camera>
-        </View>
-      ) : null}
-
-      <Button title="camera" onPress={() => toggleCamera(!camera)} />
 
       <ScrollView horizontal style={styles.photoContainer}>
         {cat.gallery &&
@@ -152,35 +134,7 @@ const CreateCat = (props: {
             </View>
           ))}
       </ScrollView>
-      <Modal
-        animationType="slide"
-        presentationStyle="fullScreen"
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={AppStyles.container}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-
       <View>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable>
         <Button
           title="Create Cat"
           testID="CreateCatButton"

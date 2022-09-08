@@ -16,7 +16,7 @@ interface Props {
   onSubmit: (photos: []) => void;
 }
 export const PhotoPicker = ({ onSubmit }: Props) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const [camera, toggleCamera] = useState(false);
   const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
   const cameraRef = useRef<Camera>(null);

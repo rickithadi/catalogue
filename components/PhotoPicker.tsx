@@ -16,11 +16,13 @@ import AppStyles from "../styles/AppStyles";
 interface Props {
   show: boolean;
   onSubmit: (photos: string[]) => void;
+  initialPics?: string[];
 }
-export const PhotoPicker = ({ onSubmit, show }: Props) => {
-  const [modalVisible, setModalVisible] = useState(true);
+export const PhotoPicker = ({ onSubmit, show, initialPics }: Props) => {
   const [camera, toggleCamera] = useState(false);
-  const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
+  const [selectedPictures, setSelectedPictures] = useState<string[]>(
+    initialPics || []
+  );
   const cameraRef = useRef<Camera>(null);
 
   const [type, setType] = useState(CameraType.back);

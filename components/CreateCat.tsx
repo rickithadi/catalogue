@@ -1,6 +1,6 @@
 import { LocationGeocodedAddress } from "expo-location";
 import { Camera, CameraType } from "expo-camera";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Text,
   Image,
@@ -18,10 +18,13 @@ import {
 import { Cat, EmptyCat } from "../types/types";
 import { supabase } from "../lib/supabase";
 import AppStyles from "../styles/AppStyles";
+import { CurrentWhereAboutsContext } from "../App";
 
 const CreateCat = (props: {
   locationGeocodedAddressList: LocationGeocodedAddress[] | undefined;
+  catPictures: string[];
 }) => {
+  const whereAbouts = useContext(CurrentWhereAboutsContext);
   const emptyCat: EmptyCat = {
     name: "",
     description: "",
@@ -29,11 +32,12 @@ const CreateCat = (props: {
     gender: false,
     pets: 0,
     gallery: [],
+    whereAbouts: undefined,
   };
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
 
-    const handleChangeText = (value: string, name: string) => {
+  const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
@@ -46,6 +50,23 @@ const CreateCat = (props: {
         console.log(error);
       }
     }
+  };
+  const uploadImage = async (gallery: string[]) => {
+    gallery.map(async (image, index) => {
+      const { data, error } = await supabase.storage
+        .from("cats")
+        .upload(
+          `${cat.name}${index}${whereAbouts?.location?.timestamp}`,
+          image,
+          {
+            cacheControl: "3600",
+            upsert: false,
+          }
+        );
+      if (error) {
+        console.log(error);
+      }
+    });
   };
 
   return (
@@ -79,21 +100,20 @@ const CreateCat = (props: {
         />
       </View>
 
-
-      <ScrollView horizontal style={styles.photoContainer}>
-        {cat.gallery &&
-          cat.gallery.map((photo: string, i: number) => (
-            <View style={AppStyles.popCatHeaderContainer} key={i}>
-              <Image source={{ uri: photo }} style={styles.image} />
-            </View>
-          ))}
-      </ScrollView>
       <View>
         <Button
           title="Create Cat"
           testID="CreateCatButton"
-          onPress={() => saveNewCat()}
-          disabled={!cat.description || !cat.name || !cat.temperament}
+          disabled={
+            !cat.description ||
+            !cat.name ||
+            !cat.temperament ||
+            !props.catPictures
+          }
+          onPress={() =>
+            // uploadImage(props.catPictures).then(() => saveNewCat())
+            uploadImage(props.catPictures)
+          }
         />
       </View>
     </ScrollView>

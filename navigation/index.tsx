@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable, View } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import { useEffect } from "react";
 
@@ -107,16 +107,15 @@ function BottomTabNavigator({ session }: { session: Session }) {
         headerShown: false,
       }}
     >
-      <BottomTab.Screen name="New" children={() => <NewCatScreen />} />
-
       <BottomTab.Screen
         name="Home"
         children={() => <HomeScreen />}
-        options={({ navigation }: RootTabScreenProps<"Home">) => ({
+        options={{
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        })}
+        }}
       />
+
       <BottomTab.Screen
         name="Explore"
         children={() => <ExploreScreen />}
@@ -124,6 +123,29 @@ function BottomTabNavigator({ session }: { session: Session }) {
           title: "Explore",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="compass" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="New"
+        children={() => <NewCatScreen />}
+        options={{
+          title: "New",
+          tabBarIcon: ({ color }) => (
+            <View
+              style={{
+                position: "absolute",
+                bottom: 10, // space from bottombar
+                height: 58,
+                width: 58,
+                borderRadius: 58,
+                // backgroundColor: Colors[colorScheme].tint,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <TabBarIcon name="plus" color={color} />
+            </View>
           ),
         }}
       />

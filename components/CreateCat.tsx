@@ -20,7 +20,7 @@ import { supabase } from "../lib/supabase";
 import AppStyles from "../styles/AppStyles";
 
 const CreateCat = (props: {
-  locationGeocodedAddress: LocationGeocodedAddress | null;
+  locationGeocodedAddressList: LocationGeocodedAddress[] | undefined;
 }) => {
   const emptyCat: EmptyCat = {
     name: "",

@@ -67,7 +67,7 @@ const CreateCat = (props: {
     if (cat.name === "") {
       alert("please provide a name");
     } else {
-      console.log('creating a cat',cat)
+      console.log("creating a cat", cat);
       const { data, error } = await supabase.from("cats").insert(cat);
       console.log(data);
       if (error) {
@@ -125,7 +125,6 @@ const CreateCat = (props: {
 
       {camera ? (
         <View style={styles.container}>
-          {/* <Camera style={styles.camera} type={type}> */}
           <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
             <View style={styles.buttonContainer}>
               <TouchableOpacity

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { definitions } from "../types/supabase";
 import { decode } from "base64-arraybuffer";
 import { supabase } from "../lib/supabase";
 import { StyleSheet, View, Alert, Image } from "react-native";

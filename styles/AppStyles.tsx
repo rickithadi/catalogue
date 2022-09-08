@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  createCatContainer: {
+    alignContent: "space-around",
+    flexDirection: "row",
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

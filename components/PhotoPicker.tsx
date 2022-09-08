@@ -96,12 +96,12 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
     >
       <Text style={AppStyles.modalText}>Select Images</Text>
 
-      <View style={AppStyles.container}>
+      <View style={AppStyles.createCatContainer}>
         {selectedPictures.map((picture, index) => (
           <View key={index}>
             <Image
               source={{ uri: picture }}
-              style={{ height: 20, width: 20 }}
+              style={{ height: 100, width: 100 }}
             />
           </View>
         ))}

@@ -34,12 +34,12 @@ export type Cat = {
   whereAbouts: Whereabouts; //populated at creation by current location
 };
 export type Whereabouts = {
-  address: LocationGeocodedAddress;
+  address: LocationGeocodedAddress[];
   location: LocationObject;
   picture?: string;
 };
 
-export type emptyCat = Omit<Cat, "whereAbouts" | "uid">;
+export type EmptyCat = Omit<Cat, "whereAbouts" | "uid">;
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
@@ -52,6 +52,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   Home: undefined;
+  New: undefined;
   Explore: undefined;
   Inbox: undefined;
   Profile: undefined;

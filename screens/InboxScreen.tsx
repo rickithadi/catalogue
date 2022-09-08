@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
+import { RootTabScreenProps } from "../types/types";
 import AppStyles from "../styles/AppStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
 

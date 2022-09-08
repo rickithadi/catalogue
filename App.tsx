@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import 'react-native-url-polyfill/auto';
-import React, { useEffect, useState } from "react";
+import "react-native-url-polyfill/auto";
+import React, { createContext, useEffect, useState } from "react";
 import Constants from "expo-constants";
-import { setGoogleApiKey } from "expo-location";
+
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import {
@@ -28,10 +28,28 @@ import AppLoading from "expo-app-loading";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
+import {
+  LocationGeocodedAddress,
+  LocationObject,
+  setGoogleApiKey,
+} from "expo-location";
+import * as Location from "expo-location";
+import { Whereabouts } from "./types/types";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
+  const [locationGeocodedAddress, setLocationGeocodedAddress] = useState<
+    undefined | LocationGeocodedAddress[]
+  >(undefined);
+  const [location, setLocation] = useState<undefined | LocationObject>(
+    undefined
+  );
+
+  const CurrentWhereAboutsContext = createContext<Whereabouts | undefined>(
+    undefined
+  );
 
   let [fontsLoaded] = useFonts({
     LondrinaSolid_100Thin,
@@ -51,13 +69,34 @@ export default function App() {
   });
   setGoogleApiKey(Constants.manifest?.extra?.googleApiKey);
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setLocationGeocodedAddress(undefined);
+      } else {
+        Location.getCurrentPositionAsync({}).then((loc) =>
+          Location.reverseGeocodeAsync(loc.coords).then((data) => {
+            console.log(data, loc);
+            setLocation(loc);
+            setLocationGeocodedAddress(data);
+          })
+        );
+      }
+    })();
+  }, []);
+
   if (!fontsLoaded || !isLoadingComplete) {
     return <AppLoading />;
   } else {
     return (
       <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
+        <CurrentWhereAboutsContext.Provider
+          value={{ location, address: locationGeocodedAddress }}
+        >
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </CurrentWhereAboutsContext.Provider>
       </SafeAreaProvider>
     );
   }

@@ -10,16 +10,19 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  Modal,
+  Pressable,
 } from "react-native";
 
-import { Cat, emptyCat } from "../types";
+import { Cat, EmptyCat } from "../types/types";
 import { supabase } from "../lib/supabase";
 import AppStyles from "../styles/AppStyles";
 
 const CreateCat = (props: {
   locationGeocodedAddress: LocationGeocodedAddress | null;
 }) => {
-  const emptyCat: emptyCat = {
+  const emptyCat: EmptyCat = {
     name: "",
     description: "",
     temperament: "",
@@ -28,7 +31,8 @@ const CreateCat = (props: {
     gallery: [],
   };
 
-  const [cat, setCat] = useState<Cat | emptyCat>(emptyCat);
+  const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [camera, toggleCamera] = useState(false);
   const cameraRef = useRef<Camera>(null);
@@ -67,9 +71,7 @@ const CreateCat = (props: {
     if (cat.name === "") {
       alert("please provide a name");
     } else {
-      console.log("creating a cat", cat);
       const { data, error } = await supabase.from("cats").insert(cat);
-      console.log(data);
       if (error) {
         console.log(error);
       }
@@ -144,13 +146,41 @@ const CreateCat = (props: {
 
       <ScrollView horizontal style={styles.photoContainer}>
         {cat.gallery &&
-          cat.gallery.map((photo, i) => (
+          cat.gallery.map((photo: string, i: number) => (
             <View style={AppStyles.popCatHeaderContainer} key={i}>
               <Image source={{ uri: photo }} style={styles.image} />
             </View>
           ))}
       </ScrollView>
+      <Modal
+        animationType="slide"
+        presentationStyle="fullScreen"
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={AppStyles.container}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
       <View>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Show Modal</Text>
+        </Pressable>
         <Button
           title="Create Cat"
           testID="CreateCatButton"
@@ -163,6 +193,47 @@ const CreateCat = (props: {
 };
 
 const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
   container: {
     flex: 1,
     padding: 35,
@@ -197,11 +268,6 @@ const styles = StyleSheet.create({
     margin: 64,
   },
   image: { height: 150, width: 150 },
-  button: {
-    flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
-  },
 });
 
 export default CreateCat;

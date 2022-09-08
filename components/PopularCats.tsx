@@ -12,7 +12,7 @@ import { View, Text } from "react-native";
 import AppStyles from "../styles/AppStyles";
 import icons from "./Icons";
 import catSample from "../assets/images/rusty.jpg";
-import { Cat } from "../types";
+import { Cat } from "../types/types";
 
 export default function PopularCats(props: { cats: Cat[] }) {
   return (

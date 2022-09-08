@@ -13,7 +13,7 @@ import { LocationGeocodedAddress } from "expo-location";
 import AppStyles from "../styles/AppStyles";
 import catSample from "../assets/images/rusty.jpg";
 import icons from "./Icons";
-import { Cat } from "../types";
+import { Cat } from "../types/types";
 
 export default function CatsAround(props: {
   cats: Cat[];

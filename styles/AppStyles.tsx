@@ -1,6 +1,47 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
   popCatParentContainer: {
     padding: 20,
     alignItems: "stretch",
@@ -34,9 +75,8 @@ export default StyleSheet.create({
     flex: 1,
   },
 
-
   catsAroundTextContainer: {
-    padding:20,
+    padding: 20,
     flex: 2,
   },
 
@@ -62,18 +102,13 @@ export default StyleSheet.create({
     paddingBottom: 0,
     fontSize: 16,
     textTransform: "capitalize",
-
-
   },
   popCatsmallText: {
-
     fontFamily: "RobotoMono_400Regular",
     color: "white",
     paddingBottom: 0,
     fontSize: 12,
     textTransform: "capitalize",
-
-
   },
   bannerContainer: {
     height: 200,

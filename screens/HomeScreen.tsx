@@ -7,7 +7,7 @@ import AppStyles from "../styles/AppStyles";
 export default function HomeScreen() {
   return (
     <SafeAreaView style={AppStyles.container}>
-      <View style={AppStyles.container}>home</View>
+      <View style={AppStyles.container}></View>
     </SafeAreaView>
   );
 }

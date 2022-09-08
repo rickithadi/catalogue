@@ -1,14 +1,7 @@
 import { Camera, CameraType } from "expo-camera";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Text,
-  Image,
-  Button,
-  View,
-  Alert,
-  Modal,
-  Pressable,
-} from "react-native";
+import { Text, Button, View, Alert, Modal, Pressable } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 import AppStyles from "../styles/AppStyles";
 
@@ -28,7 +21,6 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
     // Camera permissions are still loading
     return <View />;
   }
-
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
@@ -66,6 +58,19 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
       toggleCamera(false);
     }
   };
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      base64: true,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      console.log(result.uri);
+    }
+  };
   return (
     <Modal
       animationType="slide"
@@ -78,6 +83,7 @@ export const PhotoPicker = ({ onSubmit }: Props) => {
     >
       <View style={AppStyles.container}>
         <Button title="camera" onPress={() => toggleCamera(!camera)} />
+        <Button title="Pick an image from camera roll" onPress={pickImage} />
         <View style={AppStyles.modalView}>
           <Text style={AppStyles.modalText}>Hello World!</Text>
           <Pressable

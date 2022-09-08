@@ -32,38 +32,8 @@ const CreateCat = (props: {
   };
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
-  const [modalVisible, setModalVisible] = useState(false);
 
-  const [camera, toggleCamera] = useState(false);
-  const cameraRef = useRef<Camera>(null);
-
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-
-  if (!permission) {
-    // Camera permissions are still loading
-    return <View />;
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
-
-  const toggleCameraType = () => {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  };
-
-  const handleChangeText = (value: string, name: string) => {
+    const handleChangeText = (value: string, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
@@ -77,23 +47,7 @@ const CreateCat = (props: {
       }
     }
   };
-  const takePicture = async () => {
-    if (camera) {
-      const options = {
-        quality: 1,
-        base64: true,
-        fixOrientation: true,
-        exif: true,
-      };
-      await cameraRef.current?.takePictureAsync(options).then((photo) => {
-        photo.exif.Orientation = 1;
-        if (photo.base64 && cat.gallery) {
-          cat.gallery.push(`data:image/png;base64,${photo.base64}`);
-        }
-        toggleCamera(false);
-      });
-    }
-  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Name Input */}

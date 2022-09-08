@@ -22,7 +22,7 @@ export default function PhotoUpload({ size = 150, onUpload, fileName }: Props) {
     if (fileName) downloadImage(fileName);
   }, [fileName]);
 
-  async function downloadImage(path: string) {
+  const downloadImage = async (path: string) => {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
@@ -41,7 +41,7 @@ export default function PhotoUpload({ size = 150, onUpload, fileName }: Props) {
       if (error instanceof Error) {
       }
     }
-  }
+  };
   const pickImage = async () => {
     //UPLOAD IMAGE as BASE64 and get publicURL
     try {

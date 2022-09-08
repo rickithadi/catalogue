@@ -24,6 +24,7 @@ import {
   RobotoMono_700Bold_Italic,
 } from "@expo-google-fonts/roboto-mono";
 import AppLoading from "expo-app-loading";
+import * as Location from "expo-location";
 
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
@@ -33,8 +34,11 @@ import {
   LocationObject,
   setGoogleApiKey,
 } from "expo-location";
-import * as Location from "expo-location";
 import { Whereabouts } from "./types/types";
+
+export const CurrentWhereAboutsContext = createContext<Whereabouts | undefined>(
+  undefined
+);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -43,11 +47,8 @@ export default function App() {
   const [locationGeocodedAddress, setLocationGeocodedAddress] = useState<
     undefined | LocationGeocodedAddress[]
   >(undefined);
-  const [location, setLocation] = useState<undefined | LocationObject>(
-    undefined
-  );
 
-  const CurrentWhereAboutsContext = createContext<Whereabouts | undefined>(
+  const [location, setLocation] = useState<undefined | LocationObject>(
     undefined
   );
 
@@ -92,7 +93,12 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <CurrentWhereAboutsContext.Provider
-          value={{ location, address: locationGeocodedAddress }}
+          value={{
+            location,
+            address: locationGeocodedAddress
+              ? locationGeocodedAddress[0]
+              : undefined,
+          }}
         >
           <Navigation colorScheme={colorScheme} />
           <StatusBar />

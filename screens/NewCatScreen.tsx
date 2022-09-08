@@ -7,10 +7,7 @@ import CreateCat from "../components/CreateCat";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
 import PhotoPicker from "../components/PhotoPicker";
 
-export default function NewCatScreen(props: {
-  locationGeocodedAddress: undefined | LocationGeocodedAddress[];
-  location: undefined | LocationObject;
-}) {
+export default function NewCatScreen() {
   const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
 
   return (

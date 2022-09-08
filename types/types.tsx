@@ -34,9 +34,9 @@ export type Cat = {
   whereAbouts: Whereabouts; //populated at creation by current location
 };
 export type Whereabouts = {
-  address: LocationGeocodedAddress[];
-  location: LocationObject;
-  picture?: string;
+  address: LocationGeocodedAddress[] | undefined;
+  location: LocationObject | undefined;
+  pictures?: string[];
 };
 
 export type EmptyCat = Omit<Cat, "whereAbouts" | "uid">;

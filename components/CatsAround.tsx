@@ -17,7 +17,7 @@ import { Cat } from "../types/types";
 
 export default function CatsAround(props: {
   cats: Cat[];
-  locationGeocodedAddress: undefined | LocationGeocodedAddress[];
+  locationGeocodedAddressList: undefined | LocationGeocodedAddress[];
 }) {
   return (
     <View style={AppStyles.popCatParentContainer}>
@@ -25,8 +25,8 @@ export default function CatsAround(props: {
         <Text>
           <Text style={AppStyles.title}>Cats Around </Text>
           <Text style={AppStyles.locationStyle}>
-            {props.locationGeocodedAddress
-              ? props.locationGeocodedAddress[0].name
+            {props.locationGeocodedAddressList
+              ? props.locationGeocodedAddressList[0].name
               : "Singapore"}
           </Text>
         </Text>

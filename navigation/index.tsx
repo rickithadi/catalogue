@@ -111,12 +111,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
 
       <BottomTab.Screen
         name="Home"
-        children={() => (
-          <HomeScreen
-            locationGeocodedAddress={locationGeocodedAddress}
-            location={location}
-          />
-        )}
+        children={() => <HomeScreen />}
         options={({ navigation }: RootTabScreenProps<"Home">) => ({
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -124,9 +119,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Explore"
-        children={() => (
-          <ExploreScreen locationGeocodedAddress={locationGeocodedAddress} />
-        )}
+        children={() => <ExploreScreen />}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (

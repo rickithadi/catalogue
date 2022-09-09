@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+/** URL polyfill. Required for Supabase queries to work in React Native. */
 import "react-native-url-polyfill/auto";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Constants from "expo-constants";
@@ -26,15 +27,16 @@ import {
 import AppLoading from "expo-app-loading";
 import * as Location from "expo-location";
 
-import useCachedResources from "./hooks/useCachedResources";
-import useColorScheme from "./hooks/useColorScheme";
-import Navigation from "./navigation";
 import {
   LocationGeocodedAddress,
   LocationObject,
   setGoogleApiKey,
 } from "expo-location";
+
 import { Whereabouts } from "./types/types";
+import useCachedResources from "./hooks/useCachedResources";
+import useColorScheme from "./hooks/useColorScheme";
+import Navigation from "./navigation";
 
 export const CurrentWhereAboutsContext = createContext<Whereabouts | undefined>(
   undefined

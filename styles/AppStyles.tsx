@@ -8,7 +8,14 @@ export default StyleSheet.create({
   createCatImageContainer: {
     alignItems: "center",
     alignSelf: "center",
-    height: 350,
+    height: "100%",
+    alignContent: "center",
+    flexDirection: "row",
+  },
+  selectedImageContainer: {
+    alignItems: "center",
+    alignSelf: "center",
+    height: "10%",
     alignContent: "center",
     flexDirection: "row",
   },
@@ -83,12 +90,12 @@ export default StyleSheet.create({
     flex: 2,
   },
   image: {
-    flex: 1,
     height: 100,
     width: 100,
   },
   imageOverlay: {
     position: "absolute",
+    zIndex:99,
     top: 2,
     right: 0,
   },

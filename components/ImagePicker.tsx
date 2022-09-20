@@ -1,15 +1,25 @@
 import { Ionicons } from "@expo/vector-icons";
 import { MediaType } from "expo-media-library";
 import React, { useMemo } from "react";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-
 import { AssetsSelector } from "expo-images-picker";
-import { Asset } from "expo-asset";
-import navigation from "../navigation";
-import { useColorScheme } from "react-native";
 
-export const ImagePicker = () => {
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+
+type Props = {
+  setSelectedPictures: (pictures: any[]) => void;
+};
+export const ImagePicker = ({ setSelectedPictures }: Props) => {
   const colorScheme = useColorScheme();
+  const _textStyle = {
+    color: "white",
+  };
+
+  const _buttonStyle = {
+    backgroundColor: Colors[colorScheme].tint,
+    borderRadius: 5,
+  };
+
   const widgetErrors = useMemo(
     () => ({
       errorTextColor: "black",
@@ -27,7 +37,7 @@ export const ImagePicker = () => {
     () => ({
       getImageMetaData: false, // true might perform slower results but gives meta data and absolute path for ios users
       initialLoad: 100,
-      assetsType: [MediaType.photo, MediaType.video],
+      assetsType: [MediaType.photo],
       minSelection: 1,
       maxSelection: 3,
       portraitCols: 4,
@@ -46,15 +56,6 @@ export const ImagePicker = () => {
     []
   );
 
-  const _textStyle = {
-    color: "white",
-  };
-
-  const _buttonStyle = {
-    backgroundColor: Colors[colorScheme].tint,
-    borderRadius: 5,
-  };
-
   const widgetNavigator = useMemo(
     () => ({
       Texts: {
@@ -63,11 +64,15 @@ export const ImagePicker = () => {
         selected: "selected",
       },
       midTextColor: "black",
+      backFunction: false,
       minSelection: 1,
       buttonTextStyle: _textStyle,
       buttonStyle: _buttonStyle,
       onBack: () => {},
-      onSuccess: (e: any) => console.log(e),
+      onSuccess: (e: any) => {
+        console.log(e);
+        setSelectedPictures(e);
+      },
     }),
     []
   );
@@ -76,7 +81,7 @@ export const ImagePicker = () => {
     () => ({
       margin: 2,
       bgColor: "white",
-      spinnerColor: "blue",
+      spinnerColor: Colors[colorScheme].tint,
       widgetWidth: 99,
       widgetHeight: 40,
       videoIcon: {

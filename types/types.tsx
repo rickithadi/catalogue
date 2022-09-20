@@ -23,6 +23,7 @@ export type Feeder = {
 
 export type Cat = {
   uid: string | null;
+  id: string;
   name: string;
   gender: boolean;
   lastSeen?: Whereabouts[]; //user populated by public by current location
@@ -39,7 +40,7 @@ export type Whereabouts = {
   pictures?: string[];
 };
 
-export type EmptyCat = Omit<Cat, "uid">;
+export type EmptyCat = Omit<Cat, "uid" | "id">;
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;

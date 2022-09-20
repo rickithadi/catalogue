@@ -5,6 +5,13 @@ export default StyleSheet.create({
     alignContent: "space-around",
     flexDirection: "row",
   },
+  createCatImageContainer: {
+    alignItems: "center",
+    alignSelf: "center",
+    height: 110,
+    alignContent: "center",
+    flexDirection: "row",
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -77,6 +84,13 @@ export default StyleSheet.create({
   },
   image: {
     flex: 1,
+    height: 100,
+    width: 100,
+  },
+  imageOverlay: {
+    position: "absolute",
+    top: 2,
+    right: 0,
   },
 
   catsAroundTextContainer: {

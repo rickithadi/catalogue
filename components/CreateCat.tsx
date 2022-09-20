@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { decode } from "base64-arraybuffer";
 import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
 
 import { Cat, EmptyCat } from "../types/types";
@@ -12,9 +13,8 @@ const CreateCat = (props: { catPictures: string[] }) => {
     description: "",
     temperament: "",
     gender: false,
-    pets: 0,
-    gallery: [],
-    whereAbouts: undefined,
+    pets: 69,
+    whereAbouts: whereAbouts || undefined,
   };
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
@@ -23,32 +23,50 @@ const CreateCat = (props: { catPictures: string[] }) => {
     setCat({ ...cat, [name]: value });
   };
 
-  const saveNewCat = async () => {
-    if (cat.name === "") {
-      alert("please provide a name");
+  const createCat = async () => {
+    const { data, error } = await supabase.from("cats").insert(cat).select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
+    if (error) {
+      console.log(error);
     } else {
-      const { data, error } = await supabase.from("cats").insert(cat);
-      if (error) {
-        console.log(error);
-      }
+      // NOTE sort this type out
+      console.log("created", data);
+      return data[0];
     }
   };
-  const uploadImage = async (gallery: string[]) => {
+
+  const uploadImage = async (gallery: string[], createdCat: Cat) => {
+    if (!createdCat) return;
+    console.log("uploading images for", createdCat.id);
+    const publicUrlList: string[] = [];
     gallery.map(async (image, index) => {
-      const { data, error } = await supabase.storage
+      const fileName = `${createdCat?.id}/${index}#${whereAbouts?.location?.timestamp}`;
+      console.log("uploading image", index, fileName);
+      const { error } = await supabase.storage
         .from("cats")
-        .upload(
-          `${cat.name}${index}${whereAbouts?.location?.timestamp}`,
-          image,
-          {
-            cacheControl: "3600",
-            upsert: false,
-          }
-        );
+        .upload(fileName, decode(image), {
+          contentType: "image/png",
+          cacheControl: "3600",
+          upsert: false,
+        });
       if (error) {
         console.log(error);
+        return;
       }
+      const { data: publicURL } = supabase.storage
+        .from("cats")
+        .getPublicUrl(fileName);
+      publicUrlList.push(publicURL.publicUrl);
     });
+    // TODO maybe abstract this out
+    updateCatGallery(createdCat.id, publicUrlList);
+  };
+  const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
+    console.log("updasing url list", publicUrlList);
+    console.log("of cat", catId);
+    await supabase
+      .from("cats")
+      .update({ gallery: publicUrlList })
+      .match({ id: catId });
   };
 
   return (
@@ -90,11 +108,12 @@ const CreateCat = (props: { catPictures: string[] }) => {
             !cat.description ||
             !cat.name ||
             !cat.temperament ||
-            !props.catPictures
+            props.catPictures.length === 0
           }
           onPress={() =>
-            // uploadImage(props.catPictures).then(() => saveNewCat())
-            uploadImage(props.catPictures)
+            createCat().then((createdCat) =>
+              uploadImage(props.catPictures, createdCat)
+            )
           }
         />
       </View>

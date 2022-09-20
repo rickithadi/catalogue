@@ -43,7 +43,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
       const fileName = `${createdCat?.id}/${index}#${whereAbouts?.location?.timestamp}`;
       console.log("uploading image", index, fileName);
       const { error } = await supabase.storage
-        .from("cats")
+        .from("avatars")
         .upload(fileName, decode(image), {
           contentType: "image/png",
           cacheControl: "3600",

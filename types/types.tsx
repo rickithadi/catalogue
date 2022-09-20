@@ -31,7 +31,7 @@ export type Cat = {
   description?: string;
   pets: number;
   feeder?: Feeder;
-  whereAbouts: Whereabouts; //populated at creation by current location
+  whereAbouts: Whereabouts | undefined; //populated at creation by current location
 };
 export type Whereabouts = {
   address: LocationGeocodedAddress[] | undefined;
@@ -39,7 +39,7 @@ export type Whereabouts = {
   pictures?: string[];
 };
 
-export type EmptyCat = Omit<Cat, "whereAbouts" | "uid">;
+export type EmptyCat = Omit<Cat, "uid">;
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;

@@ -13,7 +13,6 @@ import { Ionicons } from "@expo/vector-icons";
 export default function NewCatScreen() {
   const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
   const [photoPicker, togglePhotoPicker] = useState(false);
-  const whereAbouts = useContext(CurrentWhereAboutsContext);
 
   const colorScheme = useColorScheme();
 
@@ -62,10 +61,7 @@ export default function NewCatScreen() {
         </View>
         <CreateCat
           catPictures={selectedPictures}
-          locationGeocodedAddressList={
-            whereAbouts?.address ? whereAbouts.address : undefined
-          }
-        />
+       />
       </View>
     </SafeAreaView>
   );

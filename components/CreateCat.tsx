@@ -35,6 +35,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   const uploadImage = async (gallery: string[], createdCat: Cat) => {
+    console.log("uploading", gallery);
     if (!createdCat) return;
     console.log("uploading images for", createdCat.id);
     const publicUrlList: string[] = [];

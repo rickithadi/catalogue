@@ -1,29 +1,11 @@
-import { LocationGeocodedAddress } from "expo-location";
-import { Camera, CameraType } from "expo-camera";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  Text,
-  Image,
-  Button,
-  View,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-  Modal,
-  Pressable,
-} from "react-native";
+import React, { useContext, useState } from "react";
+import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
 
 import { Cat, EmptyCat } from "../types/types";
 import { supabase } from "../lib/supabase";
-import AppStyles from "../styles/AppStyles";
 import { CurrentWhereAboutsContext } from "../App";
 
-const CreateCat = (props: {
-  locationGeocodedAddressList: LocationGeocodedAddress[] | undefined;
-  catPictures: string[];
-}) => {
+const CreateCat = (props: { catPictures: string[] }) => {
   const whereAbouts = useContext(CurrentWhereAboutsContext);
   const emptyCat: EmptyCat = {
     name: "",

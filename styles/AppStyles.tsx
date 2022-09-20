@@ -8,7 +8,7 @@ export default StyleSheet.create({
   createCatImageContainer: {
     alignItems: "center",
     alignSelf: "center",
-    height: 110,
+    height: 350,
     alignContent: "center",
     flexDirection: "row",
   },

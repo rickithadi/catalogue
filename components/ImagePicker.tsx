@@ -8,7 +8,7 @@ import useColorScheme from "../hooks/useColorScheme";
 
 type Props = {
   setSelectedPictures: (pictures: any[]) => void;
-  back: any;
+  back: () => void;
 };
 export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
   const colorScheme = useColorScheme();

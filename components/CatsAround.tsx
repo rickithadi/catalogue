@@ -40,13 +40,11 @@ export default function CatsAround(props: {
         </TouchableOpacity>
       </View>
 
-      <View>
-        <FlatList
-          data={props.cats}
-          renderItem={CatsAroundCard}
-          keyExtractor={(cat) => cat.id as string}
-        />
-      </View>
+      <FlatList
+        data={props.cats}
+        renderItem={CatsAroundCard}
+        keyExtractor={(cat) => cat.id as string}
+      />
     </View>
   );
 }

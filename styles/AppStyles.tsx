@@ -90,13 +90,15 @@ export default StyleSheet.create({
     flex: 2,
   },
   image: {
-    flex:1
-    // height: 100,
-    // width: 100,
+    flex: 1,
+  },
+  createCatImage: {
+    height: 100,
+    width: 100,
   },
   imageOverlay: {
     position: "absolute",
-    zIndex:99,
+    zIndex: 99,
     top: 2,
     right: 0,
   },
@@ -163,7 +165,7 @@ export default StyleSheet.create({
     height: 15,
     padding: 5,
     marginRight: 5,
-    textAlignVertical: "middle",
+    // textAlignVertical: "middle",
   },
   imageContainer: {
     flex: 1,

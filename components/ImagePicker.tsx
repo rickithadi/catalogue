@@ -5,11 +5,13 @@ import { AssetsSelector } from "expo-images-picker";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import navigation from "../navigation";
 
 type Props = {
   setSelectedPictures: (pictures: any[]) => void;
+  back: () => void;
 };
-export const ImagePicker = ({ setSelectedPictures }: Props) => {
+export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
   const colorScheme = useColorScheme();
   const _textStyle = {
     color: "white",
@@ -68,7 +70,9 @@ export const ImagePicker = ({ setSelectedPictures }: Props) => {
       minSelection: 1,
       buttonTextStyle: _textStyle,
       buttonStyle: _buttonStyle,
-      onBack: () => {},
+      onBack: () => {
+        back();
+      },
       onSuccess: (e: any) => {
         console.log(e);
         setSelectedPictures(e);

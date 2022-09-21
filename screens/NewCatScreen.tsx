@@ -14,7 +14,8 @@ import useColorScheme from "../hooks/useColorScheme";
 import { ImagePicker } from "../components/ImagePicker";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-export default function NewCatScreen() {
+
+export default function NewCatScreen({ navigation }) {
   const [selectedPictures, setSelectedPictures] = useState<any[]>([]);
   const colorScheme = useColorScheme();
   return (
@@ -52,7 +53,10 @@ export default function NewCatScreen() {
         </View>
       ) : (
         <View style={AppStyles.createCatImageContainer}>
-          <ImagePicker setSelectedPictures={setSelectedPictures} />
+          <ImagePicker
+            setSelectedPictures={setSelectedPictures}
+            back={navigation.navigate("Home")}
+          />
         </View>
       )}
     </SafeAreaView>

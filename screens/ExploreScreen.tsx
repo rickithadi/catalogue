@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Location from "expo-location";
 import { LocationGeocodedAddress } from "expo-location";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { Cat } from "../types/types";
 import AppStyles from "../styles/AppStyles";
@@ -17,7 +17,7 @@ export default function ExploreScreen() {
   // TODO mock this
   const rusty: Cat = {
     name: "rusty",
-    uid: "234",
+    id: "234",
     gender: true,
     pets: 900,
     description: "very soft and fluffy, 10/10",
@@ -54,7 +54,7 @@ export default function ExploreScreen() {
   };
   const loki: Cat = {
     name: "loki",
-    uid: "1234",
+    id: "1234",
     gender: false,
     pets: 900,
     whereAbouts: {

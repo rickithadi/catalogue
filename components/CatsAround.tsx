@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ListRenderItemInfo,
+  ScrollView,
 } from "react-native";
 import { View, Text } from "react-native";
 import { LocationGeocodedAddress } from "expo-location";
@@ -39,11 +40,13 @@ export default function CatsAround(props: {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={props.cats}
-        renderItem={CatsAroundCard}
-        keyExtractor={(cat) => cat.uid as string}
-      />
+      <View>
+        <FlatList
+          data={props.cats}
+          renderItem={CatsAroundCard}
+          keyExtractor={(cat) => cat.id as string}
+        />
+      </View>
     </View>
   );
 }

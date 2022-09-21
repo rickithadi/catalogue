@@ -41,7 +41,7 @@ export default function NewCatScreen() {
                 <Image
                   source={{ uri: picture.uri }}
                   key={index}
-                  style={AppStyles.image}
+                  style={AppStyles.createCatImage}
                 />
               </TouchableOpacity>
             ))}

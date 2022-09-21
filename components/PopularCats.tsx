@@ -31,7 +31,7 @@ export default function PopularCats(props: { cats: Cat[] }) {
         horizontal={true}
         data={props.cats}
         renderItem={PopularCatCard}
-        keyExtractor={(cat) => cat.uid as string}
+        keyExtractor={(cat) => cat.id as string}
       />
     </View>
   );

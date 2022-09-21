@@ -22,7 +22,6 @@ export type Feeder = {
 };
 
 export type Cat = {
-  uid: string | null;
   id: string;
   name: string;
   gender: boolean;

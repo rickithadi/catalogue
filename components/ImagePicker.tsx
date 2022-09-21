@@ -5,11 +5,10 @@ import { AssetsSelector } from "expo-images-picker";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import navigation from "../navigation";
 
 type Props = {
   setSelectedPictures: (pictures: any[]) => void;
-  back: () => void;
+  back: any;
 };
 export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
   const colorScheme = useColorScheme();

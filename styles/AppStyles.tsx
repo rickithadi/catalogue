@@ -6,6 +6,7 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   createCatImageContainer: {
+    flex: 2,
     alignItems: "center",
     alignSelf: "center",
     height: "100%",
@@ -13,10 +14,13 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   selectedImageContainer: {
+    flexWrap: "wrap",
+    padding: 20,
     alignItems: "center",
     alignSelf: "center",
-    height: "10%",
+    height: 200,
     alignContent: "center",
+    justifyContent: "center",
     flexDirection: "row",
   },
   centeredView: {

@@ -40,7 +40,7 @@ export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
       initialLoad: 100,
       assetsType: [MediaType.photo],
       minSelection: 1,
-      maxSelection: 3,
+      maxSelection: 6,
       portraitCols: 4,
       landscapeCols: 4,
     }),

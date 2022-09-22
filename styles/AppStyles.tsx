@@ -16,6 +16,7 @@ export default StyleSheet.create({
   selectedImageContainer: {
     flexWrap: "wrap",
     padding: 20,
+    paddingTop: '20%',
     alignItems: "center",
     alignSelf: "center",
     height: 200,

@@ -13,7 +13,7 @@ import CreateCat from "../components/CreateCat";
 import useColorScheme from "../hooks/useColorScheme";
 import { ImagePicker } from "../components/ImagePicker";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import Colors from "../constants/Colors";
 
 export default function NewCatScreen({ navigation }: any) {
   const [selectedPictures, setSelectedPictures] = useState<any[]>([]);

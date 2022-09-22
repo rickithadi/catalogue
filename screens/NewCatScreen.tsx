@@ -21,7 +21,7 @@ export default function NewCatScreen({ navigation }: any) {
   return (
     <SafeAreaView style={AppStyles.container}>
       {selectedPictures.length > 0 ? (
-        <View style={AppStyles.container}>
+        <View style={AppStyles.selectedImagesContainer}>
           <View style={AppStyles.selectedImageContainer}>
             {selectedPictures.map((picture, index) => (
               <TouchableOpacity
@@ -47,9 +47,7 @@ export default function NewCatScreen({ navigation }: any) {
               </TouchableOpacity>
             ))}
           </View>
-          <View style={AppStyles.createCatImageContainer}>
-            <CreateCat catPictures={selectedPictures} />
-          </View>
+          <CreateCat catPictures={selectedPictures} />
         </View>
       ) : (
         <View style={AppStyles.createCatImageContainer}>
@@ -62,25 +60,3 @@ export default function NewCatScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-// <View style={AppStyles.createCatContainer}>
-//   {selectedPictures.map((picture, index) => (
-//     <TouchableOpacity
-//       key={index}
-//       onPress={() =>
-//         setSelectedPictures((current) =>
-//           current.filter((pic) => pic !== picture)
-//         )
-//       }
-//     >
-//       <Ionicons
-//         name="trash"
-//         size={32}
-//         color={Colors[colorScheme].tint}
-//       />
-
-//       <Image
-//         source={{ uri: picture }}
-//         style={{ height: 100, width: 100 }}
-//       />
-//     </TouchableOpacity>

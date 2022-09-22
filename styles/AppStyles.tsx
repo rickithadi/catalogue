@@ -16,7 +16,8 @@ export default StyleSheet.create({
   selectedImageContainer: {
     flexWrap: "wrap",
     padding: 20,
-    paddingTop: '20%',
+    paddingBottom: 2,
+    paddingTop: "5%",
     alignItems: "center",
     alignSelf: "center",
     height: 200,
@@ -44,11 +45,6 @@ export default StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -146,11 +142,27 @@ export default StyleSheet.create({
   bannerContainer: {
     height: 200,
   },
-  container: {
+  selectedImagesContainer: {
+    padding: 2,
     flex: 1,
+    alignItems: "stretch",
+    justifyContent: "flex-start",
+  },
+  container: {
+    paddingTop: 22,
+    padding: 12,
+    flex: 2,
     height: 100,
     alignItems: "stretch",
     justifyContent: "flex-start",
+  },
+  formContainer: {
+    paddingTop: 22,
+    padding: 12,
+    flex: 2,
+    height: 100,
+    // alignItems: "stretch",
+    // justifyContent: "flex-start",
   },
   bannerTextContainer: {
     padding: 10,
@@ -306,6 +318,9 @@ export default StyleSheet.create({
   button: {
     backgroundColor: "#87F1FF",
     opacity: 0.6,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
   },
   buttonText: {
     fontSize: 60,
@@ -314,5 +329,38 @@ export default StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: "contain",
+  },
+
+  photoContainer: {
+    height: 100,
+    flex: 1,
+  },
+  inputGroup: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignSelf: "stretch",
+    // flex: 1,
+    padding: 0,
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+  },
+  loader: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
   },
 });

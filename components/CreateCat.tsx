@@ -1,6 +1,14 @@
 import React, { useContext, useState } from "react";
 import { decode } from "base64-arraybuffer";
-import { Button, View, StyleSheet, TextInput, ScrollView } from "react-native";
+import {
+  Button,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Switch,
+} from "react-native";
 
 import { Cat, EmptyCat } from "../types/types";
 import { supabase } from "../lib/supabase";
@@ -20,7 +28,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
 
-  const handleChangeText = (value: string, name: string) => {
+  const handleChangeText = (value: string | boolean, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
@@ -82,10 +90,14 @@ const CreateCat = (props: { catPictures: string[] }) => {
         />
       </View>
       <View style={AppStyles.inputGroup}>
-        <TextInput
-          placeholder="Gender"
-          onChangeText={(value) => handleChangeText(value, "gender")}
-          // value={cat.gender}
+        <Text>Male</Text>
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={cat.gender ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          // onValueChange={toggleSwitch}
+          onValueChange={(value: boolean) => handleChangeText(value, "gender")}
+          value={cat.gender}
         />
       </View>
 

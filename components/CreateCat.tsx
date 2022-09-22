@@ -80,7 +80,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   return (
-    <ScrollView style={AppStyles.formContainer}>
+    <View style={AppStyles.formContainer}>
       {/* Name Input */}
       <View style={AppStyles.inputGroup}>
         <TextInput
@@ -88,9 +88,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
           onChangeText={(value) => handleChangeText(value, "name")}
           value={cat.name}
         />
-      </View>
-      <View style={AppStyles.inputGroup}>
-        <Text>Male</Text>
         <Switch
           trackColor={{ false: "#767577", true: "#81b0ff" }}
           thumbColor={cat.gender ? "#f5dd4b" : "#f4f3f4"}
@@ -100,7 +97,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
           value={cat.gender}
         />
       </View>
-
       {/* Email Input */}
       <View style={AppStyles.inputGroup}>
         <TextInput
@@ -138,7 +134,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
           }
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

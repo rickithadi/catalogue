@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ImageComponent,
+  ScrollView,
 } from "react-native";
 
 import AppStyles from "../styles/AppStyles";
@@ -21,34 +22,36 @@ export default function NewCatScreen({ navigation }: any) {
   return (
     <SafeAreaView style={AppStyles.container}>
       {selectedPictures.length > 0 ? (
-        <View style={AppStyles.selectedImagesContainer}>
-          <View style={AppStyles.selectedImageContainer}>
-            {selectedPictures.map((picture, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() =>
-                  setSelectedPictures((current) =>
-                    current.filter((pic) => pic !== picture)
-                  )
-                }
-              >
-                <Ionicons
-                  name="trash"
-                  style={AppStyles.imageOverlay}
-                  size={32}
-                  color={Colors[colorScheme].tint}
-                />
-
-                <Image
-                  source={{ uri: picture.uri }}
+        <ScrollView>
+          <View style={AppStyles.selectedImagesContainer}>
+            <View style={AppStyles.selectedImageContainer}>
+              {selectedPictures.map((picture, index) => (
+                <TouchableOpacity
                   key={index}
-                  style={AppStyles.createCatImage}
-                />
-              </TouchableOpacity>
-            ))}
+                  onPress={() =>
+                    setSelectedPictures((current) =>
+                      current.filter((pic) => pic !== picture)
+                    )
+                  }
+                >
+                  <Ionicons
+                    name="trash"
+                    style={AppStyles.imageOverlay}
+                    size={32}
+                    color={Colors[colorScheme].tint}
+                  />
+
+                  <Image
+                    source={{ uri: picture.uri }}
+                    key={index}
+                    style={AppStyles.createCatImage}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+            <CreateCat catPictures={selectedPictures} />
           </View>
-          <CreateCat catPictures={selectedPictures} />
-        </View>
+        </ScrollView>
       ) : (
         <View style={AppStyles.createCatImageContainer}>
           <ImagePicker

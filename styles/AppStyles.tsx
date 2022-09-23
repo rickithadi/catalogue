@@ -76,6 +76,17 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
+formVerticalEven: {
+    // alignItems: "center",
+    // alignContent: "space-between",
+    // alignSelf: "auto",
+
+    // justifyContent: "space-between",
+
+    flexDirection: "row",
+      alignItems: "flex-start"
+  },
+
 
   evenlyVert: {
     justifyContent: "center",

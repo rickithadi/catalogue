@@ -16,6 +16,7 @@ import { CurrentWhereAboutsContext } from "../App";
 import AppStyles from "../styles/AppStyles";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import { WhereAboutDisplay } from "./WhereAboutDisplay";
 
 const CreateCat = (props: { catPictures: string[] }) => {
   const colorScheme = useColorScheme();
@@ -85,8 +86,8 @@ const CreateCat = (props: { catPictures: string[] }) => {
   return (
     <View style={AppStyles.formContainer}>
       {/* Name Input */}
-      <View style={AppStyles.popCatHeaderContainer}>
-        <View style={[{ flex: 3 }, AppStyles.inputGroup]}>
+      <View style={AppStyles.formVerticalEven}>
+        <View style={[{ flex: 3, marginTop: 20 }, AppStyles.inputGroup]}>
           <TextInput
             placeholder="Name"
             onChangeText={(value) => handleChangeText(value, "name")}
@@ -94,8 +95,8 @@ const CreateCat = (props: { catPictures: string[] }) => {
           />
         </View>
 
-        <View style={AppStyles.evenlyVert}>
-          <Text style={[{ flex: 1 }, AppStyles.smallButtonText]}>
+        <View style={[{ flex: 1, paddingBottom: 20 }, AppStyles.evenlyVert]}>
+          <Text style={AppStyles.smallButtonText}>
             {cat.gender ? "male" : "female"}
           </Text>
           <Switch
@@ -136,11 +137,11 @@ const CreateCat = (props: { catPictures: string[] }) => {
       </View>
       <View style={AppStyles.inputGroup}>
         <Text style={AppStyles.smallButtonText}>Location</Text>
-        <Text style={AppStyles.locationStyle}>
-          {whereAbouts?.address && whereAbouts.address[0]
-            ? whereAbouts.address[0].name
-            : "Singapore"}
-        </Text>
+        {whereAbouts ? (
+          <WhereAboutDisplay whereAbouts={whereAbouts} />
+        ) : (
+          <Text style={AppStyles.locationStyle}>"Singapore"</Text>
+        )}
       </View>
       <View>
         <Button

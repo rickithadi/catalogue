@@ -77,6 +77,12 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
 
+  evenlyVert: {
+    justifyContent: "center",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+  },
   catsAroundCard: {
     margin: 2,
     height: 200,

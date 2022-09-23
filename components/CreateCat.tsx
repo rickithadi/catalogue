@@ -7,15 +7,18 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
-  Switch,
 } from "react-native";
+import { Switch } from "react-native-switch";
 
 import { Cat, EmptyCat } from "../types/types";
 import { supabase } from "../lib/supabase";
 import { CurrentWhereAboutsContext } from "../App";
 import AppStyles from "../styles/AppStyles";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
 
 const CreateCat = (props: { catPictures: string[] }) => {
+  const colorScheme = useColorScheme();
   const whereAbouts = useContext(CurrentWhereAboutsContext);
   const emptyCat: EmptyCat = {
     name: "",
@@ -82,20 +85,35 @@ const CreateCat = (props: { catPictures: string[] }) => {
   return (
     <View style={AppStyles.formContainer}>
       {/* Name Input */}
-      <View style={AppStyles.inputGroup}>
-        <TextInput
-          placeholder="Name"
-          onChangeText={(value) => handleChangeText(value, "name")}
-          value={cat.name}
-        />
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={cat.gender ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          // onValueChange={toggleSwitch}
-          onValueChange={(value: boolean) => handleChangeText(value, "gender")}
-          value={cat.gender}
-        />
+      <View style={AppStyles.popCatHeaderContainer}>
+        <View style={[{ flex: 3 }, AppStyles.inputGroup]}>
+          <TextInput
+            placeholder="Name"
+            onChangeText={(value) => handleChangeText(value, "name")}
+            value={cat.name}
+          />
+        </View>
+
+        <View style={AppStyles.evenlyVert}>
+          <Text style={[{ flex: 1 }, AppStyles.smallButtonText]}>
+            {cat.gender ? "male" : "female"}
+          </Text>
+          <Switch
+            containerStyle={{ flex: 1 }}
+            activeText={"M"}
+            inActiveText={"F"}
+            circleSize={40}
+            circleBorderWidth={0}
+            backgroundActive={Colors[colorScheme].tabIconSelected}
+            backgroundInactive={Colors[colorScheme].tabIconDefault}
+            circleActiveColor={Colors[colorScheme].tabIconDefault}
+            circleInActiveColor={Colors[colorScheme].tabIconSelected}
+            onValueChange={(value: boolean) =>
+              handleChangeText(value, "gender")
+            }
+            value={cat.gender}
+          />
+        </View>
       </View>
       {/* Email Input */}
       <View style={AppStyles.inputGroup}>
@@ -116,7 +134,14 @@ const CreateCat = (props: { catPictures: string[] }) => {
           value={cat.temperament}
         />
       </View>
-
+      <View style={AppStyles.inputGroup}>
+        <Text style={AppStyles.smallButtonText}>Location</Text>
+        <Text style={AppStyles.locationStyle}>
+          {whereAbouts?.address && whereAbouts.address[0]
+            ? whereAbouts.address[0].name
+            : "Singapore"}
+        </Text>
+      </View>
       <View>
         <Button
           title="Create Cat"
@@ -127,10 +152,12 @@ const CreateCat = (props: { catPictures: string[] }) => {
             !cat.temperament ||
             props.catPictures.length === 0
           }
-          onPress={() =>
-            createCat().then((createdCat) =>
-              uploadImage(props.catPictures, createdCat)
-            )
+          onPress={
+            () => console.log(cat)
+            //          createCat().then((createdCat) =>
+            // uploadImage(props.catPictures, createdCat)
+
+            // )
           }
         />
       </View>

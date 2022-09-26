@@ -47,7 +47,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
     }
   };
 
-  const uploadImage = async (gallery: string[], createdCat: Cat) => {
+  const uploadImage = async (gallery: any[], createdCat: Cat) => {
     console.log("uploading", gallery);
     // const publicUrlList: string[] = [];
     if (!createdCat) return;
@@ -63,7 +63,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
 
     const { data, error } = await supabase.storage
       .from("cats")
-      .upload(filePath, decode(gallery[0]), {
+      .upload(filePath, decode(gallery[0].base64), {
         contentType: "image/png",
         cacheControl: "3600",
         upsert: false,

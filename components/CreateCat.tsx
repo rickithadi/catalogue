@@ -49,7 +49,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
 
   const uploadImage = async (gallery: any[], createdCat: Cat) => {
     console.log("uploading", gallery);
-    // const publicUrlList: string[] = [];
+    const publicUrlList: string[] = [];
     if (!createdCat) return;
 
     const fileName = `${
@@ -59,9 +59,9 @@ const CreateCat = (props: { catPictures: string[] }) => {
     }`;
     const filePath = `${createdCat?.id}/${fileName}`;
 
-    console.log("uploading images for", createdCat.id, fileName, gallery);
+    console.log("uploading images for", createdCat.id, filePath);
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("cats")
       .upload(filePath, decode(gallery[0].base64), {
         contentType: "image/png",
@@ -89,12 +89,18 @@ const CreateCat = (props: { catPictures: string[] }) => {
     //   publicUrlList.push(publicURL.publicUrl);
     // });
     // TODO maybe abstract this out
-    // updateCatGallery(createdCat.id, publicUrlList);
-    console.log("got back", data, error);
+    const { data: publicURL } = supabase.storage
+      .from("cats")
+      .getPublicUrl(filePath);
+
+    publicUrlList.push(publicURL.publicUrl);
+    console.log("got url", publicUrlList);
+
+    updateCatGallery(createdCat.id, publicUrlList);
   };
 
   const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
-    console.log("updasing url list", publicUrlList);
+    console.log("updating url list", publicUrlList);
     console.log("of cat", catId);
     await supabase
       .from("cats")

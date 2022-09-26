@@ -48,61 +48,46 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   const uploadImage = async (gallery: any[], createdCat: Cat) => {
-    console.log("uploading", gallery);
     const publicUrlList: string[] = [];
+
     if (!createdCat) return;
 
-    const fileName = `${
-      whereAbouts?.location?.timestamp
-        ? whereAbouts?.location?.timestamp
-        : Date.now()
-    }`;
-    const filePath = `${createdCat?.id}/${fileName}`;
+    gallery.map((image, index) => {
+      const fileName = `${
+        whereAbouts?.location?.timestamp
+          ? whereAbouts?.location?.timestamp
+          : Date.now()
+      }`;
+      const filePath = `${createdCat?.id}/${fileName}-${index}.png`;
 
-    console.log("uploading images for", createdCat.id, filePath);
+      console.log("uploading image", filePath);
+      supabase.storage
+        .from("cats")
+        .upload(filePath, decode(image.base64), {
+          contentType: "image/png",
+          cacheControl: "3600",
+          upsert: false,
+        });
+      // if (error) {
+      //   console.log(error);
+      //   return;
+      // }
+      const { data: publicURL } = supabase.storage
+        .from("cats")
+        .getPublicUrl(filePath);
 
-    const { error } = await supabase.storage
-      .from("cats")
-      .upload(filePath, decode(gallery[0].base64), {
-        contentType: "image/png",
-        cacheControl: "3600",
-        upsert: false,
-      });
-
-    // gallery.map(async (image, index) => {
-    //   const fileName = `${createdCat?.id}/${index}#${whereAbouts?.location?.timestamp}`;
-    //   console.log("uploading image", index, fileName);
-    //   const { error } = await supabase.storage
-    //     .from("avatars")
-    //     .upload(fileName, decode(image), {
-    //       contentType: "image/png",
-    //       cacheControl: "3600",
-    //       upsert: false,
-    //     });
-    //   if (error) {
-    //     console.log(error);
-    //     return;
-    //   }
-    //   const { data: publicURL } = supabase.storage
-    //     .from("cats")
-    //     .getPublicUrl(fileName);
-    //   publicUrlList.push(publicURL.publicUrl);
-    // });
-    // TODO maybe abstract this out
-    const { data: publicURL } = supabase.storage
-      .from("cats")
-      .getPublicUrl(filePath);
-
-    publicUrlList.push(publicURL.publicUrl);
-    console.log("got url", publicUrlList);
-
-    updateCatGallery(createdCat.id, publicUrlList);
+      publicUrlList.push(publicURL.publicUrl);
+      console.log("uploaded image", publicUrlList);
+    });
+    console.log("final url list", publicUrlList);
+    return await updateCatGallery(createdCat.id, publicUrlList);
   };
 
   const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
+    if (publicUrlList.length === 0) return;
     console.log("updating url list", publicUrlList);
     console.log("of cat", catId);
-    await supabase
+    return await supabase
       .from("cats")
       .update({ gallery: publicUrlList })
       .match({ id: catId });

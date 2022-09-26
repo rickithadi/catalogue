@@ -60,7 +60,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
       }`;
       const filePath = `${createdCat?.id}/${fileName}-${index}.png`;
 
-      console.log("uploading image", filePath);
       supabase.storage.from("cats").upload(filePath, decode(image.base64), {
         contentType: "image/png",
         cacheControl: "3600",
@@ -72,7 +71,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
         .getPublicUrl(filePath);
 
       publicUrlList.push(publicURL.publicUrl);
-      console.log("uploaded image", publicUrlList);
     });
     return await updateCatGallery(createdCat.id, publicUrlList);
   };
@@ -81,11 +79,10 @@ const CreateCat = (props: { catPictures: string[] }) => {
     if (publicUrlList.length === 0) return;
     console.log("updating url list", publicUrlList);
     console.log("of cat", catId);
-    const { data, error } = await supabase
+    await supabase
       .from("cats")
       .update({ gallery: publicUrlList })
       .match({ id: catId });
-    console.log(data, error);
   };
 
   return (

@@ -37,6 +37,7 @@ export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
   const widgetSettings = useMemo(
     () => ({
       getImageMetaData: false, // true might perform slower results but gives meta data and absolute path for ios users
+      // NOTE idk
       initialLoad: 100,
       assetsType: [MediaType.photo],
       minSelection: 1,
@@ -51,7 +52,7 @@ export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
     () => ({
       width: 50,
       compress: 0.7,
-      base64: false,
+      base64: true,
       saveTo: "jpeg",
     }),
     []
@@ -108,6 +109,7 @@ export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
       Settings={widgetSettings}
       Errors={widgetErrors}
       Styles={widgetStyles}
+      Resize={widgetResize} // optional
       Navigator={widgetNavigator}
     />
   );

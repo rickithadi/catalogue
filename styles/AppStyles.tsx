@@ -64,7 +64,7 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   popCatParentContainer: {
-    padding: 20,
+    padding: 10,
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
@@ -76,7 +76,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
-formVerticalEven: {
+  formVerticalEven: {
     // alignItems: "center",
     // alignContent: "space-between",
     // alignSelf: "auto",
@@ -84,9 +84,8 @@ formVerticalEven: {
     // justifyContent: "space-between",
 
     flexDirection: "row",
-      alignItems: "flex-start"
+    alignItems: "flex-start",
   },
-
 
   evenlyVert: {
     justifyContent: "center",
@@ -353,6 +352,7 @@ formVerticalEven: {
     flex: 1,
   },
   inputGroup: {
+    height: 40,
     paddingTop: 4,
     paddingBottom: 4,
     alignSelf: "stretch",

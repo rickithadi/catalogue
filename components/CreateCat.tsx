@@ -21,28 +21,31 @@ import { WhereAboutDisplay } from "./WhereAboutDisplay";
 const CreateCat = (props: { catPictures: string[] }) => {
   const colorScheme = useColorScheme();
   const whereAbouts = useContext(CurrentWhereAboutsContext);
+
   const emptyCat: EmptyCat = {
     name: "",
+    gender: false,
     description: "",
     temperament: "",
-    gender: false,
     pets: 69,
-    whereAbouts: whereAbouts || undefined,
+    whereAbouts: undefined,
   };
+  // TODO lastseen and whereabouts, gallery
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
+  const [loading, setLoading] = useState(false);
 
   const handleChangeText = (value: string | boolean, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
   const createCat = async () => {
+    console.log('submiting',cat)
     const { data, error } = await supabase.from("cats").insert(cat).select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
     if (error) {
       console.log(error);
     } else {
       // NOTE sort this type out
-      console.log("created", data);
       return data[0];
     }
   };
@@ -76,13 +79,41 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
+    // TODO create whereabouts and pop gallery
     if (publicUrlList.length === 0) return;
-    console.log("updating url list", publicUrlList);
-    console.log("of cat", catId);
-    await supabase
-      .from("cats")
-      .update({ gallery: publicUrlList })
-      .match({ id: catId });
+    // await supabase
+    //   .from("cats")
+    //   .update({ gallery: publicUrlList })
+    //   .match({ id: catId });
+    //    setAdding(true);
+    // try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    // session.user.id;
+    console.log(
+      "inital whereabouts",
+      whereAbouts?.location,
+      whereAbouts?.address,
+      user?.id,
+      catId,
+      publicUrlList
+    );
+    //   const { data, error } = await supabase.from("whereabouts").insert({
+    //     description: "inital whereabouts",
+    //     location: whereAbouts?.location,
+    //     address: whereAbouts?.address,
+    //     user: user?.id,
+    //     cat: catId,
+    //     pictures: publicUrlList,
+    //   });
+    //   if (error) throw error;
+    //   // setTasks([...tasks, ...data]);
+    // } catch (error) {
+    //   console.error(error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -155,16 +186,10 @@ const CreateCat = (props: { catPictures: string[] }) => {
             !cat.temperament ||
             props.catPictures.length === 0
           }
-          onPress={
-            () =>
-              createCat().then((createdCat) =>
-                uploadImage(props.catPictures, createdCat)
-              )
-            //          createCat().then((createdCat) =>
-            // uploadImage(props.catPictures, createdCat)
-
-            // )
-            //  console.log(cat)
+          onPress={() =>
+            createCat().then((createdCat) =>
+              uploadImage(props.catPictures, createdCat)
+            )
           }
         />
       </View>

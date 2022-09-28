@@ -40,7 +40,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   const createCat = async () => {
-    console.log('submiting',cat)
+    console.log("submiting", cat);
     const { data, error } = await supabase.from("cats").insert(cat).select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
     if (error) {
       console.log(error);
@@ -86,34 +86,35 @@ const CreateCat = (props: { catPictures: string[] }) => {
     //   .update({ gallery: publicUrlList })
     //   .match({ id: catId });
     //    setAdding(true);
-    // try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    // session.user.id;
-    console.log(
-      "inital whereabouts",
-      whereAbouts?.location,
-      whereAbouts?.address,
-      user?.id,
-      catId,
-      publicUrlList
-    );
-    //   const { data, error } = await supabase.from("whereabouts").insert({
-    //     description: "inital whereabouts",
-    //     location: whereAbouts?.location,
-    //     address: whereAbouts?.address,
-    //     user: user?.id,
-    //     cat: catId,
-    //     pictures: publicUrlList,
-    //   });
-    //   if (error) throw error;
-    //   // setTasks([...tasks, ...data]);
-    // } catch (error) {
-    //   console.error(error);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      // TODO create whereabouts with relation to cat and user id
+      const { data, error } = await supabase
+        .from("whereabouts")
+        .insert({
+          description: "inital whereabouts",
+          location: whereAbouts?.location,
+          address: whereAbouts?.address,
+          user: user?.id,
+          cat: catId,
+          pictures: publicUrlList,
+        })
+        .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
+      // TODO update cat whereabouts with whereabouts id
+      console.log("created whereabouts", data, error);
+      //  await supabase
+      //   .from("cats")
+      //   .update({ whereAbouts: data[0].id })
+      //   .eq("id", catId);
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

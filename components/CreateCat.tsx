@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { Switch } from "react-native-switch";
 
@@ -28,20 +29,20 @@ const CreateCat = (props: { catPictures: string[] }) => {
     description: "",
     temperament: "",
   };
-  // TODO lastseen and whereabouts, gallery
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleChangeText = (value: string | boolean, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
   const createCat = async () => {
-    console.log("submiting", cat);
+    setLoading(true);
     const { data, error } = await supabase.from("cats").insert(cat).select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
     if (error) {
       console.log(error);
+      setLoading(false);
     } else {
       // NOTE sort this type out
       return data[0];
@@ -121,82 +122,89 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   return (
-    <View style={AppStyles.formContainer}>
-      {/* Name Input */}
-      <View style={AppStyles.formVerticalEven}>
-        <View style={[{ flex: 3, marginTop: 20 }, AppStyles.inputGroup]}>
-          <TextInput
-            placeholder="Name"
-            onChangeText={(value) => handleChangeText(value, "name")}
-            value={cat.name}
-          />
-        </View>
-
-        <View style={[{ flex: 1, paddingBottom: 20 }, AppStyles.evenlyVert]}>
-          <Text style={AppStyles.smallButtonText}>
-            {cat.gender ? "male" : "female"}
-          </Text>
-          <Switch
-            containerStyle={{ flex: 1 }}
-            activeText={"M"}
-            inActiveText={"F"}
-            circleSize={40}
-            circleBorderWidth={0}
-            backgroundActive={Colors[colorScheme].tabIconSelected}
-            backgroundInactive={Colors[colorScheme].tabIconDefault}
-            circleActiveColor={Colors[colorScheme].tabIconDefault}
-            circleInActiveColor={Colors[colorScheme].tabIconSelected}
-            onValueChange={(value: boolean) =>
-              handleChangeText(value, "gender")
-            }
-            value={cat.gender}
-          />
-        </View>
-      </View>
-      {/* Email Input */}
-      <View style={AppStyles.inputGroup}>
-        <TextInput
-          placeholder="Description"
-          multiline={true}
-          numberOfLines={4}
-          onChangeText={(value) => handleChangeText(value, "description")}
-          value={cat.description}
-        />
-      </View>
-
-      {/* Input */}
-      <View style={AppStyles.inputGroup}>
-        <TextInput
-          placeholder="temperament"
-          onChangeText={(value) => handleChangeText(value, "temperament")}
-          value={cat.temperament}
-        />
-      </View>
-      {/* <View style={AppStyles.inputGroup}> */}
-      <Text style={AppStyles.smallButtonText}>Location</Text>
-      {whereabouts ? (
-        <WhereAboutDisplay whereAbouts={whereabouts} />
+    <View style={[AppStyles.formContainer, loading && AppStyles.loadingBG]}>
+      {loading ? (
+        <ActivityIndicator size="large" style={AppStyles.spinner} />
       ) : (
-        <Text style={AppStyles.locationStyle}>Singapore</Text>
+        <>
+          {" "}
+          <View style={AppStyles.formVerticalEven}>
+            <View style={[{ flex: 3, marginTop: 20 }, AppStyles.inputGroup]}>
+              <TextInput
+                placeholder="Name"
+                onChangeText={(value) => handleChangeText(value, "name")}
+                value={cat.name}
+              />
+            </View>
+
+            <View
+              style={[{ flex: 1, paddingBottom: 20 }, AppStyles.evenlyVert]}
+            >
+              <Text style={AppStyles.smallButtonText}>
+                {cat.gender ? "male" : "female"}
+              </Text>
+              <Switch
+                containerStyle={{ flex: 1 }}
+                activeText={"M"}
+                inActiveText={"F"}
+                circleSize={40}
+                circleBorderWidth={0}
+                backgroundActive={Colors[colorScheme].tabIconSelected}
+                backgroundInactive={Colors[colorScheme].tabIconDefault}
+                circleActiveColor={Colors[colorScheme].tabIconDefault}
+                circleInActiveColor={Colors[colorScheme].tabIconSelected}
+                onValueChange={(value: boolean) =>
+                  handleChangeText(value, "gender")
+                }
+                value={cat.gender}
+              />
+            </View>
+          </View>
+          {/* Email Input */}
+          <View style={AppStyles.inputGroup}>
+            <TextInput
+              placeholder="Description"
+              multiline={true}
+              numberOfLines={4}
+              onChangeText={(value) => handleChangeText(value, "description")}
+              value={cat.description}
+            />
+          </View>
+          {/* Input */}
+          <View style={AppStyles.inputGroup}>
+            <TextInput
+              placeholder="temperament"
+              onChangeText={(value) => handleChangeText(value, "temperament")}
+              value={cat.temperament}
+            />
+          </View>
+          {/* <View style={AppStyles.inputGroup}> */}
+          <Text style={AppStyles.smallButtonText}>Location</Text>
+          {whereabouts ? (
+            <WhereAboutDisplay whereAbouts={whereabouts} />
+          ) : (
+            <Text style={AppStyles.locationStyle}>Singapore</Text>
+          )}
+          {/* </View> */}
+          <View>
+            <Button
+              title="Create Cat"
+              testID="CreateCatButton"
+              disabled={
+                !cat.description ||
+                !cat.name ||
+                !cat.temperament ||
+                props.catPictures.length === 0
+              }
+              onPress={() =>
+                createCat().then((createdCat) =>
+                  uploadImage(props.catPictures, createdCat)
+                )
+              }
+            />
+          </View>
+        </>
       )}
-      {/* </View> */}
-      <View>
-        <Button
-          title="Create Cat"
-          testID="CreateCatButton"
-          disabled={
-            !cat.description ||
-            !cat.name ||
-            !cat.temperament ||
-            props.catPictures.length === 0
-          }
-          onPress={() =>
-            createCat().then((createdCat) =>
-              uploadImage(props.catPictures, createdCat)
-            )
-          }
-        />
-      </View>
     </View>
   );
 };

@@ -1,9 +1,23 @@
 import { StyleSheet } from "react-native";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
 
+const colorScheme = useColorScheme();
 export default StyleSheet.create({
   createCatContainer: {
     alignContent: "space-around",
     flexDirection: "row",
+  },
+  spinner: {
+    marginTop: 50,
+    marginBottom: 50,
+    // backgroundColor: "black",
+    height: "100%",
+  },
+  loadingBG: {
+    backgroundColor: Colors[colorScheme].background,
+    // backgroundColor: "black",
+    height: "100%",
   },
   createCatImageContainer: {
     flex: 2,

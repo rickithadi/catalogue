@@ -89,9 +89,10 @@ function RootNavigator({ session }: { session: Session }) {
       <Stack.Screen
         name="SuccessfulCatCreation"
         component={ModalScreen}
-        options={{
+        options={({ navigation }) => ({
           title: "Cat Created!",
-        }}
+          headerShown: false,
+        })}
       />
     </Stack.Navigator>
   );

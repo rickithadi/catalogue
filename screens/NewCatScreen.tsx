@@ -44,7 +44,7 @@ export default function NewCatScreen({ navigation }: any) {
             </View>
             <CreateCat
               catPictures={selectedPictures}
-              onSuccess={navigation.navigate("SuccessfulCatCreation")}
+              onSuccess={() => navigation.navigate("SuccessfulCatCreation")}
             />
           </View>
         </ScrollView>

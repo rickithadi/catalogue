@@ -226,6 +226,11 @@ export default StyleSheet.create({
     fontSize: 24,
     fontFamily: "LondrinaSolid_400Regular",
   },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: "80%",
+  },
 
   smallButtonText: {
     fontSize: 12,
@@ -253,11 +258,6 @@ export default StyleSheet.create({
     fontSize: 16,
   },
 
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
   logo: {
     resizeMode: "contain",
     width: 300,

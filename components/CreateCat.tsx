@@ -4,9 +4,7 @@ import {
   Button,
   View,
   Text,
-  StyleSheet,
   TextInput,
-  ScrollView,
   ActivityIndicator,
 } from "react-native";
 import { Switch } from "react-native-switch";

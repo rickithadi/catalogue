@@ -27,8 +27,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
     gender: false,
     description: "",
     temperament: "",
-    pets: 69,
-    whereabouts: undefined,
   };
   // TODO lastseen and whereabouts, gallery
 
@@ -92,10 +90,11 @@ const CreateCat = (props: { catPictures: string[] }) => {
         .from("whereabouts")
         .insert({
           description: "inital whereabouts",
+          initial: true,
           location: whereabouts?.location,
           address: whereabouts?.address,
-          user: user?.id,
-          cat: catId,
+          user_id: user?.id,
+          cat_id: catId,
           pictures: publicUrlList,
         })
         .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
@@ -103,7 +102,10 @@ const CreateCat = (props: { catPictures: string[] }) => {
       if (whereAboutsData) {
         console.log("created whereabouts id", whereAboutsData[0].id);
         console.log("for cat id", catId);
-        const updatedCat = { ...cat, whereabouts: whereAboutsData[0].id };
+        const updatedCat = {
+          ...cat,
+          last_seen_id: whereAboutsData[0].id,
+        };
 
         console.log("updating cat with", updatedCat);
         const { error } = await supabase.from("cats").upsert(updatedCat);

@@ -32,6 +32,7 @@ import { supabase } from "../lib/supabase";
 import Account from "../components/Account";
 import Auth from "../components/Auth";
 import NewCatScreen from "../screens/NewCatScreen";
+import { ModalScreen } from "../screens/ModalScreen";
 
 export default function Navigation({
   colorScheme,
@@ -84,6 +85,13 @@ function RootNavigator({ session }: { session: Session }) {
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
+      />
+      <Stack.Screen
+        name="SuccessfulCatCreation"
+        component={ModalScreen}
+        options={{
+          title: "Cat Created!",
+        }}
       />
     </Stack.Navigator>
   );

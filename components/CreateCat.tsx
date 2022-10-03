@@ -19,7 +19,11 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { WhereAboutDisplay } from "./WhereAboutDisplay";
 
-const CreateCat = (props: { catPictures: string[] }) => {
+type Props = {
+  catPictures: string[];
+  onSuccess: () => void;
+};
+export const CreateCat = ({ catPictures, onSuccess }: Props) => {
   const colorScheme = useColorScheme();
   const whereabouts = useContext(CurrentWhereAboutsContext);
 
@@ -31,7 +35,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleChangeText = (value: string | boolean, name: string) => {
     setCat({ ...cat, [name]: value });
@@ -42,7 +46,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
     const { data, error } = await supabase.from("cats").insert(cat).select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
     if (error) {
       console.log(error);
-      setLoading(false);
+      resetForm();
     } else {
       // NOTE sort this type out
       return data[0];
@@ -78,7 +82,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
   };
 
   const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
-    // TODO create whereabouts and pop gallery
     if (publicUrlList.length === 0) return;
 
     try {
@@ -86,7 +89,6 @@ const CreateCat = (props: { catPictures: string[] }) => {
         data: { user },
       } = await supabase.auth.getUser();
 
-      // TODO create whereabouts with relation to cat and user id
       const { data: whereAboutsData, error } = await supabase
         .from("whereabouts")
         .insert({
@@ -101,14 +103,11 @@ const CreateCat = (props: { catPictures: string[] }) => {
         .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
 
       if (whereAboutsData) {
-        console.log("created whereabouts id", whereAboutsData[0].id);
-        console.log("for cat id", catId);
         const updatedCat = {
           ...cat,
           last_seen_id: whereAboutsData[0].id,
         };
 
-        console.log("updating cat with", updatedCat);
         const { error } = await supabase.from("cats").upsert(updatedCat);
         if (error) throw error;
       }
@@ -117,94 +116,95 @@ const CreateCat = (props: { catPictures: string[] }) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      onSuccess();
+      resetForm();
     }
   };
 
-  return (
-    <View style={[AppStyles.formContainer, loading && AppStyles.loadingBG]}>
-      {loading ? (
-        <ActivityIndicator size="large" style={AppStyles.spinner} />
-      ) : (
-        <>
-          {" "}
-          <View style={AppStyles.formVerticalEven}>
-            <View style={[{ flex: 3, marginTop: 20 }, AppStyles.inputGroup]}>
-              <TextInput
-                placeholder="Name"
-                onChangeText={(value) => handleChangeText(value, "name")}
-                value={cat.name}
-              />
-            </View>
+  const resetForm = () => {
+    setLoading(false);
+    setCat(emptyCat);
+  };
 
-            <View
-              style={[{ flex: 1, paddingBottom: 20 }, AppStyles.evenlyVert]}
-            >
-              <Text style={AppStyles.smallButtonText}>
-                {cat.gender ? "male" : "female"}
-              </Text>
-              <Switch
-                containerStyle={{ flex: 1 }}
-                activeText={"M"}
-                inActiveText={"F"}
-                circleSize={40}
-                circleBorderWidth={0}
-                backgroundActive={Colors[colorScheme].tabIconSelected}
-                backgroundInactive={Colors[colorScheme].tabIconDefault}
-                circleActiveColor={Colors[colorScheme].tabIconDefault}
-                circleInActiveColor={Colors[colorScheme].tabIconSelected}
-                onValueChange={(value: boolean) =>
-                  handleChangeText(value, "gender")
-                }
-                value={cat.gender}
-              />
-            </View>
-          </View>
-          {/* Email Input */}
-          <View style={AppStyles.inputGroup}>
-            <TextInput
-              placeholder="Description"
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={(value) => handleChangeText(value, "description")}
-              value={cat.description}
-            />
-          </View>
-          {/* Input */}
-          <View style={AppStyles.inputGroup}>
-            <TextInput
-              placeholder="temperament"
-              onChangeText={(value) => handleChangeText(value, "temperament")}
-              value={cat.temperament}
-            />
-          </View>
-          {/* <View style={AppStyles.inputGroup}> */}
-          <Text style={AppStyles.smallButtonText}>Location</Text>
-          {whereabouts ? (
-            <WhereAboutDisplay whereAbouts={whereabouts} />
-          ) : (
-            <Text style={AppStyles.locationStyle}>Singapore</Text>
-          )}
-          {/* </View> */}
-          <View>
-            <Button
-              title="Create Cat"
-              testID="CreateCatButton"
-              disabled={
-                !cat.description ||
-                !cat.name ||
-                !cat.temperament ||
-                props.catPictures.length === 0
-              }
-              onPress={() =>
-                createCat().then((createdCat) =>
-                  uploadImage(props.catPictures, createdCat)
-                )
-              }
-            />
-          </View>
-        </>
+  return (
+    <View style={AppStyles.formContainer}>
+      <View style={AppStyles.formVerticalEven}>
+        <View style={[{ flex: 3, marginTop: 20 }, AppStyles.inputGroup]}>
+          <TextInput
+            placeholder="Name"
+            onChangeText={(value) => handleChangeText(value, "name")}
+            value={cat.name}
+          />
+        </View>
+
+        <View style={[{ flex: 1, paddingBottom: 20 }, AppStyles.evenlyVert]}>
+          <Text style={AppStyles.smallButtonText}>
+            {cat.gender ? "male" : "female"}
+          </Text>
+          <Switch
+            containerStyle={{ flex: 1 }}
+            activeText={"M"}
+            inActiveText={"F"}
+            circleSize={40}
+            circleBorderWidth={0}
+            backgroundActive={Colors[colorScheme].tabIconSelected}
+            backgroundInactive={Colors[colorScheme].tabIconDefault}
+            circleActiveColor={Colors[colorScheme].tabIconDefault}
+            circleInActiveColor={Colors[colorScheme].tabIconSelected}
+            onValueChange={(value: boolean) =>
+              handleChangeText(value, "gender")
+            }
+            value={cat.gender}
+          />
+        </View>
+      </View>
+      {/* Email Input */}
+      <View style={AppStyles.inputGroup}>
+        <TextInput
+          placeholder="Description"
+          multiline={true}
+          numberOfLines={4}
+          onChangeText={(value) => handleChangeText(value, "description")}
+          value={cat.description}
+        />
+      </View>
+      {/* Input */}
+      <View style={AppStyles.inputGroup}>
+        <TextInput
+          placeholder="temperament"
+          onChangeText={(value) => handleChangeText(value, "temperament")}
+          value={cat.temperament}
+        />
+      </View>
+      {/* <View style={AppStyles.inputGroup}> */}
+      <Text style={AppStyles.smallButtonText}>Location</Text>
+      {whereabouts ? (
+        <WhereAboutDisplay whereAbouts={whereabouts} />
+      ) : (
+        <Text style={AppStyles.locationStyle}>Singapore</Text>
       )}
+
+      <View>
+        {loading ? (
+          <ActivityIndicator size="large" style={AppStyles.spinner} />
+        ) : (
+          <Button
+            title="Create Cat"
+            testID="CreateCatButton"
+            disabled={
+              !cat.description ||
+              !cat.name ||
+              !cat.temperament ||
+              catPictures.length === 0
+            }
+            onPress={() =>
+              createCat().then((createdCat) =>
+                uploadImage(catPictures, createdCat)
+              )
+            }
+          />
+        )}
+      </View>
     </View>
   );
 };

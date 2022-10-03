@@ -44,6 +44,7 @@ export type EmptyCat = Omit<Cat, "uid" | "id"|"whereabouts"|"pets">;
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
+  SuccessfulCatCreation: undefined;
   NotFound: undefined;
 };
 

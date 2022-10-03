@@ -9,15 +9,10 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   spinner: {
-    marginTop: 50,
-    marginBottom: 50,
+    marginTop: 100,
+    marginBottom: "50%",
     // backgroundColor: "black",
-    height: "100%",
-  },
-  loadingBG: {
-    backgroundColor: Colors[colorScheme].background,
-    // backgroundColor: "black",
-    height: "100%",
+    height: 100,
   },
   createCatImageContainer: {
     flex: 2,
@@ -191,8 +186,6 @@ export default StyleSheet.create({
     padding: 12,
     flex: 2,
     height: "100%",
-    // alignItems: "stretch",
-    // justifyContent: "flex-start",
   },
   bannerTextContainer: {
     padding: 10,
@@ -216,7 +209,7 @@ export default StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

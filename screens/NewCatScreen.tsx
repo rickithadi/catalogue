@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ImageComponent,
-  ScrollView,
-} from "react-native";
+import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 
 import AppStyles from "../styles/AppStyles";
 import CreateCat from "../components/CreateCat";
@@ -49,7 +42,10 @@ export default function NewCatScreen({ navigation }: any) {
                 </TouchableOpacity>
               ))}
             </View>
-            <CreateCat catPictures={selectedPictures} />
+            <CreateCat
+              catPictures={selectedPictures}
+              onSuccess={navigation.navigate("SuccessfulCatCreation")}
+            />
           </View>
         </ScrollView>
       ) : (

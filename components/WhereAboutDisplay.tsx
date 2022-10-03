@@ -8,10 +8,9 @@ type Props = {
 };
 export const WhereAboutDisplay = ({ whereAbouts }: Props) => (
   <Text style={AppStyles.locationStyle}>
-    fuck you
-    {JSON.stringify(whereAbouts)}
-    {!whereAbouts && "No where abouts"}
-    {!whereAbouts.address && "No address"}
+    {/* {JSON.stringify(whereAbouts)} */}
+    {!whereAbouts && "No Whereabouts"}
+    {!whereAbouts.address && "No Address"}
     {whereAbouts.address &&
       whereAbouts?.address[0] &&
       whereAbouts?.address[0].postalCode}

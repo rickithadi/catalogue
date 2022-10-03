@@ -50,7 +50,6 @@ export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
 
   const widgetResize = useMemo(
     () => ({
-      width: 50,
       compress: 0.7,
       base64: true,
       saveTo: "jpeg",
@@ -74,7 +73,6 @@ export const ImagePicker = ({ setSelectedPictures, back }: Props) => {
         back();
       },
       onSuccess: (e: any) => {
-        console.log(e);
         setSelectedPictures(e);
       },
     }),

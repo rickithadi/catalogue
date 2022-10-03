@@ -82,7 +82,7 @@ export default function App() {
         } else {
           Location.getCurrentPositionAsync({}).then((loc) =>
             Location.reverseGeocodeAsync(loc.coords).then((data) => {
-              console.log(data, loc);
+              console.log('got geolocation',data, loc);
               setLocation(loc);
               setLocationGeocodedAddress(data);
             })

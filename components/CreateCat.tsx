@@ -81,11 +81,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
   const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
     // TODO create whereabouts and pop gallery
     if (publicUrlList.length === 0) return;
-    // await supabase
-    //   .from("cats")
-    //   .update({ gallery: publicUrlList })
-    //   .match({ id: catId });
-    //    setAdding(true);
+
     try {
       const {
         data: { user },
@@ -105,10 +101,12 @@ const CreateCat = (props: { catPictures: string[] }) => {
         .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
       // TODO update cat whereabouts with whereabouts id
       console.log("created whereabouts", data, error);
-      //  await supabase
-      //   .from("cats")
-      //   .update({ whereAbouts: data[0].id })
-      //   .eq("id", catId);
+      if (data) {
+        await supabase
+          .from("cats")
+          .update({ whereAbouts: data[0].id })
+          .eq("id", catId);
+      }
       if (error) throw error;
     } catch (error) {
       console.error(error);

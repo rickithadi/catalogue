@@ -20,12 +20,9 @@ export const ModalScreen = ({ navigation }: any) => {
       />
       <Ionicons name="checkmark" size={100} color={Colors[colorScheme].tint} />
 
-      <Pressable onPress={() => navigation.navigate("home")}>
-        <Text style={AppStyles.smallButtonText}>Back</Text>
-      </Pressable>
       <Button
         title="Back Home"
-        onPress={() => navigation.navigate("home")}
+        onPress={() => navigation.navigate("Home")}
       ></Button>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />

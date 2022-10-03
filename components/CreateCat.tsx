@@ -20,7 +20,7 @@ import { WhereAboutDisplay } from "./WhereAboutDisplay";
 
 const CreateCat = (props: { catPictures: string[] }) => {
   const colorScheme = useColorScheme();
-  const whereAbouts = useContext(CurrentWhereAboutsContext);
+  const whereabouts = useContext(CurrentWhereAboutsContext);
 
   const emptyCat: EmptyCat = {
     name: "",
@@ -28,7 +28,7 @@ const CreateCat = (props: { catPictures: string[] }) => {
     description: "",
     temperament: "",
     pets: 69,
-    whereAbouts: undefined,
+    whereabouts: undefined,
   };
   // TODO lastseen and whereabouts, gallery
 
@@ -57,8 +57,8 @@ const CreateCat = (props: { catPictures: string[] }) => {
 
     gallery.map((image, index) => {
       const fileName = `${
-        whereAbouts?.location?.timestamp
-          ? whereAbouts?.location?.timestamp
+        whereabouts?.location?.timestamp
+          ? whereabouts?.location?.timestamp
           : Date.now()
       }`;
       const filePath = `${createdCat?.id}/${fileName}-${index}.png`;
@@ -88,25 +88,28 @@ const CreateCat = (props: { catPictures: string[] }) => {
       } = await supabase.auth.getUser();
 
       // TODO create whereabouts with relation to cat and user id
-      const { data, error } = await supabase
+      const { data: whereAboutsData, error } = await supabase
         .from("whereabouts")
         .insert({
           description: "inital whereabouts",
-          location: whereAbouts?.location,
-          address: whereAbouts?.address,
+          location: whereabouts?.location,
+          address: whereabouts?.address,
           user: user?.id,
           cat: catId,
           pictures: publicUrlList,
         })
         .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
-      // TODO update cat whereabouts with whereabouts id
-      console.log("created whereabouts", data, error);
-      if (data) {
-        await supabase
-          .from("cats")
-          .update({ whereAbouts: data[0].id })
-          .eq("id", catId);
+
+      if (whereAboutsData) {
+        console.log("created whereabouts id", whereAboutsData[0].id);
+        console.log("for cat id", catId);
+        const updatedCat = { ...cat, whereabouts: whereAboutsData[0].id };
+
+        console.log("updating cat with", updatedCat);
+        const { error } = await supabase.from("cats").upsert(updatedCat);
+        if (error) throw error;
       }
+
       if (error) throw error;
     } catch (error) {
       console.error(error);
@@ -169,8 +172,8 @@ const CreateCat = (props: { catPictures: string[] }) => {
       </View>
       {/* <View style={AppStyles.inputGroup}> */}
       <Text style={AppStyles.smallButtonText}>Location</Text>
-      {whereAbouts ? (
-        <WhereAboutDisplay whereAbouts={whereAbouts} />
+      {whereabouts ? (
+        <WhereAboutDisplay whereAbouts={whereabouts} />
       ) : (
         <Text style={AppStyles.locationStyle}>Singapore</Text>
       )}

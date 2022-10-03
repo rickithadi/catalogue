@@ -1,100 +1,163 @@
-import { LocationGeocodedAddress } from "expo-location";
-import { Camera, CameraType } from "expo-camera";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
+import { decode } from "base64-arraybuffer";
 import {
-  Text,
   Button,
   View,
-  StyleSheet,
+  Text,
   TextInput,
-  ScrollView,
-  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { Switch } from "react-native-switch";
 
-import { Cat, emptyCat } from "../types";
+import { Cat, EmptyCat } from "../types/types";
+import { supabase } from "../lib/supabase";
+import { CurrentWhereAboutsContext } from "../App";
+import AppStyles from "../styles/AppStyles";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import { WhereAboutDisplay } from "./WhereAboutDisplay";
 
-const CreateCat = (props: {
-  locationGeocodedAddress: LocationGeocodedAddress | null;
-}) => {
-  const emptyCat: emptyCat = {
+type Props = {
+  catPictures: string[];
+  onSuccess: () => void;
+};
+export const CreateCat = ({ catPictures, onSuccess }: Props) => {
+  const colorScheme = useColorScheme();
+  const whereabouts = useContext(CurrentWhereAboutsContext);
+
+  const emptyCat: EmptyCat = {
     name: "",
+    gender: false,
     description: "",
     temperament: "",
-    gender: false,
-    uid: null,
-    pets: 0,
   };
 
-  const [cat, setCat] = useState<Cat | emptyCat>(emptyCat);
+  const [cat, setCat] = useState<Cat | EmptyCat>(emptyCat);
+  const [loading, setLoading] = useState(false);
 
-  const [camera, toggleCamera] = useState(false);
-  const cameraRef = useRef<Camera>(null);
-
-  const [type, setType] = useState(CameraType.front);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-
-  if (!permission) {
-    // Camera permissions are still loading
-    return <View />;
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
-
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
-
-  const handleChangeText = (value: string, name: string) => {
+  const handleChangeText = (value: string | boolean, name: string) => {
     setCat({ ...cat, [name]: value });
   };
 
-  const saveNewCat = async () => {
-    if (cat.name === "") {
-      alert("please provide a name");
+  const createCat = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from("cats").insert(cat).select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
+    if (error) {
+      console.log(error);
+      resetForm();
     } else {
-      try {
-        //TODO insert into supabase
-        // await db
-        //   .collection("cats")
-        //   .add(cat)
-        //   .then(() => setCat(emptyCat));
-      } catch (error) {
-        console.log(error);
-      }
+      // NOTE sort this type out
+      return data[0];
     }
   };
-  const takePicture = async () => {
-    if (camera) {
-      const options = { quality: 1, base64: true };
-      const data = await cameraRef.current?.takePictureAsync(options);
-      console.log(data);
-    }
-  };
-  return (
-    <ScrollView style={styles.container}>
-      {/* Name Input */}
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Name"
-          onChangeText={(value) => handleChangeText(value, "name")}
-          value={cat.name}
-        />
-      </View>
 
+  const uploadImage = async (gallery: any[], createdCat: Cat) => {
+    const publicUrlList: string[] = [];
+
+    if (!createdCat) return;
+
+    gallery.map((image, index) => {
+      const fileName = `${
+        whereabouts?.location?.timestamp
+          ? whereabouts?.location?.timestamp
+          : Date.now()
+      }`;
+      const filePath = `${createdCat?.id}/${fileName}-${index}.png`;
+
+      supabase.storage.from("cats").upload(filePath, decode(image.base64), {
+        contentType: "image/png",
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+      const { data: publicURL } = supabase.storage
+        .from("cats")
+        .getPublicUrl(filePath);
+
+      publicUrlList.push(publicURL.publicUrl);
+    });
+    return await updateCatGallery(createdCat.id, publicUrlList);
+  };
+
+  const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
+    if (publicUrlList.length === 0) return;
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const { data: whereAboutsData, error } = await supabase
+        .from("whereabouts")
+        .insert({
+          description: "inital whereabouts",
+          initial: true,
+          location: whereabouts?.location,
+          address: whereabouts?.address,
+          user_id: user?.id,
+          cat_id: catId,
+          pictures: publicUrlList,
+        })
+        .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
+
+      if (whereAboutsData) {
+        const updatedCat = {
+          ...cat,
+          last_seen_id: whereAboutsData[0].id,
+        };
+
+        const { error } = await supabase.from("cats").upsert(updatedCat);
+        if (error) throw error;
+      }
+
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      onSuccess();
+      resetForm();
+    }
+  };
+
+  const resetForm = () => {
+    setLoading(false);
+    setCat(emptyCat);
+  };
+
+  return (
+    <View style={AppStyles.formContainer}>
+      <View style={AppStyles.formVerticalEven}>
+        <View style={[{ flex: 3, marginTop: 20 }, AppStyles.inputGroup]}>
+          <TextInput
+            placeholder="Name"
+            onChangeText={(value) => handleChangeText(value, "name")}
+            value={cat.name}
+          />
+        </View>
+
+        <View style={[{ flex: 1, paddingBottom: 20 }, AppStyles.evenlyVert]}>
+          <Text style={AppStyles.smallButtonText}>
+            {cat.gender ? "male" : "female"}
+          </Text>
+          <Switch
+            containerStyle={{ flex: 1 }}
+            activeText={"M"}
+            inActiveText={"F"}
+            circleSize={40}
+            circleBorderWidth={0}
+            backgroundActive={Colors[colorScheme].tabIconSelected}
+            backgroundInactive={Colors[colorScheme].tabIconDefault}
+            circleActiveColor={Colors[colorScheme].tabIconDefault}
+            circleInActiveColor={Colors[colorScheme].tabIconSelected}
+            onValueChange={(value: boolean) =>
+              handleChangeText(value, "gender")
+            }
+            value={cat.gender}
+          />
+        </View>
+      </View>
       {/* Email Input */}
-      <View style={styles.inputGroup}>
+      <View style={AppStyles.inputGroup}>
         <TextInput
           placeholder="Description"
           multiline={true}
@@ -103,80 +166,45 @@ const CreateCat = (props: {
           value={cat.description}
         />
       </View>
-
       {/* Input */}
-      <View style={styles.inputGroup}>
+      <View style={AppStyles.inputGroup}>
         <TextInput
           placeholder="temperament"
           onChangeText={(value) => handleChangeText(value, "temperament")}
           value={cat.temperament}
         />
       </View>
+      {/* <View style={AppStyles.inputGroup}> */}
+      <Text style={AppStyles.smallButtonText}>Location</Text>
+      {whereabouts ? (
+        <WhereAboutDisplay whereAbouts={whereabouts} />
+      ) : (
+        <Text style={AppStyles.locationStyle}>Singapore</Text>
+      )}
 
       <View>
-        <Button
-          title="Create Cat"
-          testID="CreateCatButton"
-          onPress={() => saveNewCat()}
-          disabled={!cat.description || !cat.name || !cat.temperament}
-        />
+        {loading ? (
+          <ActivityIndicator size="large" style={AppStyles.spinner} />
+        ) : (
+          <Button
+            title="Create Cat"
+            testID="CreateCatButton"
+            disabled={
+              !cat.description ||
+              !cat.name ||
+              !cat.temperament ||
+              catPictures.length === 0
+            }
+            onPress={() =>
+              createCat().then((createdCat) =>
+                uploadImage(catPictures, createdCat)
+              )
+            }
+          />
+        )}
       </View>
-      {camera ? (
-        <View style={styles.container}>
-          <Camera style={styles.camera} type={type}>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={toggleCameraType}
-              >
-                <Text>Flip Camera</Text>
-              </TouchableOpacity>
-            </View>
-          </Camera>
-
-          <Button title="camera" onPress={() => toggleCamera(!camera)} />
-          <Button title="Take Picture" onPress={() => takePicture()} />
-        </View>
-      ) : null}
-    </ScrollView>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 35,
-  },
-  inputGroup: {
-    flex: 1,
-    padding: 0,
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  loader: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
-  },
-});
 
 export default CreateCat;

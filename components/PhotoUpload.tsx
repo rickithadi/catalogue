@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { decode } from "base64-arraybuffer";
-import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert, Image, Button } from "react-native";
+import { StyleSheet, View, Alert, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { FontAwesome } from "@expo/vector-icons";
-import { pick } from "react-native-document-picker";
 
+import { supabase } from "../lib/supabase";
 interface Props {
   size: number;
   fileName: string;
   onUpload: (filePath: string) => void;
 }
 
-export default function PhotoUpload({
-  size = 150,
-  onUpload,
-  fileName,
-}: Props) {
+export default function PhotoUpload({ size = 150, onUpload, fileName }: Props) {
   const [uploading, setUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{
     localUri: string;
@@ -27,7 +22,7 @@ export default function PhotoUpload({
     if (fileName) downloadImage(fileName);
   }, [fileName]);
 
-  async function downloadImage(path: string) {
+  const downloadImage = async (path: string) => {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
@@ -46,8 +41,9 @@ export default function PhotoUpload({
       if (error instanceof Error) {
       }
     }
-  }
+  };
   const pickImage = async () => {
+    //UPLOAD IMAGE as BASE64 and get publicURL
     try {
       setUploading(true);
 
@@ -68,10 +64,14 @@ export default function PhotoUpload({
             cacheControl: "3600",
             upsert: true,
           });
+        const { data: publicURL } = supabase.storage
+          .from("avatars")
+          .getPublicUrl(fileName);
+
         if (error) {
           throw error;
         }
-        onUpload(result.uri);
+        onUpload(publicURL.publicUrl);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -96,10 +96,8 @@ export default function PhotoUpload({
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
 
-      <View
-          style={styles.button}>
+      <View style={styles.button}>
         <FontAwesome.Button
-
           name="edit"
           backgroundColor="#3b5998"
           onPress={pickImage}
@@ -139,7 +137,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
   },
   image: {
-    objectFit: "cover",
     paddingTop: 0,
   },
   noImage: {

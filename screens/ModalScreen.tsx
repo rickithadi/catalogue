@@ -1,35 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { Button, Platform, Pressable, StyleSheet } from "react-native";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { Text, View } from "../components/Themed";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import AppStyles from "../styles/AppStyles";
 
-export default function ModalScreen() {
+export const ModalScreen = ({ navigation }: any) => {
+  const colorScheme = useColorScheme();
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ModalScreen.tsx" />
+    <View style={AppStyles.centeredView}>
+      <Text style={AppStyles.title}>Cat Succesfully created!</Text>
+      <View
+        style={AppStyles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
+      <Ionicons name="checkmark" size={100} color={Colors[colorScheme].tint} />
 
+      <Button
+        title="Back Home"
+        onPress={() => navigation.navigate("Home")}
+      ></Button>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+};

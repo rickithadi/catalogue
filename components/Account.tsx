@@ -3,7 +3,6 @@ import { supabase } from "../lib/supabase";
 
 import {
   Button,
-  Image,
   View,
   TextInput,
   StyleSheet,
@@ -23,7 +22,7 @@ export default function Account({ session }: { session: Session }) {
     if (session) getProfile();
   }, [session]);
 
-  async function getProfile() {
+  const getProfile = async () => {
     try {
       setLoading(true);
       if (!session?.user) throw new Error("No user on the session!");
@@ -50,9 +49,9 @@ export default function Account({ session }: { session: Session }) {
       console.log("user", session.user);
       setLoading(false);
     }
-  }
+  };
 
-  async function updateProfile({
+  const updateProfile = async ({
     username,
     website,
     avatar_url,
@@ -60,7 +59,7 @@ export default function Account({ session }: { session: Session }) {
     username: string;
     website: string;
     avatar_url: string;
-  }) {
+  }) => {
     try {
       setLoading(true);
       if (!session?.user) throw new Error("No user on the session!");
@@ -85,7 +84,7 @@ export default function Account({ session }: { session: Session }) {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -109,7 +108,6 @@ export default function Account({ session }: { session: Session }) {
 
       <PhotoUpload
         size={200}
-        url={avatarUrl}
         fileName={session.user.id}
         onUpload={(url: string) => {
           setAvatarUrl(url);

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, ImageBackground } from "react-native";
 import AppStyles from "../styles/AppStyles";
 
-import { Cat } from "../types";
+import { Cat } from "../types/types";
 
 import catSample from "../assets/images/rusty.jpg";
 

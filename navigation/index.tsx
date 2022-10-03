@@ -12,29 +12,27 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
-import * as Location from "expo-location";
+import { ColorSchemeName, Pressable, View } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import { useEffect } from "react";
-import { LocationGeocodedAddress, LocationObject } from "expo-location";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-} from "../types";
+} from "../types/types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ExploreScreen from "../screens/ExploreScreen";
 import InboxScreen from "../screens/InboxScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import { supabase } from "../lib/supabase";
 import Account from "../components/Account";
 import Auth from "../components/Auth";
+import NewCatScreen from "../screens/NewCatScreen";
+import { ModalScreen } from "../screens/ModalScreen";
 
 export default function Navigation({
   colorScheme,
@@ -88,6 +86,14 @@ function RootNavigator({ session }: { session: Session }) {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
+      <Stack.Screen
+        name="SuccessfulCatCreation"
+        component={ModalScreen}
+        options={({ navigation }) => ({
+          title: "Cat Created!",
+          headerShown: false,
+        })}
+      />
     </Stack.Navigator>
   );
 }
@@ -100,29 +106,6 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator({ session }: { session: Session }) {
   const colorScheme = useColorScheme();
-  const [locationGeocodedAddress, setLocationGeocodedAddress] = React.useState<
-    undefined | LocationGeocodedAddress[]
-  >(undefined);
-  const [location, setLocation] = React.useState<undefined | LocationObject>(
-    undefined
-  );
-
-  React.useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setLocationGeocodedAddress(undefined);
-      } else {
-        Location.getCurrentPositionAsync({}).then((loc) =>
-          Location.reverseGeocodeAsync(loc.coords).then((data) => {
-            console.log(data, loc);
-            setLocation(loc);
-            setLocationGeocodedAddress(data);
-          })
-        );
-      }
-    })();
-  }, []);
 
   return (
     <BottomTab.Navigator
@@ -135,28 +118,48 @@ function BottomTabNavigator({ session }: { session: Session }) {
     >
       <BottomTab.Screen
         name="Home"
-        children={() => (
-          <HomeScreen
-            locationGeocodedAddress={locationGeocodedAddress}
-            location={location}
-          />
-        )}
-        options={({ navigation }: RootTabScreenProps<"Home">) => ({
+        children={HomeScreen}
+        options={{
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        })}
+        }}
       />
+
       <BottomTab.Screen
         name="Explore"
-        children={() => (
-          <ExploreScreen locationGeocodedAddress={locationGeocodedAddress} />
-        )}
+        component={ExploreScreen}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="compass" color={color} />
           ),
         }}
+      />
+      <BottomTab.Screen
+        name="New"
+        // children={() => <NewCatScreen />}
+        component={NewCatScreen}
+        options={({ navigation }: RootTabScreenProps<"New">) => ({
+          title: "New",
+          tabBarIcon: ({ color }) => (
+            <View
+              style={{
+                position: "absolute",
+                bottom: 10, // space from bottombar
+                height: 58,
+                width: 58,
+                borderRadius: 58,
+                borderWidth: 2,
+                backgroundColor: Colors[colorScheme].background,
+                borderColor: Colors[colorScheme].tint,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <TabBarIcon name="plus" color={color} />
+            </View>
+          ),
+        })}
       />
       <BottomTab.Screen
         name="Inbox"

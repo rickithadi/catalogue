@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ListRenderItemInfo,
+  ScrollView,
 } from "react-native";
 import { View, Text } from "react-native";
 import { LocationGeocodedAddress } from "expo-location";
@@ -13,11 +14,11 @@ import { LocationGeocodedAddress } from "expo-location";
 import AppStyles from "../styles/AppStyles";
 import catSample from "../assets/images/rusty.jpg";
 import icons from "./Icons";
-import { Cat } from "../types";
+import { Cat } from "../types/types";
 
 export default function CatsAround(props: {
   cats: Cat[];
-  locationGeocodedAddress: undefined | LocationGeocodedAddress[];
+  locationGeocodedAddressList: undefined | LocationGeocodedAddress[];
 }) {
   return (
     <View style={AppStyles.popCatParentContainer}>
@@ -25,8 +26,9 @@ export default function CatsAround(props: {
         <Text>
           <Text style={AppStyles.title}>Cats Around </Text>
           <Text style={AppStyles.locationStyle}>
-            {props.locationGeocodedAddress
-              ? props.locationGeocodedAddress[0].name
+            {props.locationGeocodedAddressList &&
+            props.locationGeocodedAddressList[0]
+              ? props.locationGeocodedAddressList[0].name
               : "Singapore"}
           </Text>
         </Text>
@@ -41,7 +43,7 @@ export default function CatsAround(props: {
       <FlatList
         data={props.cats}
         renderItem={CatsAroundCard}
-        keyExtractor={(cat) => cat.uid as string}
+        keyExtractor={(cat) => cat.id as string}
       />
     </View>
   );

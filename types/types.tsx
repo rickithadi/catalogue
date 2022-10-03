@@ -20,26 +20,31 @@ declare global {
 export type Feeder = {
   uid: string;
 };
+
 export type Cat = {
-  uid: string | null;
+  id: string;
   name: string;
   gender: boolean;
-  lastSeen?: Whereabouts[]; //user populated by public by current location
+  lastSeen?: string; //user populated by public by current location
   gallery?: string[];
   temperament?: string;
   description?: string;
   pets: number;
   feeder?: Feeder;
-  whereAbouts: Whereabouts; //populated at creation by current location
+  whereabouts: Whereabouts[] | undefined; //populated at creation by current location
 };
 export type Whereabouts = {
-  address: LocationGeocodedAddress;
-  location: LocationObject;
-  picture?: string;
+  address: LocationGeocodedAddress[] | undefined;
+  location: LocationObject | undefined;
+  pictures?: string[];
 };
+
+export type EmptyCat = Omit<Cat, "uid" | "id"|"whereabouts"|"pets">;
+
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
+  SuccessfulCatCreation: undefined;
   NotFound: undefined;
 };
 
@@ -48,6 +53,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type RootTabParamList = {
   Home: undefined;
+  New: undefined;
   Explore: undefined;
   Inbox: undefined;
   Profile: undefined;

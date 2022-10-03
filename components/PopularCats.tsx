@@ -12,7 +12,7 @@ import { View, Text } from "react-native";
 import AppStyles from "../styles/AppStyles";
 import icons from "./Icons";
 import catSample from "../assets/images/rusty.jpg";
-import { Cat } from "../types";
+import { Cat } from "../types/types";
 
 export default function PopularCats(props: { cats: Cat[] }) {
   return (
@@ -31,7 +31,7 @@ export default function PopularCats(props: { cats: Cat[] }) {
         horizontal={true}
         data={props.cats}
         renderItem={PopularCatCard}
-        keyExtractor={(cat) => cat.uid as string}
+        keyExtractor={(cat) => cat.id as string}
       />
     </View>
   );

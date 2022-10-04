@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ImageBackground } from "react-native";
+
 import AppStyles from "../styles/AppStyles";
-
 import { Cat } from "../types/types";
-
-import catSample from "../assets/images/rusty.jpg";
 import { supabase } from "../lib/supabase";
 
 export default function Banner(props: { cat: Cat }) {
@@ -17,12 +15,14 @@ export default function Banner(props: { cat: Cat }) {
         .from("whereabouts")
         .select("pictures")
         .eq("cat_id", props.cat.id);
-      if (nestedPictureList) {
+      if (nestedPictureList && nestedPictureList[0]) {
         console.log("pictureList", nestedPictureList);
         const { pictures } = nestedPictureList[0];
         setPictureList(pictures);
+      } else {
+        console.log("error", error);
+        return [];
       }
-      // setPictureList(pictureList);
     };
     getCatPics();
   }, [props.cat]);
@@ -30,9 +30,11 @@ export default function Banner(props: { cat: Cat }) {
   return (
     <View style={AppStyles.bannerContainer}>
       <ImageBackground
-        source={{ uri: pictureList[0] }}
+        source={{
+          uri: pictureList[Math.floor(Math.random() * pictureList.length)],
+        }}
         resizeMode="cover"
-        style={AppStyles.image}
+        style={AppStyles.BannerImage}
       >
         <View style={AppStyles.bannerTextContainer}>
           <Text style={AppStyles.bannerTitle}>{props.cat.name}</Text>

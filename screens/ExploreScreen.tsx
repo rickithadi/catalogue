@@ -50,7 +50,8 @@ export default function ExploreScreen() {
     <SafeAreaView style={AppStyles.container}>
       {cats && (
         <ScrollView>
-          <Banner cat={cats[0]}></Banner>
+          {/* TODO implement popularity based on pets */}
+          <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner>
           <PopularCats cats={cats}></PopularCats>
           <CatsAround
             cats={[rusty, loki]}

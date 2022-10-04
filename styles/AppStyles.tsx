@@ -120,6 +120,10 @@ export default StyleSheet.create({
   image: {
     flex: 1,
   },
+  BannerImage: {
+    flex: 1,
+  },
+
   createCatImage: {
     height: 100,
     width: 100,

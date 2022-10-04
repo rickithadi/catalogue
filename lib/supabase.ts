@@ -14,3 +14,17 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 
+export const getCatPics = async (catId: string) => {
+  // TODO fix array response, not some cats dont have whereabouts for some reason, will fix eventually
+  const { data: nestedPictureList, error } = await supabase
+    .from("whereabouts")
+    .select("pictures")
+    .eq("cat_id", catId);
+  if (nestedPictureList && nestedPictureList[0]) {
+    const { pictures } = nestedPictureList[0];
+    return pictures;
+  } else {
+    console.log("error", error);
+    return [];
+  }
+};

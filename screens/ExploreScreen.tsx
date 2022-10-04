@@ -5,7 +5,7 @@ import { ScrollView, View, Image, Text } from "react-native";
 import { Cat } from "../types/types";
 import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";
-import PopularCats from "../components/PopularCats";
+import { PopularCats } from "../components/PopularCats";
 import CatsAround from "../components/CatsAround";
 import { CurrentWhereAboutsContext } from "../App";
 import { supabase } from "../lib/supabase";
@@ -53,6 +53,7 @@ export default function ExploreScreen() {
           {/* TODO implement popularity based on pets */}
           <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner>
           <PopularCats cats={cats}></PopularCats>
+          {/* TODO sort cats by proximity */}
           <CatsAround
             cats={[rusty, loki]}
             locationGeocodedAddressList={

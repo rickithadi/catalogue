@@ -54,11 +54,12 @@ export function PopularCatCard({ item }: any) {
   return (
     <TouchableOpacity
       style={AppStyles.popCatCard}
-      // style={AppStyles.popularCatCardTextContainer}
       onPress={() => console.log(item)}
     >
       <ImageBackground
-        source={{ uri: pictureList[0] }}
+        source={{
+          uri: pictureList[Math.floor(Math.random() * pictureList.length)],
+        }}
         resizeMode="cover"
         style={AppStyles.popCatCardTextContainer}
       >

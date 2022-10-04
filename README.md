@@ -1,5 +1,5 @@
 # Catalogue
-catalogue community cats. Built with expo, react native and maybe firebase? Help ket
+catalogue community cats. Built with expo, react native and supabase. Help ket
 
 https://www.figma.com/file/dVVMxvnrUbI8ggwsoCiRCg/ketalogue
 

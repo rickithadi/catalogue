@@ -81,34 +81,39 @@ export const CreateCat = ({ catPictures, onSuccess }: Props) => {
         data: { user },
       } = await supabase.auth.getUser();
 
-      const { data: whereAboutsData, error } = await supabase
-        .from("whereabouts")
-        .insert({
-          description: "inital whereabouts",
-          initial: true,
-          location: whereabouts?.location,
-          address: whereabouts?.address,
-          user_id: user?.id,
-          cat_id: createdCat.id,
-          pictures: publicUrlList,
-          lat: whereabouts?.location?.coords?.latitude,
-          long: whereabouts?.location?.coords?.longitude,
-          postal: whereabouts?.address[0].postalCode,
-          geog: null,
-        })
-        .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
+      if (whereabouts && whereabouts.address && whereabouts?.address[0]) {
+        const { data: whereAboutsData, error } = await supabase
+          .from("whereabouts")
+          .insert({
+            description: "inital whereabouts",
+            initial: true,
+            location: whereabouts?.location,
+            address: whereabouts?.address,
+            user_id: user?.id,
+            cat_id: createdCat.id,
+            pictures: publicUrlList,
+            lat: whereabouts?.location?.coords?.latitude,
+            long: whereabouts?.location?.coords?.longitude,
+            postal: whereabouts?.address[0].postalCode,
+            geog: null,
+          })
+          .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
 
-      if (whereAboutsData) {
-        const updatedCat = {
-          ...createdCat,
-          last_seen_id: whereAboutsData[0].id,
-        };
+        if (whereAboutsData) {
+          await supabase.rpc("generate_geography", {
+            whereabouts_id: whereAboutsData[0].id,
+          });
+          const updatedCat = {
+            ...createdCat,
+            last_seen_id: whereAboutsData[0].id,
+          };
 
-        const { error } = await supabase.from("cats").upsert(updatedCat);
+          const { error } = await supabase.from("cats").upsert(updatedCat);
+          if (error) throw error;
+        }
+
         if (error) throw error;
       }
-
-      if (error) throw error;
     } catch (error) {
       console.error(error);
     } finally {

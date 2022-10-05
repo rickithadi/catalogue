@@ -8,10 +8,12 @@ import Banner from "../components/Banner";
 import { PopularCats } from "../components/PopularCats";
 import CatsAround from "../components/CatsAround";
 import { CurrentWhereAboutsContext } from "../App";
-import { getCats, supabase } from "../lib/supabase";
+import { getCats, getProximity, supabase } from "../lib/supabase";
 
 export default function ExploreScreen() {
   const { data: cats, isLoading, isSuccess } = getCats();
+  const { data: proximity } = getProximity();
+  console.log(proximity);
 
   const whereAbouts = useContext(CurrentWhereAboutsContext);
 

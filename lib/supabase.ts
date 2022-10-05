@@ -39,6 +39,18 @@ const fetchCats = async () => {
   if (error) console.log(error);
   return data || [];
 };
+const fetchCalculateProximity = async () => {
+  const { data, error } = await supabase.rpc(
+    "hello_world",
+    {},
+    { count: "exact" }
+  );
+  console.log("proximity", data);
+  return data;
+};
+
+export const getProximity = () =>
+  useQuery("proximity", fetchCalculateProximity);
 
 export const getCats = () => useQuery("cats", fetchCats);
 export const getCatPics = (catId: string) =>

@@ -3,31 +3,27 @@ import { View, Text, ImageBackground } from "react-native";
 
 import AppStyles from "../styles/AppStyles";
 import { Cat } from "../types/types";
-import { getCatPics, supabase } from "../lib/supabase";
+import { getCatPics } from "../lib/supabase";
 
 export default function Banner(props: { cat: Cat }) {
-  const [pictureList, setPictureList] = useState<string[]>([]);
-
-  useEffect(() => {
-    getCatPics(props.cat.id).then((pics) => {
-      setPictureList(pics);
-    });
-  }, [props.cat]);
+  const { data: pictureList } = getCatPics(props.cat.id);
 
   return (
     <View style={AppStyles.bannerContainer}>
-      <ImageBackground
-        source={{
-          uri: pictureList[Math.floor(Math.random() * pictureList.length)],
-        }}
-        resizeMode="cover"
-        style={AppStyles.BannerImage}
-      >
-        <View style={AppStyles.bannerTextContainer}>
-          <Text style={AppStyles.bannerTitle}>{props.cat.name}</Text>
-          <Text style={AppStyles.bannersubText}>{props.cat.description}</Text>
-        </View>
-      </ImageBackground>
+      {pictureList && pictureList.length > 0 && (
+        <ImageBackground
+          source={{
+            uri: pictureList[Math.floor(Math.random() * pictureList.length)],
+          }}
+          resizeMode="cover"
+          style={AppStyles.BannerImage}
+        >
+          <View style={AppStyles.bannerTextContainer}>
+            <Text style={AppStyles.bannerTitle}>{props.cat.name}</Text>
+            <Text style={AppStyles.bannersubText}>{props.cat.description}</Text>
+          </View>
+        </ImageBackground>
+      )}
     </View>
   );
 }

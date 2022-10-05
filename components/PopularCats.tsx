@@ -42,35 +42,30 @@ export function PopularCats(props: { cats: Cat[] }) {
 }
 
 export function PopularCatCard({ item }: any) {
-  const [pictureList, setPictureList] = useState<string[]>([]);
-
-  useEffect(() => {
-    getCatPics(item.id).then((pics) => {
-      console.log(pics);
-      setPictureList(pics);
-    });
-  }, [item]);
+  const { data: pictureList } = getCatPics(item.id);
 
   return (
     <TouchableOpacity
       style={AppStyles.popCatCard}
       onPress={() => console.log(item)}
     >
-      <ImageBackground
-        source={{
-          uri: pictureList[Math.floor(Math.random() * pictureList.length)],
-        }}
-        resizeMode="cover"
-        style={AppStyles.popCatCardTextContainer}
-      >
-        <View style={{ padding: 5 }}>
-          <Text style={AppStyles.popCatBigText}>{item.name}</Text>
-          <Text style={AppStyles.popCatsmallText}>
-            <Image source={icons.petsWhite} style={AppStyles.icon} />
-            {item.pets}
-          </Text>
-        </View>
-      </ImageBackground>
+      {pictureList && pictureList.length > 0 && (
+        <ImageBackground
+          source={{
+            uri: pictureList[Math.floor(Math.random() * pictureList.length)],
+          }}
+          resizeMode="cover"
+          style={AppStyles.popCatCardTextContainer}
+        >
+          <View style={{ padding: 5 }}>
+            <Text style={AppStyles.popCatBigText}>{item.name}</Text>
+            <Text style={AppStyles.popCatsmallText}>
+              <Image source={icons.petsWhite} style={AppStyles.icon} />
+              {item.pets}
+            </Text>
+          </View>
+        </ImageBackground>
+      )}
     </TouchableOpacity>
   );
 }

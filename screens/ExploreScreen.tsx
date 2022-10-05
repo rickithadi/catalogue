@@ -12,25 +12,8 @@ import { getCats, supabase } from "../lib/supabase";
 
 export default function ExploreScreen() {
   const { data: cats, isLoading, isSuccess } = getCats();
-  const [loading, setLoading] = useState(false);
-  const [pictureMap, setPictureMap] = useState<Record<string, string>>({});
 
   const whereAbouts = useContext(CurrentWhereAboutsContext);
-  // useEffect(() => {
-  //   getCats();
-  // }, []); // TODO mock this
-
-  // const getCats = async (done = false) => {
-  //   setLoading(true);
-  //   const { data, error } = await supabase
-  //     .from("cats")
-  //     .select("*")
-  //     .order("id", { ascending: true });
-  //   // if (error) throw error;
-  //   console.log(data);
-  //   setCats(data || []);
-  //   setLoading(false);
-  // };
 
   const rusty: Cat = {
     name: "rusty",
@@ -52,8 +35,8 @@ export default function ExploreScreen() {
       {cats && cats.length > 0 && (
         <ScrollView>
           {/* TODO implement popularity based on pets */}
-          {/* <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner> */}
-          {/* <PopularCats cats={cats}></PopularCats> */}
+          <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner>
+          <PopularCats cats={cats}></PopularCats>
           {/* TODO sort cats by proximity */}
           <CatsAround
             cats={[rusty, loki]}

@@ -34,8 +34,8 @@ export type Cat = {
   whereabouts: Whereabouts[] | undefined; //populated at creation by current location
 };
 export type Whereabouts = {
-  address: LocationGeocodedAddress[];
-  location: LocationObject;
+  address: LocationGeocodedAddress[] | undefined;
+  location: LocationObject | undefined;
   pictures?: string[];
 };
 

@@ -129,7 +129,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
 
       <BottomTab.Screen
         name="Explore"
-        component={ExploreScreen}
+        component={() => <ExploreScreen />}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (

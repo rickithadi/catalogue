@@ -109,6 +109,7 @@ export default function App() {
         if (status !== "granted") {
           console.log("geolocation permission denied");
           setLocationGeocodedAddress(undefined);
+          setLocation(undefined);
         } else {
           Location.getCurrentPositionAsync({}).then((loc) =>
             Location.reverseGeocodeAsync(loc.coords).then((data) => {

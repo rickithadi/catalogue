@@ -34,12 +34,12 @@ export type Cat = {
   whereabouts: Whereabouts[] | undefined; //populated at creation by current location
 };
 export type Whereabouts = {
-  address: LocationGeocodedAddress[] | undefined;
-  location: LocationObject | undefined;
+  address: LocationGeocodedAddress[];
+  location: LocationObject;
   pictures?: string[];
 };
 
-export type EmptyCat = Omit<Cat, "uid" | "id"|"whereabouts"|"pets">;
+export type EmptyCat = Omit<Cat, "uid" | "id" | "whereabouts" | "pets">;
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;

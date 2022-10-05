@@ -1,12 +1,6 @@
 import React, { useContext, useState } from "react";
 import { decode } from "base64-arraybuffer";
-import {
-  Button,
-  View,
-  Text,
-  TextInput,
-  ActivityIndicator,
-} from "react-native";
+import { Button, View, Text, TextInput, ActivityIndicator } from "react-native";
 import { Switch } from "react-native-switch";
 
 import { Cat, EmptyCat } from "../types/types";
@@ -97,6 +91,10 @@ export const CreateCat = ({ catPictures, onSuccess }: Props) => {
           user_id: user?.id,
           cat_id: catId,
           pictures: publicUrlList,
+          lat: whereabouts?.location?.coords?.latitude,
+          long: whereabouts?.location?.coords?.longitude,
+          postal: whereabouts?.address[0].postalCode,
+          geog: null,
         })
         .select("*"); // <- new since v2; //insert an object with the key value pair, the key being the column on the table
 

@@ -70,10 +70,10 @@ export const CreateCat = ({ catPictures, onSuccess }: Props) => {
 
       publicUrlList.push(publicURL.publicUrl);
     });
-    return await updateCatGallery(createdCat.id, publicUrlList);
+    return await updateCatGallery(createdCat, publicUrlList);
   };
 
-  const updateCatGallery = async (catId: string, publicUrlList: string[]) => {
+  const updateCatGallery = async (createdCat: Cat, publicUrlList: string[]) => {
     if (publicUrlList.length === 0) return;
 
     try {
@@ -89,7 +89,7 @@ export const CreateCat = ({ catPictures, onSuccess }: Props) => {
           location: whereabouts?.location,
           address: whereabouts?.address,
           user_id: user?.id,
-          cat_id: catId,
+          cat_id: createdCat.id,
           pictures: publicUrlList,
           lat: whereabouts?.location?.coords?.latitude,
           long: whereabouts?.location?.coords?.longitude,
@@ -100,7 +100,7 @@ export const CreateCat = ({ catPictures, onSuccess }: Props) => {
 
       if (whereAboutsData) {
         const updatedCat = {
-          ...cat,
+          ...createdCat,
           last_seen_id: whereAboutsData[0].id,
         };
 

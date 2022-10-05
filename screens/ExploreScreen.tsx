@@ -11,7 +11,7 @@ import { CurrentWhereAboutsContext } from "../App";
 import { supabase } from "../lib/supabase";
 
 export default function ExploreScreen() {
-  const [cats, setCats] = useState<undefined | Cat[]>(undefined);
+  const [cats, setCats] = useState<Cat[]>([]);
   const [loading, setLoading] = useState(false);
   const [pictureMap, setPictureMap] = useState<Record<string, string>>({});
 
@@ -27,7 +27,7 @@ export default function ExploreScreen() {
       .select("*")
       .order("id", { ascending: true });
     // if (error) throw error;
-    setCats(data);
+    setCats(data || []);
     setLoading(false);
   };
 
@@ -48,7 +48,7 @@ export default function ExploreScreen() {
   };
   return (
     <SafeAreaView style={AppStyles.container}>
-      {cats && (
+      {cats.length > 0 && (
         <ScrollView>
           {/* TODO implement popularity based on pets */}
           <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner>

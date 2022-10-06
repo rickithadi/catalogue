@@ -34,29 +34,47 @@ const fetchCats = async () => {
     .from("cats")
     .select("*")
     .order("id", { ascending: true });
-  // if (error) throw error;
-  console.log(data);
   if (error) console.log(error);
   return data || [];
 };
-const fetchCalculateProximity = async () => {
+const proximitySearch = async (
+  currentLong: number,
+  currentLat: number,
+  rad: number,
+  lim: number
+) => {
+  console.log("proximity search", currentLong, currentLat, rad, lim);
   const { data, error } = await supabase.rpc(
-    "hello_world",
-    {},
+    "proximity_search",
+    {
+      current_long: currentLong,
+      current_lat: currentLat,
+      rad: rad,
+      lim: lim,
+    },
     { count: "exact" }
   );
   console.log("proximity", data);
+  if (error) console.log(error);
   return data;
 };
 
-export const getProximity = () =>
-  useQuery("proximity", fetchCalculateProximity);
-
 export const getCats = () => useQuery("cats", fetchCats);
+
+export const getCatsInProximity = (
+  currentLong: number,
+  currentLat: number,
+  rad: number,
+  lim: number
+) =>
+  useQuery(["catsInProximity", currentLong, currentLat, rad, lim], () =>
+    proximitySearch(currentLong, currentLat, rad, lim)
+  );
+
 export const getCatPics = (catId: string) =>
   useQuery(["catPics", catId], () => fetchCatPics(catId));
 
-  // TODO
-  // createCat
-  // uploadImages
-  // createWhereabouts
+// TODO
+// createCat
+// uploadImages
+// createWhereabouts

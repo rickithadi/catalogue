@@ -55,3 +55,8 @@ export const getProximity = () =>
 export const getCats = () => useQuery("cats", fetchCats);
 export const getCatPics = (catId: string) =>
   useQuery(["catPics", catId], () => fetchCatPics(catId));
+
+  // TODO
+  // createCat
+  // uploadImages
+  // createWhereabouts

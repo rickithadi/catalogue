@@ -8,19 +8,18 @@ import Banner from "../components/Banner";
 import { PopularCats } from "../components/PopularCats";
 import CatsAround from "../components/CatsAround";
 import { CurrentWhereAboutsContext } from "../App";
-import { getCats, getCatsInProximity, supabase } from "../lib/supabase";
+import { getCats, getCatsInProximity } from "../lib/supabase";
 
 export default function ExploreScreen() {
-  const { data: cats, isLoading, isSuccess } = getCats();
+  const { data: cats } = getCats();
   const whereAbouts = useContext(CurrentWhereAboutsContext);
 
-  const { data: proximity, refetch } = getCatsInProximity(
+  const { data: proximityCats, refetch } = getCatsInProximity(
     whereAbouts?.location?.coords.longitude || 0,
     whereAbouts?.location?.coords.latitude || 0,
     200,
     10
   );
-  console.log(proximity);
 
   useEffect(() => {
     refetch();
@@ -50,7 +49,7 @@ export default function ExploreScreen() {
           <PopularCats cats={cats}></PopularCats>
           {/* TODO sort cats by proximity */}
           <CatsAround
-            cats={[rusty, loki]}
+            cats={proximityCats as Cat[]}
             locationGeocodedAddressList={
               whereAbouts?.address ? whereAbouts.address : undefined
             }

@@ -17,7 +17,7 @@ import icons from "./Icons";
 import { Cat } from "../types/types";
 
 export default function CatsAround(props: {
-  cats: Cat[];
+  cats: any[];
   locationGeocodedAddressList: undefined | LocationGeocodedAddress[];
 }) {
   return (

@@ -120,7 +120,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
     >
       <BottomTab.Screen
         name="Home"
-        children={HomeScreen}
+        component={HomeScreen}
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -129,7 +129,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
 
       <BottomTab.Screen
         name="Explore"
-        component={() => <ExploreScreen />}
+        component={ExploreScreen}
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
@@ -139,7 +139,6 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="New"
-        // children={() => <NewCatScreen />}
         component={NewCatScreen}
         options={({ navigation }: RootTabScreenProps<"New">) => ({
           title: "New",
@@ -173,7 +172,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Profile"
-        children={() => <Account key={session.user.id} session={session} />}
+        component={() => <Account key={session.user.id} session={session} />}
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,

@@ -92,7 +92,6 @@ function RootNavigator({ session }: { session: Session }) {
       />
       <Stack.Screen
         name="CatProfileScreen"
-        // component={CatProfileScreen}
         component={(cat: Cat) => <CatProfileScreen cat={cat} />}
         options={({}) => ({
           title: "Cat Profile",

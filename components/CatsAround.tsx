@@ -17,6 +17,7 @@ import icons from "./Icons";
 import { ProximityCat } from "../types/types";
 import { WhereAboutDisplay } from "./WhereAboutDisplay";
 import { CurrentWhereAboutsContext } from "../App";
+import { getCatPics } from "../lib/supabase";
 
 export default function CatsAround(props: { cats: ProximityCat[] }) {
   const whereabouts = useContext(CurrentWhereAboutsContext);
@@ -41,23 +42,31 @@ export default function CatsAround(props: { cats: ProximityCat[] }) {
 
       <FlatList
         data={props.cats}
-        renderItem={CatsAroundCard}
+        renderItem={({ item, index }) => (
+          <CatsAroundCard item={item} key={index} />
+        )}
         keyExtractor={(cat) => cat.id as string}
       />
     </View>
   );
 }
-export function CatsAroundCard({ item }: ListRenderItemInfo<ProximityCat>) {
+export function CatsAroundCard({ item }: any) {
+  const { data: pictureList } = getCatPics(item.id);
   return (
     <TouchableOpacity
       style={[AppStyles.catsAroundCard, { backgroundColor: "white" }]}
       onPress={() => console.log(item)}
     >
-      <ImageBackground
-        source={catSample}
-        resizeMode="cover"
-        style={AppStyles.catsAroundImageContainer}
-      ></ImageBackground>
+      {pictureList && pictureList.length > 0 && (
+        <ImageBackground
+          source={{
+            uri: pictureList[Math.floor(Math.random() * pictureList.length)],
+          }}
+          resizeMode="cover"
+          style={AppStyles.catsAroundImageContainer}
+        ></ImageBackground>
+      )}
+
       <View style={AppStyles.catsAroundTextContainer}>
         <Text style={AppStyles.title}>{item.name}</Text>
 

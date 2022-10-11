@@ -31,7 +31,6 @@ export function PopularCats(props: { cats: Cat[] }) {
       <FlatList
         horizontal={true}
         data={props.cats}
-        // renderItem={PopularCatCard}
         renderItem={({ item, index }) => (
           <PopularCatCard item={item} key={index} />
         )}

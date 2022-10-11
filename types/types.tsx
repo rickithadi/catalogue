@@ -47,6 +47,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   SuccessfulCatCreation: undefined;
+  CatProfileScreen: any;
   NotFound: undefined;
 };
 

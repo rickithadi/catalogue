@@ -25,6 +25,7 @@ import ExploreScreen from "../screens/ExploreScreen";
 import InboxScreen from "../screens/InboxScreen";
 
 import {
+  Cat,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
@@ -35,6 +36,7 @@ import Account from "../components/Account";
 import Auth from "../components/Auth";
 import NewCatScreen from "../screens/NewCatScreen";
 import { ModalScreen } from "../screens/ModalScreen";
+import CatProfileScreen from "../screens/CatProfileScreen";
 
 export default function Navigation({
   colorScheme,
@@ -88,6 +90,16 @@ function RootNavigator({ session }: { session: Session }) {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
+      <Stack.Screen
+        name="CatProfileScreen"
+        // component={CatProfileScreen}
+        component={(cat: Cat) => <CatProfileScreen cat={cat} />}
+        options={({}) => ({
+          title: "Cat Profile",
+          headerShown: false,
+        })}
+      />
+
       <Stack.Screen
         name="SuccessfulCatCreation"
         component={ModalScreen}

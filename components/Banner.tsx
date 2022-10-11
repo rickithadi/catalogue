@@ -6,13 +6,17 @@ import { Cat } from "../types/types";
 import { getCatPics } from "../lib/supabase";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Banner(props: { cat: Cat }) {
-  const { data: pictureList } = getCatPics(props.cat.id);
+type Props = {
+  cat: Cat;
+};
+
+export default function Banner({ cat }: Props) {
+  const { data: pictureList } = getCatPics(cat.id);
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("SuccessfulCatCreation")}
+      onPress={() => navigation.navigate("CatProfileScreen", { cat: cat })}
     >
       <View style={AppStyles.bannerContainer}>
         {pictureList && pictureList.length > 0 && (
@@ -24,10 +28,8 @@ export default function Banner(props: { cat: Cat }) {
             style={AppStyles.BannerImage}
           >
             <View style={AppStyles.bannerTextContainer}>
-              <Text style={AppStyles.bannerTitle}>{props.cat.name}</Text>
-              <Text style={AppStyles.bannersubText}>
-                {props.cat.description}
-              </Text>
+              <Text style={AppStyles.bannerTitle}>{cat.name}</Text>
+              <Text style={AppStyles.bannersubText}>{cat.description}</Text>
             </View>
           </ImageBackground>
         )}

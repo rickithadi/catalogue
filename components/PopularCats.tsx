@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import {
   ImageBackground,
@@ -13,8 +13,9 @@ import AppStyles from "../styles/AppStyles";
 import icons from "./Icons";
 import catSample from "../assets/images/rusty.jpg";
 import { Cat } from "../types/types";
+import { getCatPics } from "../lib/supabase";
 
-export default function PopularCats(props: { cats: Cat[] }) {
+export function PopularCats(props: { cats: Cat[] }) {
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>
@@ -30,21 +31,35 @@ export default function PopularCats(props: { cats: Cat[] }) {
       <FlatList
         horizontal={true}
         data={props.cats}
-        renderItem={PopularCatCard}
+        // renderItem={PopularCatCard}
+        renderItem={({ item, index }) => (
+          <PopularCatCard item={item} key={index} />
+        )}
         keyExtractor={(cat) => cat.id as string}
       />
     </View>
   );
 }
-export function PopularCatCard({ item }: ListRenderItemInfo<Cat>) {
+
+export function PopularCatCard({ item }: any) {
+  const [pictureList, setPictureList] = useState<string[]>([]);
+
+  useEffect(() => {
+    getCatPics(item.id).then((pics) => {
+      console.log(pics);
+      setPictureList(pics);
+    });
+  }, [item]);
+
   return (
     <TouchableOpacity
       style={AppStyles.popCatCard}
-      // style={AppStyles.popularCatCardTextContainer}
       onPress={() => console.log(item)}
     >
       <ImageBackground
-        source={catSample}
+        source={{
+          uri: pictureList[Math.floor(Math.random() * pictureList.length)],
+        }}
         resizeMode="cover"
         style={AppStyles.popCatCardTextContainer}
       >

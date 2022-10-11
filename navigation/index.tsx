@@ -18,16 +18,18 @@ import { useEffect } from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
+import ExploreScreen from "../screens/ExploreScreen";
+import InboxScreen from "../screens/InboxScreen";
+
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from "../types/types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import ExploreScreen from "../screens/ExploreScreen";
-import InboxScreen from "../screens/InboxScreen";
 import { supabase } from "../lib/supabase";
 import Account from "../components/Account";
 import Auth from "../components/Auth";

@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
+import { useQuery } from "react-query";
 
 const supabaseUrl = "https://ttofpxcplkleqtuopfgq.supabase.co";
 const supabaseAnonKey =
@@ -14,7 +15,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 
-export const getCatPics = async (catId: string) => {
+const fetchCatPics = async (catId: string) => {
   // TODO fix array response, not some cats dont have whereabouts for some reason, will fix eventually
   const { data: nestedPictureList, error } = await supabase
     .from("whereabouts")
@@ -28,3 +29,52 @@ export const getCatPics = async (catId: string) => {
     return [];
   }
 };
+const fetchCats = async () => {
+  const { data, error } = await supabase
+    .from("cats")
+    .select("*")
+    .order("id", { ascending: true });
+  if (error) console.log(error);
+  return data || [];
+};
+const proximitySearch = async (
+  currentLong: number,
+  currentLat: number,
+  rad: number,
+  lim: number
+) => {
+  console.log("proximity search", currentLong, currentLat, rad, lim);
+  const { data, error } = await supabase.rpc(
+    "proximity_search",
+    {
+      current_long: currentLong,
+      current_lat: currentLat,
+      rad: rad,
+      lim: lim,
+    },
+    { count: "exact" }
+  );
+  console.log("proximity", data);
+  if (error) console.log(error);
+  return data;
+};
+
+export const getCats = () => useQuery("cats", fetchCats);
+
+export const getCatsInProximity = (
+  currentLong: number,
+  currentLat: number,
+  rad: number,
+  lim: number
+) =>
+  useQuery(["catsInProximity", currentLong, currentLat, rad, lim], () =>
+    proximitySearch(currentLong, currentLat, rad, lim)
+  );
+
+export const getCatPics = (catId: string) =>
+  useQuery(["catPics", catId], () => fetchCatPics(catId));
+
+// TODO
+// createCat
+// uploadImages
+// createWhereabouts

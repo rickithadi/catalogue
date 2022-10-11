@@ -39,12 +39,15 @@ export type Whereabouts = {
   pictures?: string[];
 };
 
-export type EmptyCat = Omit<Cat, "uid" | "id"|"whereabouts"|"pets">;
+export type ProximityCat = Cat & { distance: number };
+
+export type EmptyCat = Omit<Cat, "uid" | "id" | "whereabouts" | "pets">;
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   SuccessfulCatCreation: undefined;
+  CatProfileScreen: any;
   NotFound: undefined;
 };
 

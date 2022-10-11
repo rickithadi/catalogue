@@ -2,64 +2,38 @@ import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, View, Image, Text } from "react-native";
 
-import { Cat } from "../types/types";
+import { Cat, ProximityCat } from "../types/types";
 import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";
 import { PopularCats } from "../components/PopularCats";
 import CatsAround from "../components/CatsAround";
 import { CurrentWhereAboutsContext } from "../App";
-import { supabase } from "../lib/supabase";
+import { getCats, getCatsInProximity } from "../lib/supabase";
 
 export default function ExploreScreen() {
-  const [cats, setCats] = useState<undefined | Cat[]>(undefined);
-  const [loading, setLoading] = useState(false);
-  const [pictureMap, setPictureMap] = useState<Record<string, string>>({});
-
+  const { data: cats } = getCats();
   const whereAbouts = useContext(CurrentWhereAboutsContext);
+
+  const { data: proximityCats, refetch } = getCatsInProximity(
+    whereAbouts?.location?.coords.longitude || 0,
+    whereAbouts?.location?.coords.latitude || 0,
+    200,
+    10
+  );
+
   useEffect(() => {
-    getCats();
-  }, []); // TODO mock this
+    refetch();
+  }, [whereAbouts]);
 
-  const getCats = async (done = false) => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("cats")
-      .select("*")
-      .order("id", { ascending: true });
-    // if (error) throw error;
-    setCats(data);
-    setLoading(false);
-  };
-
-  const rusty: Cat = {
-    name: "rusty",
-    id: "234",
-    gender: true,
-    pets: 900,
-    description: "very soft and fluffy, 10/10",
-    whereabouts: undefined,
-  };
-  const loki: Cat = {
-    name: "loki",
-    id: "1234",
-    gender: false,
-    pets: 900,
-    whereabouts: undefined,
-  };
   return (
     <SafeAreaView style={AppStyles.container}>
-      {cats && (
+      {cats && cats.length > 0 && (
         <ScrollView>
           {/* TODO implement popularity based on pets */}
           <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner>
           <PopularCats cats={cats}></PopularCats>
           {/* TODO sort cats by proximity */}
-          <CatsAround
-            cats={[rusty, loki]}
-            locationGeocodedAddressList={
-              whereAbouts?.address ? whereAbouts.address : undefined
-            }
-          ></CatsAround>
+          <CatsAround cats={proximityCats as ProximityCat[]}></CatsAround>
         </ScrollView>
       )}
     </SafeAreaView>

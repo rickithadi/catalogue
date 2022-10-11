@@ -36,6 +36,7 @@ import {
   LocationObject,
   setGoogleApiKey,
 } from "expo-location";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { Whereabouts } from "./types/types";
 import useColorScheme from "./hooks/useColorScheme";
@@ -49,6 +50,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const colorScheme = useColorScheme();
+  const queryClient = new QueryClient();
 
   const [appIsReady, setAppIsReady] = useState(false);
   const [locationGeocodedAddress, setLocationGeocodedAddress] = useState<
@@ -109,6 +111,7 @@ export default function App() {
         if (status !== "granted") {
           console.log("geolocation permission denied");
           setLocationGeocodedAddress(undefined);
+          setLocation(undefined);
         } else {
           Location.getCurrentPositionAsync({}).then((loc) =>
             Location.reverseGeocodeAsync(loc.coords).then((data) => {
@@ -128,17 +131,19 @@ export default function App() {
 
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
-      <CurrentWhereAboutsContext.Provider
-        value={{
-          location,
-          address: locationGeocodedAddress
-            ? locationGeocodedAddress
-            : undefined,
-        }}
-      >
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </CurrentWhereAboutsContext.Provider>
+      <QueryClientProvider client={queryClient}>
+        <CurrentWhereAboutsContext.Provider
+          value={{
+            location,
+            address: locationGeocodedAddress
+              ? locationGeocodedAddress
+              : undefined,
+          }}
+        >
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </CurrentWhereAboutsContext.Provider>
+      </QueryClientProvider>
     </SafeAreaProvider>
   );
 }

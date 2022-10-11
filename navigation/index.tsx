@@ -25,6 +25,7 @@ import ExploreScreen from "../screens/ExploreScreen";
 import InboxScreen from "../screens/InboxScreen";
 
 import {
+  Cat,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
@@ -35,6 +36,7 @@ import Account from "../components/Account";
 import Auth from "../components/Auth";
 import NewCatScreen from "../screens/NewCatScreen";
 import { ModalScreen } from "../screens/ModalScreen";
+import CatProfileScreen from "../screens/CatProfileScreen";
 
 export default function Navigation({
   colorScheme,
@@ -89,6 +91,15 @@ function RootNavigator({ session }: { session: Session }) {
         options={{ title: "Oops!" }}
       />
       <Stack.Screen
+        name="CatProfileScreen"
+        component={(cat: Cat) => <CatProfileScreen cat={cat} />}
+        options={({}) => ({
+          title: "Cat Profile",
+          headerShown: false,
+        })}
+      />
+
+      <Stack.Screen
         name="SuccessfulCatCreation"
         component={ModalScreen}
         options={({ navigation }) => ({
@@ -120,7 +131,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
     >
       <BottomTab.Screen
         name="Home"
-        children={HomeScreen}
+        component={HomeScreen}
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
@@ -130,16 +141,15 @@ function BottomTabNavigator({ session }: { session: Session }) {
       <BottomTab.Screen
         name="Explore"
         component={ExploreScreen}
-        options={{
+        options={({ navigation }) => ({
           title: "Explore",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="compass" color={color} />
           ),
-        }}
+        })}
       />
       <BottomTab.Screen
         name="New"
-        // children={() => <NewCatScreen />}
         component={NewCatScreen}
         options={({ navigation }: RootTabScreenProps<"New">) => ({
           title: "New",
@@ -173,7 +183,7 @@ function BottomTabNavigator({ session }: { session: Session }) {
       />
       <BottomTab.Screen
         name="Profile"
-        children={() => <Account key={session.user.id} session={session} />}
+        component={() => <Account key={session.user.id} session={session} />}
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,

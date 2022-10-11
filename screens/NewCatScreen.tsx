@@ -47,6 +47,7 @@ export default function NewCatScreen({ navigation }: any) {
               onSuccess={() => {
                 navigation.navigate("SuccessfulCatCreation");
                 setSelectedPictures([]);
+                // TODO refetch all cats call
               }}
             />
           </View>

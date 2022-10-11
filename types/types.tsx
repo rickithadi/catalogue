@@ -39,6 +39,8 @@ export type Whereabouts = {
   pictures?: string[];
 };
 
+export type ProximityCat = Cat & { distance: number };
+
 export type EmptyCat = Omit<Cat, "uid" | "id" | "whereabouts" | "pets">;
 
 export type RootStackParamList = {

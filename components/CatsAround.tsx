@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import {
   ImageBackground,
@@ -14,23 +14,22 @@ import { LocationGeocodedAddress } from "expo-location";
 import AppStyles from "../styles/AppStyles";
 import catSample from "../assets/images/rusty.jpg";
 import icons from "./Icons";
-import { Cat } from "../types/types";
+import { ProximityCat } from "../types/types";
+import { WhereAboutDisplay } from "./WhereAboutDisplay";
+import { CurrentWhereAboutsContext } from "../App";
 
-export default function CatsAround(props: {
-  cats: any[];
-  locationGeocodedAddressList: undefined | LocationGeocodedAddress[];
-}) {
+export default function CatsAround(props: { cats: ProximityCat[] }) {
+  const whereabouts = useContext(CurrentWhereAboutsContext);
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>
         <Text>
           <Text style={AppStyles.title}>Cats Around </Text>
-          <Text style={AppStyles.locationStyle}>
-            {props.locationGeocodedAddressList &&
-            props.locationGeocodedAddressList[0]
-              ? props.locationGeocodedAddressList[0].name
-              : "Singapore"}
-          </Text>
+          {whereabouts ? (
+            <WhereAboutDisplay whereAbouts={whereabouts} />
+          ) : (
+            <Text style={AppStyles.locationStyle}>Singapore</Text>
+          )}
         </Text>
         <TouchableOpacity>
           <Text style={AppStyles.smallButtonText}>
@@ -48,7 +47,7 @@ export default function CatsAround(props: {
     </View>
   );
 }
-export function CatsAroundCard({ item }: ListRenderItemInfo<Cat>) {
+export function CatsAroundCard({ item }: ListRenderItemInfo<ProximityCat>) {
   return (
     <TouchableOpacity
       style={[AppStyles.catsAroundCard, { backgroundColor: "white" }]}
@@ -71,7 +70,7 @@ export function CatsAroundCard({ item }: ListRenderItemInfo<Cat>) {
         <View style={AppStyles.cardRow}>
           <Text style={AppStyles.smallText}>
             <Image source={icons.location} style={AppStyles.icon} />
-            {item.name}
+            {item.distance.toFixed(2)} km away
           </Text>
         </View>
         <View style={AppStyles.cardRow}>

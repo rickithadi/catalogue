@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, View, Image, Text } from "react-native";
 
-import { Cat } from "../types/types";
+import { Cat, ProximityCat } from "../types/types";
 import AppStyles from "../styles/AppStyles";
 import Banner from "../components/Banner";
 import { PopularCats } from "../components/PopularCats";
@@ -25,21 +25,6 @@ export default function ExploreScreen() {
     refetch();
   }, [whereAbouts]);
 
-  const rusty: Cat = {
-    name: "rusty",
-    id: "234",
-    gender: true,
-    pets: 900,
-    description: "very soft and fluffy, 10/10",
-    whereabouts: undefined,
-  };
-  const loki: Cat = {
-    name: "loki",
-    id: "1234",
-    gender: false,
-    pets: 900,
-    whereabouts: undefined,
-  };
   return (
     <SafeAreaView style={AppStyles.container}>
       {cats && cats.length > 0 && (
@@ -48,12 +33,7 @@ export default function ExploreScreen() {
           <Banner cat={cats[Math.floor(Math.random() * cats.length)]}></Banner>
           <PopularCats cats={cats}></PopularCats>
           {/* TODO sort cats by proximity */}
-          <CatsAround
-            cats={proximityCats as Cat[]}
-            locationGeocodedAddressList={
-              whereAbouts?.address ? whereAbouts.address : undefined
-            }
-          ></CatsAround>
+          <CatsAround cats={proximityCats as ProximityCat[]}></CatsAround>
         </ScrollView>
       )}
     </SafeAreaView>

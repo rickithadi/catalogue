@@ -21,6 +21,9 @@ export default {
     extra: {
       // Add your extra configs here
       googleApiKey: process.env.GOOGLE_API_KEY,
+      eas: {
+        projectId: "5dcde1fd-90f7-477e-b076-adc2f469870c",
+      },
     },
     ios: {
       supportsTablet: true,
@@ -30,6 +33,8 @@ export default {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
+      package: "com.catalogue.catalogue",
+      versionCode: 1,
     },
     web: {
       favicon: "./assets/images/favicon.png",

@@ -3,7 +3,6 @@ import { AntDesign } from "@expo/vector-icons";
 import {
   ImageBackground,
   Image,
-  ListRenderItemInfo,
   TouchableOpacity,
   FlatList,
 } from "react-native";
@@ -11,11 +10,15 @@ import { View, Text } from "react-native";
 
 import AppStyles from "../styles/AppStyles";
 import icons from "./Icons";
-import catSample from "../assets/images/rusty.jpg";
 import { Cat } from "../types/types";
 import { getCatPics } from "../lib/supabase";
+import { useNavigation } from "@react-navigation/native";
 
 export function PopularCats(props: { cats: Cat[] }) {
+  const navigation = useNavigation();
+
+  const routeToCat = (cat: Cat) =>
+    navigation.navigate("CatProfileScreen", { cat: cat });
   return (
     <View style={AppStyles.popCatParentContainer}>
       <View style={AppStyles.popCatHeaderContainer}>
@@ -32,7 +35,11 @@ export function PopularCats(props: { cats: Cat[] }) {
         horizontal={true}
         data={props.cats}
         renderItem={({ item, index }) => (
-          <PopularCatCard item={item} key={index} />
+          <PopularCatCard
+            item={item}
+            key={index}
+            route={(cat: Cat) => routeToCat(cat)}
+          />
         )}
         keyExtractor={(cat) => cat.id as string}
       />
@@ -40,14 +47,11 @@ export function PopularCats(props: { cats: Cat[] }) {
   );
 }
 
-export function PopularCatCard({ item }: any) {
+export function PopularCatCard({ item, route }: any) {
   const { data: pictureList } = getCatPics(item.id);
 
   return (
-    <TouchableOpacity
-      style={AppStyles.popCatCard}
-      onPress={() => console.log(item)}
-    >
+    <TouchableOpacity style={AppStyles.popCatCard} onPress={() => route(item)}>
       {pictureList && pictureList.length > 0 && (
         <ImageBackground
           source={{

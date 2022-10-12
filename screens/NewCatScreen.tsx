@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  Platform,
+} from "react-native";
 
 import AppStyles from "../styles/AppStyles";
 import CreateCat from "../components/CreateCat";
@@ -54,10 +61,14 @@ export default function NewCatScreen({ navigation }: any) {
         </ScrollView>
       ) : (
         <View style={AppStyles.createCatImageContainer}>
-          <ImagePicker
-            setSelectedPictures={setSelectedPictures}
-            back={() => navigation.goBack()}
-          />
+          {Platform.OS === "web" ? (
+            <Text>youm on web</Text>
+          ) : (
+            <ImagePicker
+              setSelectedPictures={setSelectedPictures}
+              back={() => navigation.goBack()}
+            />
+          )}
         </View>
       )}
     </SafeAreaView>

@@ -14,7 +14,7 @@ export const WhereAboutDisplay = ({ whereAbouts }: Props) => (
     {whereAbouts.address &&
       whereAbouts?.address[0] &&
       whereAbouts?.address[0].postalCode}
-    ,
+    ,{" "}
     {whereAbouts.address &&
       whereAbouts?.address[0] &&
       whereAbouts?.address[0].city}
